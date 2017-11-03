@@ -32,6 +32,62 @@
         <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps">
+
+        </activity>
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName=".MapsActivity">
+
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.maxgirkins.songle.MapsActivity" />
+        </activity>
+        <activity
+            android:name=".Help"
+            android:label="@string/help_title"
+            android:parentActivityName=".MapsActivity">
+
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.maxgirkins.songle.MapsActivity" />
+        </activity>
+        <activity
+            android:name=".Statistics"
+            android:label="@string/statistics_activity_title"
+            android:parentActivityName=".MapsActivity">
+
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.maxgirkins.songle.MapsActivity" />
+        </activity>
+        <activity
+            android:name=".word_bag"
+            android:label="@string/word_bag_title"
+            android:parentActivityName=".MapsActivity">
+
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.maxgirkins.songle.MapsActivity" />
+        </activity>
+        <activity
+            android:name=".Guess"
+            android:label="@string/activity_guess_title"
+            android:parentActivityName=".MapsActivity">
+
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.maxgirkins.songle.MapsActivity" />
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/title_activity_main"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -7,7 +7,9 @@ xmlns:tools="http://schemas.android.com/tools"
 android:id="@+id/preferenceScreen"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
-tools:context="com.example.maxgirkins.songle.SettingsActivity">
+android:title="@string/title_activity_settings">
+
+
 <SwitchPreference
     android:id="@+id/switchPreference"
     android:layout_width="384dp"
@@ -18,18 +20,9 @@ tools:context="com.example.maxgirkins.songle.SettingsActivity">
     android:title="@string/settings_night_mode"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent" />
-    <SwitchPreference
-        android:id="@+id/switchPreference2"
-        android:layout_width="384dp"
-        android:layout_height="54dp"
-        android:defaultValue="false"
-        android:key="distance_units_toggle"
-        android:summary="Miles/Kilometres"
-        android:switchTextOff="@string/units_toggle_off"
-        android:switchTextOn="@string/units_toggle_on"
-        android:title="@string/settings_units"
-        app:layout_constraintStart_toStartOf="@+id/switchPreference"
-        app:layout_constraintTop_toTopOf="@+id/switchPreference" />
+    <ToggleButton
+        android:textOn="Kilometres"
+        android:textOff="Miles"/>
 <ListPreference
     android:id="@+id/listPreference"
     android:layout_width="384dp"

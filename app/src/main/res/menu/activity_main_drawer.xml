@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_bag"
+            android:icon="@drawable/ic_shopping_basket_black_24dp"
+            android:title="Collected Words" />
+        <item
+            android:id="@+id/nav_guess"
+            android:icon="@drawable/ic_check_black_24dp"
+            android:title="Guess" />
+        <item
+            android:id="@+id/nav_help"
+            android:icon="@drawable/ic_info_black_24dp"
+            android:title="Help" />
+        <item
+            android:id="@+id/nav_give_up"
+            android:icon="@drawable/ic_warning_black_24dp"
+            android:title="Give Up?" />
+        <item
+            android:id="@+id/nav_manage"
+            android:icon="@drawable/ic_settings_black_24dp"
+            android:title="Settings" />
+    </group>
+
+
+
+</menu>

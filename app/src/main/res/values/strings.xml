@@ -88,7 +88,7 @@
 
     <string name="pref_title_system_sync_settings">System sync settings</string>
     <string name="help_title">Help</string>
-    <string name="word_bag_title">words</string>
+    <string name="word_bag_title">Collected words</string>
     <string name="statistics_activity_title">Statistics</string>
     <string name="help_text">How to play Songle: \n\nWalk around The edinburgh university campus and collect lyrics to popular songs as you get near enough to the markers displayed on the map. You can see the lyrics you have already collected
     by clicking the basket icon above the map, and you can guess the song by clicking guess at the top of the collected words screen.\n\nThe You can see your progress at any time from the map by clicking the hamburger icon at the top right
@@ -169,4 +169,12 @@
     68	Nothing really matters to me.
     69
     70	Any way the wind blows.</string>
+    <string name="word_bag_guess_button">Guess!</string>
+    <string name="activity_guess_title">Guess</string>
+    <string name="title_activity_main">MainActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
 </resources>
