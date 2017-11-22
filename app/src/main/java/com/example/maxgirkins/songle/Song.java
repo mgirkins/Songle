@@ -1,0 +1,46 @@
+package com.example.maxgirkins.songle;
+
+import java.util.Date;
+import java.util.List;
+
+/**
+ * Created by MaxGirkins on 22/11/2017.
+ */
+
+public class Song implements java.io.Serializable {
+    private String title;
+    private String artist;
+    private Integer num;
+    private List<Lyric> lyrics;
+    private  Boolean completed;
+    private Date completedAt;
+
+    public Song(String title, String artist, Integer num) {
+        this.title = title;
+        this.artist = artist;
+        this.num = num;
+        this.lyrics = null;
+        this.completed = false;
+        this.completedAt = null;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getArtist() {
+        return artist;
+    }
+
+    public List<Lyric> getLyrics() {
+        return lyrics;
+    }
+
+    public Boolean isCompleted() {
+        return completed;
+    }
+
+    public Date getCompletedAt() {
+        return completedAt;
+    }
+}

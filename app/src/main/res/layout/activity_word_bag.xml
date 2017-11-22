@@ -19,24 +19,6 @@
         app:layout_constraintTop_toBottomOf="@+id/button2" />
 
     <Button
-        android:id="@+id/button14"
-        android:layout_width="105dp"
-        android:layout_height="14dp"
-        android:background="@android:color/black"
-        android:text="Button"
-        tools:layout_editor_absoluteX="24dp"
-        tools:layout_editor_absoluteY="61dp" />
-
-    <Button
-        android:id="@+id/button15"
-        android:layout_width="70dp"
-        android:layout_height="14dp"
-        android:background="@android:color/black"
-        android:text="Button"
-        tools:layout_editor_absoluteX="9dp"
-        tools:layout_editor_absoluteY="96dp" />
-
-    <Button
         android:id="@+id/button16"
         android:layout_width="150dp"
         android:layout_height="16dp"
@@ -46,45 +28,18 @@
         tools:layout_editor_absoluteY="159dp" />
 
     <Button
-        android:id="@+id/button17"
-        android:layout_width="65dp"
-        android:layout_height="15dp"
-        android:background="@android:color/black"
-        android:text="Button"
-        tools:layout_editor_absoluteX="31dp"
-        tools:layout_editor_absoluteY="177dp" />
-
-    <Button
         android:id="@+id/button2"
         android:layout_width="366dp"
         android:layout_height="42dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:background="@android:color/holo_red_dark"
+        android:background="@color/colorAccent"
         android:text="@string/word_bag_guess_button"
         android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/button18"
-        android:layout_width="124dp"
-        android:layout_height="16dp"
-        android:background="@android:color/black"
-        android:text="Button"
-        tools:layout_editor_absoluteX="129dp"
-        tools:layout_editor_absoluteY="176dp" />
-
-    <Button
-        android:id="@+id/button19"
-        android:layout_width="147dp"
-        android:layout_height="14dp"
-        android:background="@android:color/black"
-        android:text="Button"
-        tools:layout_editor_absoluteX="9dp"
-        tools:layout_editor_absoluteY="194dp" />
 
     <Button
         android:id="@+id/button20"
@@ -96,15 +51,6 @@
         tools:layout_editor_absoluteY="194dp" />
 
     <Button
-        android:id="@+id/button21"
-        android:layout_width="96dp"
-        android:layout_height="14dp"
-        android:background="@android:color/black"
-        android:text="Button"
-        tools:layout_editor_absoluteX="9dp"
-        tools:layout_editor_absoluteY="210dp" />
-
-    <Button
         android:id="@+id/button22"
         android:layout_width="197dp"
         android:layout_height="15dp"
@@ -112,42 +58,6 @@
         android:text="Button"
         tools:layout_editor_absoluteX="9dp"
         tools:layout_editor_absoluteY="226dp" />
-
-    <Button
-        android:id="@+id/button23"
-        android:layout_width="wrap_content"
-        android:layout_height="16dp"
-        android:background="@android:color/black"
-        android:text="Button"
-        tools:layout_editor_absoluteX="287dp"
-        tools:layout_editor_absoluteY="225dp" />
-
-    <Button
-        android:id="@+id/button24"
-        android:layout_width="107dp"
-        android:layout_height="15dp"
-        android:background="@android:color/black"
-        android:text="Button"
-        tools:layout_editor_absoluteX="51dp"
-        tools:layout_editor_absoluteY="258dp" />
-
-    <Button
-        android:id="@+id/button25"
-        android:layout_width="107dp"
-        android:layout_height="16dp"
-        android:background="@android:color/black"
-        android:text="Button"
-        tools:layout_editor_absoluteX="9dp"
-        tools:layout_editor_absoluteY="276dp" />
-
-    <Button
-        android:id="@+id/button26"
-        android:layout_width="164dp"
-        android:layout_height="14dp"
-        android:background="@android:color/black"
-        android:text="Button"
-        tools:layout_editor_absoluteX="9dp"
-        tools:layout_editor_absoluteY="294dp" />
 
     <Button
         android:id="@+id/button27"
@@ -177,24 +87,6 @@
         tools:layout_editor_absoluteY="310dp" />
 
     <Button
-        android:id="@+id/button30"
-        android:layout_width="228dp"
-        android:layout_height="14dp"
-        android:background="@android:color/black"
-        android:text="Button"
-        tools:layout_editor_absoluteX="31dp"
-        tools:layout_editor_absoluteY="326dp" />
-
-    <Button
-        android:id="@+id/button31"
-        android:layout_width="152dp"
-        android:layout_height="15dp"
-        android:background="@android:color/black"
-        android:text="Button"
-        tools:layout_editor_absoluteX="9dp"
-        tools:layout_editor_absoluteY="375dp" />
-
-    <Button
         android:id="@+id/button32"
         android:layout_width="190dp"
         android:layout_height="14dp"
@@ -202,15 +94,6 @@
         android:text="Button"
         tools:layout_editor_absoluteX="66dp"
         tools:layout_editor_absoluteY="392dp" />
-
-    <Button
-        android:id="@+id/button33"
-        android:layout_width="229dp"
-        android:layout_height="15dp"
-        android:background="@android:color/black"
-        android:text="Button"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="408dp" />
 
     <Button
         android:id="@+id/button34"
@@ -222,15 +105,6 @@
         tools:layout_editor_absoluteY="441dp" />
 
     <Button
-        android:id="@+id/button35"
-        android:layout_width="105dp"
-        android:layout_height="15dp"
-        android:background="@android:color/black"
-        android:text="Button"
-        tools:layout_editor_absoluteX="51dp"
-        tools:layout_editor_absoluteY="456dp" />
-
-    <Button
         android:id="@+id/button36"
         android:layout_width="158dp"
         android:layout_height="14dp"
@@ -238,14 +112,5 @@
         android:text="Button"
         tools:layout_editor_absoluteX="9dp"
         tools:layout_editor_absoluteY="474dp" />
-
-    <Button
-        android:id="@+id/button37"
-        android:layout_width="168dp"
-        android:layout_height="15dp"
-        android:background="@android:color/black"
-        android:text="Button"
-        tools:layout_editor_absoluteX="71dp"
-        tools:layout_editor_absoluteY="491dp" />
 
 </android.support.constraint.ConstraintLayout>

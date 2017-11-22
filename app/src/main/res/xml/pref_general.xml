@@ -20,9 +20,18 @@ android:title="@string/title_activity_settings">
     android:title="@string/settings_night_mode"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent" />
-    <ToggleButton
-        android:textOn="Kilometres"
-        android:textOff="Miles"/>
+
+    <SwitchPreference
+        android:id="@+id/settings_units"
+        android:layout_width="384dp"
+        android:layout_height="72dp"
+        android:defaultValue="false"
+        android:summary="Miles/Kilometres"
+        android:title="@string/settings_units"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
 <ListPreference
     android:id="@+id/listPreference"
     android:layout_width="384dp"
@@ -33,8 +42,14 @@ android:title="@string/title_activity_settings">
     android:key="settings_difficulty_list"
     android:title="@string/settings_difficulty_level_title"
     app:layout_constraintStart_toStartOf="@+id/switchPreference"
-    app:layout_constraintTop_toTopOf="@+id/switchPreference" />>
-
+    app:layout_constraintTop_toTopOf="@+id/switchPreference" />
+    <ListPreference
+        android:defaultValue="1"
+        android:entries="@array/list_preference_entry_values"
+        android:entryValues="@array/list_preference_entry_values"
+        android:key="list_preference_1"
+        android:title="Reset!"
+        android:summary="Warning: this will delete all progress you have made so far, it cannot be undone."/>
 
 
 </PreferenceScreen>

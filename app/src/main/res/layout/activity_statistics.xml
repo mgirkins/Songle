@@ -50,7 +50,7 @@
             android:progress="21" />
 
         <TextView
-            android:id="@+id/textView5"
+            android:id="@+id/textView7"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Distance Walked Today:"
@@ -62,13 +62,26 @@
             android:text="1.25km" />
 
         <TextView
+            android:id="@+id/textView5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Distance Walked This Week:"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="34.64km" />
+
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Distance walked for this song:"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
         <TextView
-            android:id="@+id/textView6"
+            android:id="@+id/textView8"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="21.95km" />
@@ -83,5 +96,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="323.5km" />
+
+        <Button
+            android:id="@+id/button5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorAccent"
+            android:text="Completed songs" />
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

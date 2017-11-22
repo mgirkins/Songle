@@ -1,8 +1,11 @@
 package com.example.maxgirkins.songle;
 
 import android.Manifest;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.location.Location;
 import com.google.android.gms.location.LocationListener;
 
@@ -12,6 +15,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -30,6 +34,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MainActivity extends AppCompatActivity
@@ -44,7 +49,7 @@ public class MainActivity extends AppCompatActivity
     private Location mLastLocation;
     private NetworkReceiver receiver = new NetworkReceiver();
     private static final String TAG = "MapsActivity";
-
+    private DownloadXmlTask download;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,14 +58,11 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setTitle("Songle");
-
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -73,10 +75,13 @@ public class MainActivity extends AppCompatActivity
                     .addApi(LocationServices.API)
                     .build();
         }
+
         IntentFilter filter = new
                 IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
         receiver = new NetworkReceiver();
         this.registerReceiver(receiver, filter);
+        download = new DownloadXmlTask();
+        download.execute("http://www.inf.ed.ac.uk/teaching/courses/selp/data/songs/songs.xml");
 
     }
 
@@ -105,7 +110,7 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
+
         }
 
         return super.onOptionsItemSelected(item);
@@ -129,7 +134,19 @@ public class MainActivity extends AppCompatActivity
 
         // Add ‘‘My location’’ button to the user interface
         mMap.getUiSettings().setMyLocationButtonEnabled(true);
-        populateMap();
+        try {
+            // Customise the styling of the base map using a JSON object defined
+            // in a raw resource file.
+            boolean success = googleMap.setMapStyle(
+                    MapStyleOptions.loadRawResourceStyle(
+                            this, R.raw.style_json));
+
+            if (!success) {
+                Log.e(TAG, "Style parsing failed.");
+            }
+        } catch (Resources.NotFoundException e) {
+            Log.e(TAG, "Can't find style. Error: ", e);
+        }
     }
     public void populateMap(){
 
@@ -185,9 +202,9 @@ public class MainActivity extends AppCompatActivity
     }
     @Override
     public void onLocationChanged(Location location) {
-        Log.i(TAG, "location Changed.");
-        LatLng b = new LatLng(location.getLatitude(), location.getLongitude());
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(b));
+        //LatLng b = new LatLng(location.getLatitude(), location.getLongitude());
+        //mMap.moveCamera(CameraUpdateFactory.newLatLng(b));
+
     }
 
     @Override
@@ -207,15 +224,17 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_bag) {
-            // Handle the camera action
+            Intent goBag = new Intent(this, word_bag.class);
+            startActivity(goBag);
         } else if (id == R.id.nav_guess) {
-
+            Intent goGuess = new Intent(this, Guess.class);
+            startActivity(goGuess);
         } else if (id == R.id.nav_help) {
-
+            Intent goHelp = new Intent(this, Help.class);
+            startActivity(goHelp);
         } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_give_up) {
-
+            Intent goSettings = new Intent(this, SettingsActivity.class);
+            startActivity(goSettings);
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
