@@ -12,14 +12,15 @@ import java.io.ObjectOutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
-public class DownloadXmlTask extends AsyncTask<String, Void, SongList> {
+public class DownloadSongLyrics extends AsyncTask<String, Void, List<Lyric>> {
 
     private static final String TAG = "DownloaderA";
-    SongList s = null;
+    List<Lyric> s = null;
 
     @Override
-    protected SongList doInBackground(String... urls) {
+    protected List<Lyric> doInBackground(String... urls) {
         try {
             loadXmlFromNetwork(urls[0]);
         } catch (IOException e) {
@@ -33,13 +34,13 @@ public class DownloadXmlTask extends AsyncTask<String, Void, SongList> {
             XmlPullParserException, IOException {
 
         try (InputStream stream = downloadUrl(urlString)){
-            SongInfoParser p = new SongInfoParser();
+            SongLyricParser p = new SongLyricParser();
             s = p.parse(stream);
         } catch (IOException i) {
             i.printStackTrace();
         }
     }
-    private SongList onPostExecute(){
+    private List<Lyric> onPostExecute(){
         return s;
     }
     private InputStream downloadUrl(String urlString) throws IOException {

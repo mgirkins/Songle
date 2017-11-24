@@ -37,6 +37,14 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.concurrent.ExecutionException;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
@@ -50,6 +58,8 @@ public class MainActivity extends AppCompatActivity
     private NetworkReceiver receiver = new NetworkReceiver();
     private static final String TAG = "MapsActivity";
     private DownloadXmlTask download;
+    private DownloadSongLyrics downloadsongs;
+    private SongList songs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,16 +85,76 @@ public class MainActivity extends AppCompatActivity
                     .addApi(LocationServices.API)
                     .build();
         }
-
-        IntentFilter filter = new
-                IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
-        receiver = new NetworkReceiver();
-        this.registerReceiver(receiver, filter);
-        download = new DownloadXmlTask();
-        download.execute("http://www.inf.ed.ac.uk/teaching/courses/selp/data/songs/songs.xml");
+        songs = new SongList();
+        if (songs.getNumSongs() == 0){
+            getData();
+        }
+        if (songs.getNumSongs() == 0){
+            downloadSongInfo();
+        }
 
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        FileOutputStream fileOut = null;
+        try {
+            fileOut = new FileOutputStream("/tmp/songlist.ser");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        ObjectOutputStream out = null;
+        try {
+            out = new ObjectOutputStream(fileOut);
+            out.writeObject(songs);
+            out.close();
+            fileOut.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (NullPointerException n){
+
+        }
+        System.out.printf("Serialized data is saved in /tmp/songlist.ser");
+    }
+
+    public void getData(){
+
+        try {
+            FileInputStream fileIn = new FileInputStream("/tmp/songlist.ser");
+            ObjectInputStream in = new ObjectInputStream(fileIn);
+            songs = (SongList) in.readObject();
+            in.close();
+            fileIn.close();
+        } catch (IOException i) {
+            i.printStackTrace();
+        } catch (ClassNotFoundException c) {
+            System.out.println("SongList class not found");
+            c.printStackTrace();
+        }
+    }
+    public void downloadSongInfo(){
+        download = new DownloadXmlTask();
+        try {
+            songs = download.execute("http://www.inf.ed.ac.uk/teaching/courses/selp/data/songs/songs.xml").get();
+        } catch (InterruptedException i){
+            i.printStackTrace();
+        } catch (ExecutionException e ){
+            e.printStackTrace();
+        }
+
+    }
+    public void getSong(Integer num){
+        downloadsongs = new DownloadSongLyrics();
+        try {
+            songs.getSong(num).addLyrics(downloadsongs.execute("www.inf.ed.ac.uk/teaching/courses/selp/data/songs/" + num + "/lyrics.txt").get());
+        } catch (InterruptedException i){
+            i.printStackTrace();
+        } catch (ExecutionException e ){
+            e.printStackTrace();
+        }
+
+    }
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

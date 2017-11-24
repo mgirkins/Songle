@@ -14,7 +14,7 @@ import java.util.List;
  * Created by MaxGirkins on 22/11/2017.
  */
 
-public class XmlParser {
+public class SongInfoParser {
     private static final String TAG = "ParserClass";
     private static final String ns = null;
     SongList parse(InputStream in) throws XmlPullParserException, IOException {

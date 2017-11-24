@@ -8,11 +8,12 @@ import java.util.List;
  */
 
 public class Song implements java.io.Serializable {
+
     private String title;
     private String artist;
     private Integer num;
     private List<Lyric> lyrics;
-    private  Boolean completed;
+    private  Integer completed;
     private Date completedAt;
 
     public Song(String title, String artist, Integer num) {
@@ -20,7 +21,7 @@ public class Song implements java.io.Serializable {
         this.artist = artist;
         this.num = num;
         this.lyrics = null;
-        this.completed = false;
+        this.completed = 0;
         this.completedAt = null;
     }
 
@@ -36,11 +37,23 @@ public class Song implements java.io.Serializable {
         return lyrics;
     }
 
+    public void addLyrics(List<Lyric>l){
+        lyrics.addAll(l);
+    }
+
     public Boolean isCompleted() {
-        return completed;
+        if (completed == 1 ){
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public Date getCompletedAt() {
         return completedAt;
+    }
+
+    public Integer getNum() {
+        return num;
     }
 }

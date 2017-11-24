@@ -1,11 +1,10 @@
 package com.example.maxgirkins.songle;
 
-import android.icu.text.DateFormat;
-
 import com.google.android.gms.maps.model.LatLng;
 
 import java.sql.Array;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,21 +12,20 @@ import java.util.List;
  */
 
 public class Lyric implements java.io.Serializable {
-
     private String word;
     private Boolean collected;
     private Date collectedAt;
-    private Array songPosition;
-    private LatLng coords;
+    private Integer[] songPosition;
+    private List<LatLng> coords;
     private List<String> classification;
 
-    public Lyric(String word, Array songPosition, LatLng coords, List<String> classification){
+    public Lyric(String word, Integer[] songPosition){
         this.word = word;
         this.songPosition = songPosition;
-        this.coords = coords;
         this.collected = false;
         this.collectedAt = null;
-        this.classification = classification;
+        this.coords = new ArrayList<>();
+        this.classification = new ArrayList<>();
     }
 
     public String getLyric(){
@@ -38,7 +36,19 @@ public class Lyric implements java.io.Serializable {
         collected = true;
         collectedAt = now;
     }
+    public void setCoords(LatLng l, Integer level){
+        coords.set(level, l);
+    }
+    public LatLng getCoords(Integer level) {
 
+        return coords.get(level);
+    }
+    public void setClassification(String classification, Integer level){
+        this.classification.set(level,classification);
+    }
+    public String getClassification(Integer level){
+        return classification.get(level);
+    }
     public Boolean isCollected(){
         return collected;
     }
@@ -48,18 +58,8 @@ public class Lyric implements java.io.Serializable {
         return collectedAt;
     }
 
-    public Array getSongPosition() {
+    public Integer[] getSongPosition() {
         return songPosition;
     }
 
-    public LatLng getCoords() {
-        return coords;
-    }
-
-    public String getClassification(int level) {
-        return classification.get(level);
-    }
-    public void setClassification(String classification, int level){
-        this.classification.set(level, classification);
-    }
 }
