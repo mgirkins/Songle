@@ -1,5 +1,7 @@
 package com.example.maxgirkins.songle;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -20,7 +22,7 @@ public class Song implements java.io.Serializable {
         this.title = title;
         this.artist = artist;
         this.num = num;
-        this.lyrics = null;
+        this.lyrics = new ArrayList<>();
         this.completed = 0;
         this.completedAt = null;
     }
@@ -38,7 +40,7 @@ public class Song implements java.io.Serializable {
     }
 
     public void addLyrics(List<Lyric>l){
-        lyrics.addAll(l);
+        this.lyrics = l;
     }
 
     public Boolean isCompleted() {
@@ -55,5 +57,9 @@ public class Song implements java.io.Serializable {
 
     public Integer getNum() {
         return num;
+    }
+    @Override
+    public String toString(){
+        return lyrics.toString();
     }
 }

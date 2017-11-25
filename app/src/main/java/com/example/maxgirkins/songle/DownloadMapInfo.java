@@ -5,21 +5,30 @@ import android.util.Log;
 
 import org.xmlpull.v1.XmlPullParserException;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.ObjectOutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
+import java.util.List;
 
-public class DownloadXmlTask extends AsyncTask<String, Void, SongList> {
+public class DownloadMapInfo extends AsyncTask<String, Void, List<Lyric>> {
 
-    private static final String TAG = "DownloaderA";
-    SongList s = new SongList();
+    private static final String TAG = "DownloaderMapInfo";
+    private List<Lyric> b;
+    private Integer level;
+    public DownloadMapInfo(List<Lyric> s, Integer level){
+        this.b = s;
+        this.level = level;
+    }
+
     @Override
-    protected SongList doInBackground(String... urls) {
+    protected void onPostExecute(List<Lyric> lyrics) {
+
+        super.onPostExecute(lyrics);
+    }
+
+    @Override
+    protected List<Lyric> doInBackground(String... urls) {
         try {
             loadXmlFromNetwork(urls[0]);
         } catch (IOException e) {
@@ -27,12 +36,13 @@ public class DownloadXmlTask extends AsyncTask<String, Void, SongList> {
         } catch (XmlPullParserException e) {
             Log.e(TAG, "XMLPullParserException");
         }
-        return s;
+        return null;
     }
     private void loadXmlFromNetwork(String urlString) throws XmlPullParserException, IOException {
         try (InputStream stream = downloadUrl(urlString)){
-            SongInfoParser p = new SongInfoParser();
-            this.s = p.parse(stream);
+            MapInfoParser p = new MapInfoParser(b, level);
+            this.b = p.parse(stream);
+
         } catch (IOException i) {
             i.printStackTrace();
         }

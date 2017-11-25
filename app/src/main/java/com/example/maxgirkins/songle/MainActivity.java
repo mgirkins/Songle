@@ -10,6 +10,7 @@ import android.location.Location;
 import com.google.android.gms.location.LocationListener;
 
 import android.net.ConnectivityManager;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -87,11 +88,18 @@ public class MainActivity extends AppCompatActivity
         }
         songs = new SongList();
         if (songs.getNumSongs() == 0){
-            getData();
+            try {
+                getData();
+            } catch (IndexOutOfBoundsException i){
+
+            }
         }
         if (songs.getNumSongs() == 0){
             downloadSongInfo();
+
         }
+        importSongLyrics(songs.getActiveSong().getNum(), songs,1);
+
 
     }
 
@@ -136,7 +144,7 @@ public class MainActivity extends AppCompatActivity
     public void downloadSongInfo(){
         download = new DownloadXmlTask();
         try {
-            songs = download.execute("http://www.inf.ed.ac.uk/teaching/courses/selp/data/songs/songs.xml").get();
+            this.songs = download.execute("http://www.inf.ed.ac.uk/teaching/courses/selp/data/songs/songs.xml").get();
         } catch (InterruptedException i){
             i.printStackTrace();
         } catch (ExecutionException e ){
@@ -144,10 +152,17 @@ public class MainActivity extends AppCompatActivity
         }
 
     }
-    public void getSong(Integer num){
-        downloadsongs = new DownloadSongLyrics();
+    public void importSongLyrics(Integer num, SongList songList, Integer level){
+        String numForm = num.toString();
+        if (numForm.length() == 1){
+            numForm = "0" + numForm;
+        }
+        String[] strings = {"http://www.inf.ed.ac.uk/teaching/courses/selp/data/songs/" + numForm + "/lyrics.txt","http://www.inf.ed.ac.uk/teaching/courses/selp/data/songs/"+numForm+"/map"+level+".txt"};
+        downloadsongs = new DownloadSongLyrics(numForm,level, songs);
+
         try {
-            songs.getSong(num).addLyrics(downloadsongs.execute("www.inf.ed.ac.uk/teaching/courses/selp/data/songs/" + num + "/lyrics.txt").get());
+            songList.getSong(num).addLyrics(downloadsongs.execute(strings).get());
+
         } catch (InterruptedException i){
             i.printStackTrace();
         } catch (ExecutionException e ){
@@ -155,6 +170,8 @@ public class MainActivity extends AppCompatActivity
         }
 
     }
+
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -217,6 +234,7 @@ public class MainActivity extends AppCompatActivity
         } catch (Resources.NotFoundException e) {
             Log.e(TAG, "Can't find style. Error: ", e);
         }
+
     }
     public void populateMap(){
 
@@ -294,6 +312,13 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_bag) {
+            Log.i(TAG, songs.getActiveSong().getArtist());
+            Log.i(TAG, songs.getActiveSong().getTitle());
+            Log.i(TAG, songs.getActiveSong().getNum().toString());
+            Log.i(TAG, songs.getActiveSong().getLyrics().get(5).getLyric());
+            Log.i(TAG, songs.getActiveSong().getLyrics().get(5).getSongPosition()[0].toString());
+            Log.i(TAG, songs.getActiveSong().getLyrics().get(5).getClassification(1));
+            Log.i(TAG, songs.getActiveSong().getLyrics().get(5).getCoords(1).toString());
             Intent goBag = new Intent(this, word_bag.class);
             startActivity(goBag);
         } else if (id == R.id.nav_guess) {

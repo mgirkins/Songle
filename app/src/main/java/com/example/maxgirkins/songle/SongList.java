@@ -40,7 +40,8 @@ public class SongList implements java.io.Serializable {
     public Song getActiveSong(){
         Random random = new Random();
         if (activeSong == 0){
-            return songs.get(uncompletedSongs().get(random.nextInt(uncompletedSongs().size()+ 1)));
+            activeSong = random.nextInt(uncompletedSongs().size());
+            return songs.get(activeSong);
         } else {
             return songs.get(activeSong);
         }

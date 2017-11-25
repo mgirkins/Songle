@@ -17,15 +17,16 @@ import java.util.List;
 public class SongInfoParser {
     private static final String TAG = "ParserClass";
     private static final String ns = null;
-    SongList parse(InputStream in) throws XmlPullParserException, IOException {
+    public SongList parse(InputStream in) throws XmlPullParserException, IOException {
         try {
             XmlPullParser parser = Xml.newPullParser();
             parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES,
                     false);
             parser.setInput(in, null);
             parser.nextTag();
-            Log.i(TAG, readFeed(parser).getNumSongs().toString());
-            return readFeed(parser);
+            SongList s = readFeed(parser);
+            Log.i(TAG, s.getNumSongs().toString());
+            return s;
         } finally {
             in.close();
         }
