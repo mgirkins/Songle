@@ -1,9 +1,11 @@
 package com.example.maxgirkins.songle;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.location.Location;
@@ -37,7 +39,9 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.gson.Gson;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -61,24 +65,27 @@ public class MainActivity extends AppCompatActivity
     private DownloadXmlTask download;
     private DownloadSongLyrics downloadsongs;
     private SongList songs;
+    private Integer level;
+    private static  final String PREFS = "PreferencesFile";
+    SharedPreferences settings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setTitle("Songle");
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
-        mapFragment.getMapAsync((OnMapReadyCallback) this);
+        mapFragment.getMapAsync( this);
         if (mGoogleApiClient == null) {
             mGoogleApiClient = new GoogleApiClient.Builder(this)
                     .addConnectionCallbacks(this)
@@ -86,19 +93,12 @@ public class MainActivity extends AppCompatActivity
                     .addApi(LocationServices.API)
                     .build();
         }
-        songs = new SongList();
-        if (songs.getNumSongs() == 0){
-            try {
-                getData();
-            } catch (IndexOutOfBoundsException i){
 
-            }
-        }
-        if (songs.getNumSongs() == 0){
-            downloadSongInfo();
+        getData();
+        downloadSongInfo();
+        importSongLyrics(songs.getActiveSong().getNum(), songs,4);
 
-        }
-        importSongLyrics(songs.getActiveSong().getNum(), songs,1);
+
 
 
     }
@@ -106,40 +106,28 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onPause() {
         super.onPause();
-        FileOutputStream fileOut = null;
         try {
-            fileOut = new FileOutputStream("/tmp/songlist.ser");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        ObjectOutputStream out = null;
-        try {
-            out = new ObjectOutputStream(fileOut);
-            out.writeObject(songs);
-            out.close();
-            fileOut.close();
+            saveData();
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (NullPointerException n){
-
         }
-        System.out.printf("Serialized data is saved in /tmp/songlist.ser");
+
     }
-
+    public void saveData() throws IOException {
+        SharedPreferences.Editor editor = settings.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(songs);
+        editor.putString("Data", json);
+        editor.putInt("level", this.level);
+        editor.apply();
+    }
     public void getData(){
+        settings = getSharedPreferences(PREFS, MODE_PRIVATE);
+        this.level = settings.getInt("level",4);
+        Gson gson = new Gson();
+        String json = settings.getString("Data", "");
+        this.songs = gson.fromJson(json, SongList.class);
 
-        try {
-            FileInputStream fileIn = new FileInputStream("/tmp/songlist.ser");
-            ObjectInputStream in = new ObjectInputStream(fileIn);
-            songs = (SongList) in.readObject();
-            in.close();
-            fileIn.close();
-        } catch (IOException i) {
-            i.printStackTrace();
-        } catch (ClassNotFoundException c) {
-            System.out.println("SongList class not found");
-            c.printStackTrace();
-        }
     }
     public void downloadSongInfo(){
         download = new DownloadXmlTask();
@@ -157,16 +145,12 @@ public class MainActivity extends AppCompatActivity
         if (numForm.length() == 1){
             numForm = "0" + numForm;
         }
-        String[] strings = {"http://www.inf.ed.ac.uk/teaching/courses/selp/data/songs/" + numForm + "/lyrics.txt","http://www.inf.ed.ac.uk/teaching/courses/selp/data/songs/"+numForm+"/map"+level+".txt"};
-        downloadsongs = new DownloadSongLyrics(numForm,level, songs);
-
+        String[] strings = {"http://www.inf.ed.ac.uk/teaching/courses/selp/data/songs/" + numForm + "/lyrics.txt","http://www.inf.ed.ac.uk/teaching/courses/selp/data/songs/"+numForm+"/map"+(level+1)+".kml"};
+        downloadsongs = new DownloadSongLyrics(numForm,level, songList);
         try {
             songList.getSong(num).addLyrics(downloadsongs.execute(strings).get());
-
-        } catch (InterruptedException i){
+        } catch (InterruptedException | ExecutionException i){
             i.printStackTrace();
-        } catch (ExecutionException e ){
-            e.printStackTrace();
         }
 
     }
@@ -235,8 +219,6 @@ public class MainActivity extends AppCompatActivity
             Log.e(TAG, "Can't find style. Error: ", e);
         }
 
-    }
-    public void populateMap(){
 
     }
 
@@ -292,7 +274,6 @@ public class MainActivity extends AppCompatActivity
     public void onLocationChanged(Location location) {
         //LatLng b = new LatLng(location.getLatitude(), location.getLongitude());
         //mMap.moveCamera(CameraUpdateFactory.newLatLng(b));
-
     }
 
     @Override
@@ -311,14 +292,12 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
+
         if (id == R.id.nav_bag) {
-            Log.i(TAG, songs.getActiveSong().getArtist());
-            Log.i(TAG, songs.getActiveSong().getTitle());
-            Log.i(TAG, songs.getActiveSong().getNum().toString());
-            Log.i(TAG, songs.getActiveSong().getLyrics().get(5).getLyric());
-            Log.i(TAG, songs.getActiveSong().getLyrics().get(5).getSongPosition()[0].toString());
-            Log.i(TAG, songs.getActiveSong().getLyrics().get(5).getClassification(1));
-            Log.i(TAG, songs.getActiveSong().getLyrics().get(5).getCoords(1).toString());
+            Integer len = songs.getActiveSong().getLyrics().size();
+            for (int i=0; i<len;i++){
+                Log.i(TAG, songs.getActiveSong().getLyrics().get(i).getClassification(level));
+            }
             Intent goBag = new Intent(this, word_bag.class);
             startActivity(goBag);
         } else if (id == R.id.nav_guess) {
@@ -331,7 +310,7 @@ public class MainActivity extends AppCompatActivity
             Intent goSettings = new Intent(this, SettingsActivity.class);
             startActivity(goSettings);
         }
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }

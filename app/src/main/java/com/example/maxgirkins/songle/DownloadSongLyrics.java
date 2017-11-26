@@ -39,6 +39,7 @@ public class DownloadSongLyrics extends AsyncTask<String, Void, List<Lyric>> {
     protected List<Lyric> doInBackground(String... urls) {
         try {
             loadXmlFromNetwork(urls[0]);
+            loadXmlFromNetwork(urls[1]);
         } catch (IOException e) {
             Log.e(TAG, "IOException");
         } catch (XmlPullParserException e) {
@@ -53,15 +54,17 @@ public class DownloadSongLyrics extends AsyncTask<String, Void, List<Lyric>> {
         try (InputStream stream = downloadUrl(urlString)) {
             if (urlString.substring(urlString.length() - 3).equals("txt")) {
                 SongLyricParser q = new SongLyricParser();
+                Log.i(TAG,"thisisatxt");
                 s = q.parse(stream);
             } else if (urlString.substring(urlString.length() - 3).equals("kml")){
                 MapInfoParser p = new MapInfoParser(s, level);
+                Log.i(TAG,"thisisakml");
                 s = p.parse(stream);
             }
         } catch (IOException i) {
             i.printStackTrace();
         }
-        Log.i("thisis", s.get(0).toString());
+
     }
     private InputStream downloadUrl(String urlString) throws IOException {
         URL url = new URL(urlString);

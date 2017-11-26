@@ -39,7 +39,7 @@ public class Lyric implements java.io.Serializable {
         collectedAt = now;
     }
     public void setCoords(LatLng l, Integer level){
-        coords.set(level-1, l);
+        coords.set(level, l);
         Log.i("NewCoords", coords.toString());
     }
     public LatLng getCoords(Integer level) {
@@ -48,7 +48,7 @@ public class Lyric implements java.io.Serializable {
     public void setClassification(String classification, Integer level){
         Log.i("Lyricset", classification + " " + level.toString());
         Log.i("Lyricset", this.classification.toString());
-        this.classification.set(level-1,classification);
+        this.classification.set(level,classification);
     }
     public String getClassification(Integer level){
         return classification.get(level);
@@ -62,6 +62,9 @@ public class Lyric implements java.io.Serializable {
     public Integer[] getSongPosition() {
         Log.i("LricClass", "getsongPos called");
         return songPosition;
+    }
+    public String toString(){
+        return word + ": " + songPosition[0].toString() +","  +songPosition[1].toString()+"  " + coords.toString() + "..." + classification.toString();
     }
 
 }

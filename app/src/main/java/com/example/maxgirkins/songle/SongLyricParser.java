@@ -29,7 +29,7 @@ public class SongLyricParser {
             reader.close();
 
             String[] lines = out.toString().split("\\n+");
-            Log.i(TAG, lines[0].toString());
+            Log.i(TAG, lines[0]);
             for (int i = 1; i <= lines.length; i++){
                 String[] words = lines[i-1].split(" ");
                 for (int j = 1; j<=words.length; j++){

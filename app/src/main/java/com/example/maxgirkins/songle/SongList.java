@@ -9,10 +9,12 @@ import java.util.Random;
  */
 
 public class SongList implements java.io.Serializable {
-    private List<Song> songs = new ArrayList<>();
-    private Integer activeSong = 0;
+    private List<Song> songs;
+    private Integer activeSong;
 
     public SongList(){
+        activeSong = 0;
+        songs = new ArrayList<>();
     }
 
     public List<Song> getSongs() {
@@ -38,6 +40,9 @@ public class SongList implements java.io.Serializable {
     }
 
     public Song getActiveSong(){
+        return songs.get(activeSong);
+    }
+    public Song newActiveSong(){
         Random random = new Random();
         if (activeSong == 0){
             activeSong = random.nextInt(uncompletedSongs().size());

@@ -38,7 +38,9 @@ public class Song implements java.io.Serializable {
     public List<Lyric> getLyrics() {
         return lyrics;
     }
-
+    public void setLyrics(List<Lyric> l){
+        this.lyrics = l;
+    }
     public void addLyrics(List<Lyric>l){
         this.lyrics = l;
     }
@@ -60,6 +62,10 @@ public class Song implements java.io.Serializable {
     }
     @Override
     public String toString(){
-        return lyrics.toString();
+        String s = "";
+        for (int i=0; i<lyrics.size(); i++){
+            s = s+lyrics.get(i).toString();
+        }
+        return s;
     }
 }

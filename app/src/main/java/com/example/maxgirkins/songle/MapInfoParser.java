@@ -11,6 +11,7 @@ import org.xmlpull.v1.XmlPullParserException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -41,7 +42,7 @@ public class MapInfoParser {
         }
     }
     private List<Lyric> readFeed(XmlPullParser parser, List<Lyric> l) throws XmlPullParserException, IOException {
-
+        /*
         parser.require(XmlPullParser.START_TAG, ns, "kml");
 
         while (parser.next() != XmlPullParser.END_TAG) {
@@ -56,12 +57,41 @@ public class MapInfoParser {
                 skip(parser);
             }
         }
+        return l;*/
+        Integer lyricpos = 0;
+        while (parser.getEventType() != XmlPullParser.END_DOCUMENT){
+            String name;
+
+            switch (parser.getEventType()){
+                case XmlPullParser.START_DOCUMENT:
+                    break;
+                case XmlPullParser.START_TAG:
+
+                    name = parser.getName();
+                    if (name.equals("name")){
+                        lyricpos = readPosition(parser,l);
+                    }
+                    else if (name.equals("description")){
+                        String classification = readClassification(parser);
+                        l.get(lyricpos).setClassification(classification,level);
+                    } else if (name.equals("Point")){
+                        l.get(lyricpos).setCoords(readCoords(parser),level);
+                    }
+                    break;
+                case XmlPullParser.END_TAG:
+                    break;
+                default:
+                    break;
+            }
+            parser.next();
+        }
+        Log.i(TAG, l.toString());
         return l;
     }
     private  List<Lyric> readPlacemark(XmlPullParser parser, List<Lyric> l) throws IOException, XmlPullParserException {
 
         parser.require(XmlPullParser.START_TAG, ns, "Document");
-        while (parser.next() != XmlPullParser.END_TAG) {
+        while (parser.next() != XmlPullParser.END_DOCUMENT) {
             if (parser.getEventType() != XmlPullParser.START_TAG)
                 continue;
             String name = parser.getName();
@@ -69,6 +99,7 @@ public class MapInfoParser {
                 Integer lyricpos = 0;
                 parser.require(XmlPullParser.START_TAG, ns, "Placemark");
                 while (parser.next() != XmlPullParser.END_TAG) {
+
                     if (parser.getEventType() != XmlPullParser.START_TAG)
                         continue;
                     if (parser.getName().equals("name")){
@@ -76,9 +107,12 @@ public class MapInfoParser {
                     } else if (parser.getName().equals("description")) {
                          l.get(lyricpos).setClassification(readClassification(parser),level);
                     } else if (parser.getName().equals("Point")){
+                        parser.require(XmlPullParser.START_TAG, ns, "Point");
+                        Log.i(TAG,"New loop: " + parser.getName());
                         l.get(lyricpos).setCoords(readCoords(parser), level);
+                        Log.i(TAG,"New loop: " + parser.getName());
+                        parser.require(XmlPullParser.END_TAG, ns, "Point");
                     } else {
-                        Log.i(TAG, parser.getName());
                         skip(parser);
                     }
                 }
@@ -92,7 +126,6 @@ public class MapInfoParser {
 
     private Integer readPosition(XmlPullParser parser, List<Lyric> l) throws IOException, XmlPullParserException {
         Integer[] integers = {0,0};
-        Integer songIndex = 0;
         Log.i(TAG, "triggered!");
         parser.require(XmlPullParser.START_TAG, ns, "name");
         String pos = readText(parser);
@@ -101,7 +134,7 @@ public class MapInfoParser {
         integers[1] = Integer.parseInt(integerstring[1]);
         parser.require(XmlPullParser.END_TAG, ns, "name");
         for (int i=0; i<l.size();i++){
-            if (l.get(i).getSongPosition() == integers){
+            if (Arrays.equals(l.get(i).getSongPosition() ,integers)){
                 return i;
             }
         }
@@ -112,28 +145,21 @@ public class MapInfoParser {
         while (parser.next() != XmlPullParser.END_TAG) {
             if (parser.getEventType() != XmlPullParser.START_TAG)
                 continue;
-            String name = parser.getName();
-
-            if (name.equals("coordinates")) {
-                parser.require(XmlPullParser.START_TAG, ns, "coordinates");
-                String coords = readText(parser);
-                LatLng g = new LatLng(Double.parseDouble(coords.split(",")[0]),Double.parseDouble(coords.split(",")[1]));
-                Log.i(TAG,g.toString());
-                parser.require(XmlPullParser.END_TAG, ns, "coordinates");
-                return g;
-            } else {
-                skip(parser);
-            }
+            parser.require(XmlPullParser.START_TAG, ns, "coordinates");
+            Log.i(TAG,"New loop: " + parser.getName());
+            String coords = readText(parser);
+            LatLng g = new LatLng(Double.parseDouble(coords.split(",")[0]),Double.parseDouble(coords.split(",")[1]));
+            Log.i(TAG,g.toString());
+            parser.require(XmlPullParser.END_TAG, ns, "coordinates");
+            Log.i(TAG,"New 2: " + parser.getName());
+            return g;
         }
         return null;
     }
+
     private String readClassification(XmlPullParser parser) throws IOException, XmlPullParserException {
-        parser.require(XmlPullParser.START_TAG, ns, "description");
-        Log.i(TAG,"Description called");
-        String classif = readText(parser);
-        Log.i(TAG,classif);
-        parser.require(XmlPullParser.END_TAG, ns, "description");
-        return classif;
+        String s = readText(parser);
+        return s;
     }
     private String readText(XmlPullParser parser) throws IOException, XmlPullParserException {
         String result = "";
