@@ -19,7 +19,6 @@ public class SongLyricParser {
     List<Lyric> parse(InputStream in) throws XmlPullParserException, IOException {
         List<Lyric> l = new ArrayList<>();
         try {
-            Log.i(TAG,"Busted");
             BufferedReader reader = new BufferedReader(new InputStreamReader(in));
             StringBuilder out = new StringBuilder();
             String line;
@@ -29,7 +28,6 @@ public class SongLyricParser {
             reader.close();
 
             String[] lines = out.toString().split("\\n+");
-            Log.i(TAG, lines[0]);
             for (int i = 1; i <= lines.length; i++){
                 String[] words = lines[i-1].split(" ");
                 for (int j = 1; j<=words.length; j++){

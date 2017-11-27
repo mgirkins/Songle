@@ -85,7 +85,6 @@ public class MapInfoParser {
             }
             parser.next();
         }
-        Log.i(TAG, l.toString());
         return l;
     }
     private  List<Lyric> readPlacemark(XmlPullParser parser, List<Lyric> l) throws IOException, XmlPullParserException {
@@ -108,9 +107,7 @@ public class MapInfoParser {
                          l.get(lyricpos).setClassification(readClassification(parser),level);
                     } else if (parser.getName().equals("Point")){
                         parser.require(XmlPullParser.START_TAG, ns, "Point");
-                        Log.i(TAG,"New loop: " + parser.getName());
                         l.get(lyricpos).setCoords(readCoords(parser), level);
-                        Log.i(TAG,"New loop: " + parser.getName());
                         parser.require(XmlPullParser.END_TAG, ns, "Point");
                     } else {
                         skip(parser);
@@ -126,7 +123,6 @@ public class MapInfoParser {
 
     private Integer readPosition(XmlPullParser parser, List<Lyric> l) throws IOException, XmlPullParserException {
         Integer[] integers = {0,0};
-        Log.i(TAG, "triggered!");
         parser.require(XmlPullParser.START_TAG, ns, "name");
         String pos = readText(parser);
         String integerstring[] = pos.split(":");
@@ -141,17 +137,13 @@ public class MapInfoParser {
         return 0;
     }
     private LatLng readCoords(XmlPullParser parser) throws IOException, XmlPullParserException {
-        Log.i(TAG,"Coords called");
         while (parser.next() != XmlPullParser.END_TAG) {
             if (parser.getEventType() != XmlPullParser.START_TAG)
                 continue;
             parser.require(XmlPullParser.START_TAG, ns, "coordinates");
-            Log.i(TAG,"New loop: " + parser.getName());
             String coords = readText(parser);
-            LatLng g = new LatLng(Double.parseDouble(coords.split(",")[0]),Double.parseDouble(coords.split(",")[1]));
-            Log.i(TAG,g.toString());
+            LatLng g = new LatLng(Double.parseDouble(coords.split(",")[1]),Double.parseDouble(coords.split(",")[0]));
             parser.require(XmlPullParser.END_TAG, ns, "coordinates");
-            Log.i(TAG,"New 2: " + parser.getName());
             return g;
         }
         return null;

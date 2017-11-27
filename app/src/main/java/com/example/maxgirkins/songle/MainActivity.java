@@ -48,12 +48,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
-        LocationListener {
+        LocationListener{
     private GoogleMap mMap;
     private GoogleApiClient mGoogleApiClient;
     private final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION
@@ -62,16 +63,18 @@ public class MainActivity extends AppCompatActivity
     private Location mLastLocation;
     private NetworkReceiver receiver = new NetworkReceiver();
     private static final String TAG = "MapsActivity";
-    private DownloadXmlTask download;
-    private DownloadSongLyrics downloadsongs;
-    private SongList songs;
+
+    private static SongList songs;
     private Integer level;
     private static  final String PREFS = "PreferencesFile";
     SharedPreferences settings;
-
+    private Songle songle;
+    private DownloadSongLyrics downloadsongs;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+        Songle songle = (Songle) getApplicationContext();
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -94,24 +97,28 @@ public class MainActivity extends AppCompatActivity
                     .build();
         }
 
-        getData();
-        downloadSongInfo();
-        importSongLyrics(songs.getActiveSong().getNum(), songs,4);
-
-
-
-
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        songle.setSongs(songs);
         try {
             saveData();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    @Override
+    public  void onResume(){
+        super.onResume();
+        try {
+            songs = songle.getSongs();
+        } catch (NullPointerException n){
+            n.printStackTrace();
+        }
 
+        Log.i(TAG,"MapsAcvtivity resumed");
     }
     public void saveData() throws IOException {
         SharedPreferences.Editor editor = settings.edit();
@@ -120,40 +127,18 @@ public class MainActivity extends AppCompatActivity
         editor.putString("Data", json);
         editor.putInt("level", this.level);
         editor.apply();
+        Log.i(TAG, "Data Saved");
     }
+    /*
     public void getData(){
         settings = getSharedPreferences(PREFS, MODE_PRIVATE);
         this.level = settings.getInt("level",4);
         Gson gson = new Gson();
         String json = settings.getString("Data", "");
         this.songs = gson.fromJson(json, SongList.class);
+        Log.i(TAG, "i'm back");
+    }*/
 
-    }
-    public void downloadSongInfo(){
-        download = new DownloadXmlTask();
-        try {
-            this.songs = download.execute("http://www.inf.ed.ac.uk/teaching/courses/selp/data/songs/songs.xml").get();
-        } catch (InterruptedException i){
-            i.printStackTrace();
-        } catch (ExecutionException e ){
-            e.printStackTrace();
-        }
-
-    }
-    public void importSongLyrics(Integer num, SongList songList, Integer level){
-        String numForm = num.toString();
-        if (numForm.length() == 1){
-            numForm = "0" + numForm;
-        }
-        String[] strings = {"http://www.inf.ed.ac.uk/teaching/courses/selp/data/songs/" + numForm + "/lyrics.txt","http://www.inf.ed.ac.uk/teaching/courses/selp/data/songs/"+numForm+"/map"+(level+1)+".kml"};
-        downloadsongs = new DownloadSongLyrics(numForm,level, songList);
-        try {
-            songList.getSong(num).addLyrics(downloadsongs.execute(strings).get());
-        } catch (InterruptedException | ExecutionException i){
-            i.printStackTrace();
-        }
-
-    }
 
 
     @Override
@@ -291,14 +276,12 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
+        Gson g = new Gson();
+        String songsObj = g.toJson(songs);
 
         if (id == R.id.nav_bag) {
-            Integer len = songs.getActiveSong().getLyrics().size();
-            for (int i=0; i<len;i++){
-                Log.i(TAG, songs.getActiveSong().getLyrics().get(i).getClassification(level));
-            }
             Intent goBag = new Intent(this, word_bag.class);
+            goBag.putExtra("songsObj",songsObj);
             startActivity(goBag);
         } else if (id == R.id.nav_guess) {
             Intent goGuess = new Intent(this, Guess.class);
@@ -316,4 +299,18 @@ public class MainActivity extends AppCompatActivity
     }
 
 
+    /*@Override
+    public void onLyricsDownloaded(List<Lyric> list) {
+        Log.i(TAG,"onLyricsDownloaded Called!");
+        for (int i = 0; i<list.size(); i++){
+            LatLng coords = songs.getActiveSong().getLyrics().get(i).getCoords(level);
+            if (!coords.equals(new LatLng(0.0,0.0))){
+                mMap.addMarker(new MarkerOptions().position(coords));
+            }
+
+        }
+    }
+    */
+
 }
+

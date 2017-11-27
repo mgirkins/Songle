@@ -25,7 +25,6 @@ public class SongInfoParser {
             parser.setInput(in, null);
             parser.nextTag();
             SongList s = readFeed(parser);
-            Log.i(TAG, s.getNumSongs().toString());
             return s;
         } finally {
             in.close();
