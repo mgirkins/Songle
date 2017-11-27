@@ -3,6 +3,7 @@ package com.example.maxgirkins.songle;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
@@ -19,6 +20,7 @@ import android.preference.RingtonePreference;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
+import static com.example.maxgirkins.songle.Songle.songle;
 
 import java.util.List;
 
@@ -34,6 +36,7 @@ import java.util.List;
  * API Guide</a> for more information on developing a Settings UI.
  */
 public class SettingsActivity extends AppCompatPreferenceActivity {
+    SharedPreferences settings;
 
     /**
      * A preference value change listener that updates the preference's summary
@@ -119,6 +122,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        settings = songle.getSettings();
         super.onCreate(savedInstanceState);
         setTitle("Settings");
         setupActionBar();

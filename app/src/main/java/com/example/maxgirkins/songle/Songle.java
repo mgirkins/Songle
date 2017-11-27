@@ -38,8 +38,6 @@ public class Songle extends Application implements DownloadLyricsResponse{
         level = settings.getInt("level", 4);
         songs = new SongList();
         super.onCreate();
-        CountDownLatch startSignal = new CountDownLatch(2);
-        CountDownLatch doneSignal = new CountDownLatch(0);
         getData();
         downloadSongInfo();
         importSongLyrics(songs.getActiveSong().getNum(),songs,level);
@@ -62,6 +60,9 @@ public class Songle extends Application implements DownloadLyricsResponse{
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    public SharedPreferences getSettings(){
+        return settings;
     }
 
     public void getData(){
@@ -103,7 +104,6 @@ public class Songle extends Application implements DownloadLyricsResponse{
         }
 
     }
-
     @Override
     public void onLyricsDownloaded(List<Lyric> list) {
         Log.i(TAG, "lyrics Downloaded");

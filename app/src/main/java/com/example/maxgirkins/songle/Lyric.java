@@ -3,9 +3,11 @@ package com.example.maxgirkins.songle;
 import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.sql.Array;
-import java.sql.Date;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -20,7 +22,9 @@ public class Lyric implements java.io.Serializable {
     private Date collectedAt;
     private Integer[] songPosition;
     private List<LatLng> coords;
+    private Marker mapMarker;
     private List<String> classification;
+    private final String TAG = "LyricClass";
 
     public Lyric(String word, Integer[] songPosition){
         this.word = word;
@@ -37,6 +41,14 @@ public class Lyric implements java.io.Serializable {
     public void setCollectedAt(Date now){
         collected = true;
         collectedAt = now;
+    }
+
+    public Marker getMapMarker() {
+        return mapMarker;
+    }
+
+    public void setMapMarker(Marker marker){
+        mapMarker = marker;
     }
     public void setCoords(LatLng l, Integer level){
         coords.set(level, l);

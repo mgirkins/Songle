@@ -1,8 +1,9 @@
 package com.example.maxgirkins.songle;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Created by MaxGirkins on 22/11/2017.
@@ -11,22 +12,20 @@ import java.util.Random;
 public class SongList implements java.io.Serializable {
     private List<Song> songs;
     private Integer activeSong;
+    protected final String TAG = "SonglistClass";
 
     public SongList(){
-        activeSong = 0;
+        activeSong = -1;
         songs = new ArrayList<>();
     }
 
-    public List<Song> getSongs() {
-        return songs;
-    }
     public Song getSong(Integer num){
-        return songs.get(num);
+        return songs.get(num-1);
     }
     public List<String> getTitles(){
         List<String> titles = new ArrayList<>();
         for (int i = 0; i< songs.size(); i++){
-            titles.add(songs.get(i).getTitle());
+            titles.add(songs.get(i).getTitle() + " - " + songs.get(i).getArtist());
         }
         return titles;
     }
@@ -40,16 +39,19 @@ public class SongList implements java.io.Serializable {
     }
 
     public Song getActiveSong(){
-        return songs.get(activeSong);
-    }
-    public Song newActiveSong(){
-        Random random = new Random();
-        if (activeSong == 0){
-            activeSong = random.nextInt(uncompletedSongs().size());
-            return songs.get(activeSong);
+
+        if (activeSong == -1){
+            return newActiveSong();
         } else {
             return songs.get(activeSong);
         }
+
+
+    }
+    public Song newActiveSong(){
+        activeSong = (int) (Math.random() * uncompletedSongs().size());
+        Log.i(TAG, songs.get(uncompletedSongs().get(activeSong)).getTitle());
+        return songs.get(uncompletedSongs().get(activeSong));
     }
 
     private List<Integer> uncompletedSongs(){

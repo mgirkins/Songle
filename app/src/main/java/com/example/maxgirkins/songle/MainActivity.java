@@ -49,6 +49,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -60,8 +61,7 @@ public class MainActivity extends AppCompatActivity
         LocationListener{
     private GoogleMap mMap;
     private GoogleApiClient mGoogleApiClient;
-    private final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION
-            = 1;
+    private final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     private boolean mLocationPermissionGranted = false;
     private Location mLastLocation;
     private NetworkReceiver receiver = new NetworkReceiver();
@@ -101,25 +101,17 @@ public class MainActivity extends AppCompatActivity
     protected void onPause() {
         super.onPause();
         songle.setSongs(songs);
-        try {
-            saveData();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
     @Override
     public  void onResume(){
         super.onResume();
-        try {
-            songs = songle.getSongs();
-        } catch (NullPointerException n){
-            n.printStackTrace();
-        }
-
+        songs = songle.getSongs();
+        settings = songle.getSettings();
         Log.i(TAG,"MapsAcvtivity resumed");
     }
+    /*
     public void saveData() throws IOException {
-        SharedPreferences.Editor editor = settings.edit();
+        SharedPreferences.Editor editor = songle.getSettings().edit();
         Gson gson = new Gson();
         String json = gson.toJson(songs);
         editor.putString("Data", json);
@@ -127,6 +119,7 @@ public class MainActivity extends AppCompatActivity
         editor.apply();
         Log.i(TAG, "Data Saved");
     }
+    */
     /*
     public void getData(){
         settings = getSharedPreferences(PREFS, MODE_PRIVATE);
@@ -210,14 +203,34 @@ public class MainActivity extends AppCompatActivity
     private void populateMap() {
         Integer lyricsLength = songs.getActiveSong().getLyrics().size();
         for (int i = 0; i<lyricsLength; i++){
-            LatLng coords = songs.getActiveSong().getLyrics().get(i).getCoords(songle.getLevel());
-            if (!coords.equals(new LatLng(0.0,0.0))){
-                mMap.addMarker(new MarkerOptions().position(coords));
-                Log.i(TAG,coords.toString());
+            Lyric l = songs.getActiveSong().getLyrics().get(i);
+            LatLng coords = l.getCoords(songle.getLevel());
+            Boolean collected = songs.getActiveSong().getLyrics().get(i).isCollected();
+            if (!coords.equals(new LatLng(0.0,0.0)) && !collected) {
+                Marker m = mMap.addMarker(new MarkerOptions().position(coords));
+                Log.i(TAG,Integer.toString(settings.getInt("level", 4)));
+                l.setMapMarker(m);
             }
-
         }
     }
+    public static double getDistanceBetween(LatLng first, LatLng second) {
+
+        final int R = 6371; // Radius of the earth
+
+        double latDistance = Math.toRadians(first.latitude - second.latitude);
+        double lonDistance = Math.toRadians(first.longitude - second.longitude);
+        double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
+                + Math.cos(Math.toRadians(first.latitude)) * Math.cos(Math.toRadians(second.latitude))
+                * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        double distance = R * c * 1000; // convert to meters
+
+
+        distance = Math.pow(distance, 2);
+
+        return Math.sqrt(distance);
+    }
+
 
     @Override
     protected void onStart() {
@@ -269,7 +282,18 @@ public class MainActivity extends AppCompatActivity
     }
     @Override
     public void onLocationChanged(Location location) {
-        //LatLng b = new LatLng(location.getLatitude(), location.getLongitude());
+
+        LatLng b = new LatLng(location.getLatitude(), location.getLongitude());
+        for (int i=0; i<songs.getActiveSong().getLyrics().size();i++){
+            Lyric l = songs.getActiveSong().getLyrics().get(i);
+            LatLng a = l.getCoords(settings.getInt("level",4));
+            if (getDistanceBetween(b,a) < 20){
+                Date d = new Date();
+                Log.i(TAG, Double.toString(getDistanceBetween(b,a)));
+                l.setCollectedAt(d);
+                l.getMapMarker().remove();
+            }
+        }
         //mMap.moveCamera(CameraUpdateFactory.newLatLng(b));
     }
 
