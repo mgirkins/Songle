@@ -38,6 +38,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
 
@@ -51,6 +52,8 @@ import java.io.ObjectOutputStream;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import static com.example.maxgirkins.songle.Songle.songle;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
@@ -63,18 +66,13 @@ public class MainActivity extends AppCompatActivity
     private Location mLastLocation;
     private NetworkReceiver receiver = new NetworkReceiver();
     private static final String TAG = "MapsActivity";
-
     private static SongList songs;
-    private Integer level;
     private static  final String PREFS = "PreferencesFile";
     SharedPreferences settings;
-    private Songle songle;
-    private DownloadSongLyrics downloadsongs;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        Songle songle = (Songle) getApplicationContext();
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -125,7 +123,7 @@ public class MainActivity extends AppCompatActivity
         Gson gson = new Gson();
         String json = gson.toJson(songs);
         editor.putString("Data", json);
-        editor.putInt("level", this.level);
+        editor.putInt("level", songle.getLevel());
         editor.apply();
         Log.i(TAG, "Data Saved");
     }
@@ -174,6 +172,7 @@ public class MainActivity extends AppCompatActivity
 
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        Log.i(TAG, "Map ready");
 
         // Add a marker in Edinburgh and move the camera
         LatLng edinburghCentral = new LatLng(55.944425, -3.188396);
@@ -203,8 +202,21 @@ public class MainActivity extends AppCompatActivity
         } catch (Resources.NotFoundException e) {
             Log.e(TAG, "Can't find style. Error: ", e);
         }
+        populateMap();
 
 
+    }
+
+    private void populateMap() {
+        Integer lyricsLength = songs.getActiveSong().getLyrics().size();
+        for (int i = 0; i<lyricsLength; i++){
+            LatLng coords = songs.getActiveSong().getLyrics().get(i).getCoords(songle.getLevel());
+            if (!coords.equals(new LatLng(0.0,0.0))){
+                mMap.addMarker(new MarkerOptions().position(coords));
+                Log.i(TAG,coords.toString());
+            }
+
+        }
     }
 
     @Override
@@ -299,18 +311,11 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-    /*@Override
-    public void onLyricsDownloaded(List<Lyric> list) {
+    public void onLyricsDownloaded() throws InterruptedException {
+        songs = songle.getSongs();
         Log.i(TAG,"onLyricsDownloaded Called!");
-        for (int i = 0; i<list.size(); i++){
-            LatLng coords = songs.getActiveSong().getLyrics().get(i).getCoords(level);
-            if (!coords.equals(new LatLng(0.0,0.0))){
-                mMap.addMarker(new MarkerOptions().position(coords));
-            }
-
-        }
     }
-    */
+
 
 }
 

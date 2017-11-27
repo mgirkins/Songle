@@ -1,5 +1,6 @@
 package com.example.maxgirkins.songle;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,6 +10,7 @@ import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
 import java.util.prefs.Preferences;
 
@@ -18,23 +20,34 @@ import java.util.prefs.Preferences;
 
 public class Songle extends Application implements DownloadLyricsResponse{
     private static final String TAG = "SongleSingletonClass";
+    public static Songle songle;
     private SongList songs;
     private DownloadXmlTask download;
     private DownloadSongLyrics downloadsongs;
     private static  final String PREFS = "PreferencesFile";
     private SharedPreferences settings;
     private Integer level;
+    private MainActivity main;
+
+
     @Override
     public void onCreate(){
+        songle = this;
+        main = new MainActivity();
         settings = getSharedPreferences(PREFS, MODE_PRIVATE);
         level = settings.getInt("level", 4);
         songs = new SongList();
         super.onCreate();
+        CountDownLatch startSignal = new CountDownLatch(2);
+        CountDownLatch doneSignal = new CountDownLatch(0);
         getData();
-        if (songs.getNumSongs() == 0){
-            downloadSongInfo();
-            importSongLyrics(songs.getActiveSong().getNum(),songs,level);
-        }
+        downloadSongInfo();
+        importSongLyrics(songs.getActiveSong().getNum(),songs,level);
+
+
+    }
+    public Integer getLevel(){
+        return level;
     }
 
     public SongList getSongs() {
@@ -81,10 +94,10 @@ public class Songle extends Application implements DownloadLyricsResponse{
             numForm = "0" + numForm;
         }
         String[] strings = {"http://www.inf.ed.ac.uk/teaching/courses/selp/data/songs/" + numForm + "/lyrics.txt","http://www.inf.ed.ac.uk/teaching/courses/selp/data/songs/"+numForm+"/map"+(level+1)+".kml"};
-        downloadsongs = new DownloadSongLyrics(numForm,level, songList);
-        downloadsongs.delegate = this;
+
         try {
-            songList.getSong(num).addLyrics(downloadsongs.execute(strings).get());
+            downloadsongs = new DownloadSongLyrics(level, songList);
+            this.songs.getSong(num).addLyrics(downloadsongs.execute(strings).get());
         } catch (InterruptedException | ExecutionException i){
             i.printStackTrace();
         }
@@ -94,5 +107,10 @@ public class Songle extends Application implements DownloadLyricsResponse{
     @Override
     public void onLyricsDownloaded(List<Lyric> list) {
         Log.i(TAG, "lyrics Downloaded");
+        try {
+            main.onLyricsDownloaded();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }

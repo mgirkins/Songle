@@ -10,24 +10,25 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.maxgirkins.songle.Songle.songle;
+
 public class DownloadSongLyrics extends AsyncTask<String, Void, List<Lyric>> {
     private static final String TAG = "DownloaderA";
     private List<Lyric> s = new ArrayList<>();
     private Integer level;
-    private String songNum;
     private SongList songs;
-    public DownloadLyricsResponse delegate = null;
-    public DownloadSongLyrics(String songNum, Integer level, SongList s){
+
+    public DownloadSongLyrics(Integer level, SongList s){
         this.level = level;
-        this.songNum = songNum;
         this.songs = s;
     }
 
     @Override
     protected void onPostExecute(List<Lyric> lyrics) {
-        songs.getActiveSong().addLyrics(lyrics);
+        songle.getSongs().getActiveSong().addLyrics(lyrics);
         super.onPostExecute(lyrics);
-        delegate.onLyricsDownloaded(lyrics);
+        songle.onLyricsDownloaded(lyrics);
+        Log.i(TAG, "CALL ON ME");
     }
 
     @Override
