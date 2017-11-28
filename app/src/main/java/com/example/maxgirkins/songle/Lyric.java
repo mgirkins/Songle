@@ -16,10 +16,10 @@ import java.util.List;
  * Created by MaxGirkins on 22/11/2017.
  */
 
-public class Lyric implements java.io.Serializable {
+public class Lyric {
     private String word;
     private Boolean collected;
-    private Date collectedAt;
+    private Long collectedAt;
     private Integer[] songPosition;
     private List<LatLng> coords;
     private Marker mapMarker;
@@ -29,8 +29,6 @@ public class Lyric implements java.io.Serializable {
     public Lyric(String word, Integer[] songPosition){
         this.word = word;
         this.songPosition = songPosition;
-        this.collected = false;
-        this.collectedAt = null;
         this.coords = new ArrayList<>(Arrays.asList(new LatLng(0,0),new LatLng(0,0),new LatLng(0,0),new LatLng(0,0),new LatLng(0,0)));
         this.classification = new ArrayList<>(Arrays.asList("unclassified", "unclassified", "unclassified","unclassified","unclassified"));
     }
@@ -38,9 +36,10 @@ public class Lyric implements java.io.Serializable {
     public String getLyric(){
         return word;
     }
-    public void setCollectedAt(Date now){
-        collected = true;
-        collectedAt = now;
+
+    public void setCollectedAt(Long now){
+        this.collected = true;
+        this.collectedAt = now;
     }
 
     public Marker getMapMarker() {
@@ -65,7 +64,7 @@ public class Lyric implements java.io.Serializable {
     public Boolean isCollected(){
         return collected;
     }
-    public Date getCollectedAt() {
+    public Long getCollectedAt(Integer level) {
         return collectedAt;
     }
     public Integer[] getSongPosition() {
@@ -73,6 +72,17 @@ public class Lyric implements java.io.Serializable {
     }
     public String toString(){
         return word + ": " + songPosition[0].toString() +","  +songPosition[1].toString()+"  " + coords.toString() + "..." + classification.toString();
+    }
+    public String toCensoredString(){
+        if (collected){
+            return word;
+        } else {
+            String str = "";
+            for (int i=0;i<word.length();i++){
+                str = str + "-";
+            }
+            return str;
+        }
     }
 
 }

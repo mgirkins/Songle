@@ -32,8 +32,16 @@ public class SongLyricParser {
                 String[] words = lines[i-1].split(" ");
                 for (int j = 1; j<=words.length; j++){
                     Integer[] pos = {i,j};
-                    Lyric newLyric = new Lyric(words[j-1], pos);
+                    String w;
+                    if (j==words.length){
+                        w = words[j-1] + "\n";
+
+                    } else {
+                        w = words[j-1];
+                    }
+                    Lyric newLyric = new Lyric(w, pos);
                     l.add(newLyric);
+
                 }
             }
         } finally {

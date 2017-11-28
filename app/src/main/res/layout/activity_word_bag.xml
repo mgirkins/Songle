@@ -4,28 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.maxgirkins.songle.word_bag">
-
-    <TextView
-        android:id="@+id/textView14"
-        android:layout_width="367dp"
-        android:layout_height="499dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="Is this the real life? \nIs this just fantasy?      \nCaught in a landslide,      \nNo escape from reality.      \n\nOpen your eyes,      \nLook up to the skies and see,      \nI'm just a poor boy, I need no sympathy,      \nBecause I'm easy come, easy go,     \nLittle high, little low,     \nAny way the wind blows doesn't really matter to me, to me.     \n\nMama, just killed a man,     \nPut a gun against his head,     \nPulled my trigger, now he's dead.     \nMama, life had just begun,     \nBut now I've gone and thrown it all away.     \n\nMama, ooh,     \nDidn't mean to make you cry,     \nIf I'm not back again this time tomorrow,     \nCarry on, carry on as if nothing really matters.     \n\nToo late, my time has come,     \nSends shivers down my spine,     \nBody's aching all the time.     \nGoodbye, everybody, I've got to go,     \nGotta leave you all behind and face the truth."
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button2" />
-
-    <Button
-        android:id="@+id/button16"
-        android:layout_width="150dp"
-        android:layout_height="16dp"
-        android:background="@android:color/black"
-        android:text="Button"
-        tools:layout_editor_absoluteX="9dp"
-        tools:layout_editor_absoluteY="159dp" />
+    tools:context="com.example.maxgirkins.songle.word_bag"
+    android:id="@+id/word_bag_layout">
 
     <Button
         android:id="@+id/button2"
@@ -41,76 +21,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/button20"
-        android:layout_width="73dp"
-        android:layout_height="15dp"
-        android:background="@android:color/black"
-        android:text="Button"
-        tools:layout_editor_absoluteX="191dp"
-        tools:layout_editor_absoluteY="194dp" />
-
-    <Button
-        android:id="@+id/button22"
-        android:layout_width="197dp"
-        android:layout_height="15dp"
-        android:background="@android:color/black"
-        android:text="Button"
-        tools:layout_editor_absoluteX="9dp"
-        tools:layout_editor_absoluteY="226dp" />
-
-    <Button
-        android:id="@+id/button27"
-        android:layout_width="80dp"
-        android:layout_height="15dp"
-        android:background="@android:color/black"
-        android:text="Button"
-        tools:layout_editor_absoluteX="51dp"
-        tools:layout_editor_absoluteY="78dp" />
-
-    <Button
-        android:id="@+id/button28"
-        android:layout_width="146dp"
-        android:layout_height="13dp"
-        android:background="@android:color/black"
-        android:text="Button"
-        tools:layout_editor_absoluteX="10dp"
-        tools:layout_editor_absoluteY="112dp" />
-
-    <Button
-        android:id="@+id/button29"
-        android:layout_width="90dp"
-        android:layout_height="14dp"
-        android:background="@android:color/black"
-        android:text="Button"
-        tools:layout_editor_absoluteX="9dp"
-        tools:layout_editor_absoluteY="310dp" />
-
-    <Button
-        android:id="@+id/button32"
-        android:layout_width="190dp"
-        android:layout_height="14dp"
-        android:background="@android:color/black"
-        android:text="Button"
-        tools:layout_editor_absoluteX="66dp"
-        tools:layout_editor_absoluteY="392dp" />
-
-    <Button
-        android:id="@+id/button34"
-        android:layout_width="133dp"
-        android:layout_height="13dp"
-        android:background="@android:color/black"
-        android:text="Button"
-        tools:layout_editor_absoluteX="9dp"
-        tools:layout_editor_absoluteY="441dp" />
-
-    <Button
-        android:id="@+id/button36"
-        android:layout_width="158dp"
-        android:layout_height="14dp"
-        android:background="@android:color/black"
-        android:text="Button"
-        tools:layout_editor_absoluteX="9dp"
-        tools:layout_editor_absoluteY="474dp" />
+    <TextView
+        android:id="@+id/textView_lyrics"
+        android:layout_width="346dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:maxLines="25"
+        android:scrollbars="vertical"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button2"
+        app:layout_constraintVertical_chainStyle="spread" />
 
 </android.support.constraint.ConstraintLayout>

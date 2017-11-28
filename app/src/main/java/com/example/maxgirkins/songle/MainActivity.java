@@ -1,24 +1,17 @@
 package com.example.maxgirkins.songle;
 
 import android.Manifest;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.location.Location;
 import com.google.android.gms.location.LocationListener;
 
-import android.net.ConnectivityManager;
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -38,20 +31,10 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.gson.Gson;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.Date;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import static com.example.maxgirkins.songle.Songle.songle;
 
@@ -68,6 +51,8 @@ public class MainActivity extends AppCompatActivity
     private static final String TAG = "MapsActivity";
     private static SongList songs;
     private static  final String PREFS = "PreferencesFile";
+    private transient Date dater;
+    private Boolean mapReady;
     SharedPreferences settings;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +79,8 @@ public class MainActivity extends AppCompatActivity
                     .addApi(LocationServices.API)
                     .build();
         }
+        dater =  new Date();
+        mapReady = false;
 
     }
 
@@ -101,37 +88,18 @@ public class MainActivity extends AppCompatActivity
     protected void onPause() {
         super.onPause();
         songle.setSongs(songs);
+        Log.i(TAG,"MapsActivity Paused");
     }
     @Override
     public  void onResume(){
         super.onResume();
         songs = songle.getSongs();
         settings = songle.getSettings();
+        if (mapReady){
+            populateMap();
+        }
         Log.i(TAG,"MapsAcvtivity resumed");
     }
-    /*
-    public void saveData() throws IOException {
-        SharedPreferences.Editor editor = songle.getSettings().edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(songs);
-        editor.putString("Data", json);
-        editor.putInt("level", songle.getLevel());
-        editor.apply();
-        Log.i(TAG, "Data Saved");
-    }
-    */
-    /*
-    public void getData(){
-        settings = getSharedPreferences(PREFS, MODE_PRIVATE);
-        this.level = settings.getInt("level",4);
-        Gson gson = new Gson();
-        String json = settings.getString("Data", "");
-        this.songs = gson.fromJson(json, SongList.class);
-        Log.i(TAG, "i'm back");
-    }*/
-
-
-
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -141,13 +109,11 @@ public class MainActivity extends AppCompatActivity
             super.onBackPressed();
         }
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         return true;
     }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -166,7 +132,7 @@ public class MainActivity extends AppCompatActivity
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         Log.i(TAG, "Map ready");
-
+        mapReady = true;
         // Add a marker in Edinburgh and move the camera
         LatLng edinburghCentral = new LatLng(55.944425, -3.188396);
         mMap.addMarker(new MarkerOptions().position(edinburghCentral));
@@ -200,16 +166,17 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    private void populateMap() {
+    public void populateMap() {
         Integer lyricsLength = songs.getActiveSong().getLyrics().size();
         for (int i = 0; i<lyricsLength; i++){
             Lyric l = songs.getActiveSong().getLyrics().get(i);
             LatLng coords = l.getCoords(songle.getLevel());
-            Boolean collected = songs.getActiveSong().getLyrics().get(i).isCollected();
+            Boolean collected = l.isCollected();
+            Log.i(TAG, "CollectedBool" + collected.toString());
             if (!coords.equals(new LatLng(0.0,0.0)) && !collected) {
-                Marker m = mMap.addMarker(new MarkerOptions().position(coords));
-                Log.i(TAG,Integer.toString(settings.getInt("level", 4)));
-                l.setMapMarker(m);
+                l.setMapMarker(mMap.addMarker(new MarkerOptions().position(coords)));
+                Log.i(TAG,Integer.toString(songle.getLevel()));
+
             }
         }
     }
@@ -243,6 +210,15 @@ public class MainActivity extends AppCompatActivity
         super.onStop();
         if (mGoogleApiClient.isConnected()) {
             mGoogleApiClient.disconnect();
+        }
+    }
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        try {
+            songle.saveData();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -282,19 +258,23 @@ public class MainActivity extends AppCompatActivity
     }
     @Override
     public void onLocationChanged(Location location) {
-
         LatLng b = new LatLng(location.getLatitude(), location.getLongitude());
         for (int i=0; i<songs.getActiveSong().getLyrics().size();i++){
             Lyric l = songs.getActiveSong().getLyrics().get(i);
-            LatLng a = l.getCoords(settings.getInt("level",4));
+            LatLng a = l.getCoords(songle.getLevel());
             if (getDistanceBetween(b,a) < 20){
-                Date d = new Date();
                 Log.i(TAG, Double.toString(getDistanceBetween(b,a)));
-                l.setCollectedAt(d);
-                l.getMapMarker().remove();
+                l.setCollectedAt(dater.getTime());
+                Log.i(TAG, "Collectd: " + l.isCollected().toString());
+                try {
+                    l.getMapMarker().remove();
+                } catch (NullPointerException n){
+                    n.printStackTrace();
+                }
+
             }
         }
-        //mMap.moveCamera(CameraUpdateFactory.newLatLng(b));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(b));
     }
 
     @Override
@@ -312,12 +292,9 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        Gson g = new Gson();
-        String songsObj = g.toJson(songs);
 
         if (id == R.id.nav_bag) {
             Intent goBag = new Intent(this, word_bag.class);
-            goBag.putExtra("songsObj",songsObj);
             startActivity(goBag);
         } else if (id == R.id.nav_guess) {
             Intent goGuess = new Intent(this, Guess.class);

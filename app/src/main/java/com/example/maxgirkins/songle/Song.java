@@ -1,5 +1,7 @@
 package com.example.maxgirkins.songle;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -9,14 +11,15 @@ import java.util.List;
  * Created by MaxGirkins on 22/11/2017.
  */
 
-public class Song implements java.io.Serializable {
+public class Song {
 
     private String title;
     private String artist;
     private Integer num;
     private List<Lyric> lyrics;
     private  Integer completed;
-    private Date completedAt;
+    private Long completedAt;
+    private final String TAG = "SongClass";
 
     public Song(String title, String artist, Integer num) {
         this.title = title;
@@ -53,7 +56,7 @@ public class Song implements java.io.Serializable {
         }
     }
 
-    public Date getCompletedAt() {
+    public Long getCompletedAt() {
         return completedAt;
     }
 
@@ -63,9 +66,16 @@ public class Song implements java.io.Serializable {
     @Override
     public String toString(){
         String s = "";
+        Integer lineNum = 1;
         for (int i=0; i<lyrics.size(); i++){
-            s = s+lyrics.get(i).toString();
+            if (lyrics.get(i).getSongPosition()[0] != lineNum){
+                s = s + "\n" + lyrics.get(i).toCensoredString() +" ";
+                lineNum  = lyrics.get(i).getSongPosition()[0];
+            } else {
+                s = s+lyrics.get(i).toCensoredString() +" ";
+            }
         }
+        Log.i(TAG,s);
         return s;
     }
 }

@@ -1,8 +1,6 @@
 package com.example.maxgirkins.songle;
 
-import android.app.Activity;
 import android.app.Application;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 
@@ -10,9 +8,7 @@ import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
-import java.util.prefs.Preferences;
 
 /**
  * Created by MaxGirkins on 27/11/2017.
@@ -28,7 +24,7 @@ public class Songle extends Application implements DownloadLyricsResponse{
     private SharedPreferences settings;
     private Integer level;
     private MainActivity main;
-
+    private Gson gson = new Gson();
 
     @Override
     public void onCreate(){
@@ -41,9 +37,8 @@ public class Songle extends Application implements DownloadLyricsResponse{
         getData();
         downloadSongInfo();
         importSongLyrics(songs.getActiveSong().getNum(),songs,level);
-
-
     }
+
     public Integer getLevel(){
         return level;
     }
@@ -52,30 +47,23 @@ public class Songle extends Application implements DownloadLyricsResponse{
         getData();
         return songs;
     }
-
-    public void setSongs(SongList songs) {
-        this.songs = songs;
-        try {
-            saveData();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void setSongs(SongList songsUpdate) {
+        this.songs = songsUpdate;
     }
     public SharedPreferences getSettings(){
         return settings;
     }
 
     public void getData(){
-        Gson gson = new Gson();
         String json = settings.getString("Data", "");
         this.songs = gson.fromJson(json, SongList.class);
         Log.i(TAG, "i'm back");
     }
     public void saveData() throws IOException {
         SharedPreferences.Editor editor = settings.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(songs);
-        editor.putString("Data", json);
+        String json2;
+        json2 = gson.toJson(songs);
+        editor.putString("Data", json2);
         editor.apply();
         Log.i(TAG, "Data Saved");
     }

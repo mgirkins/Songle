@@ -9,7 +9,7 @@ import java.util.List;
  * Created by MaxGirkins on 22/11/2017.
  */
 
-public class SongList implements java.io.Serializable {
+public class SongList {
     private List<Song> songs;
     private Integer activeSong;
     protected final String TAG = "SonglistClass";

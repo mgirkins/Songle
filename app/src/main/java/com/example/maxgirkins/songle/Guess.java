@@ -1,14 +1,10 @@
 package com.example.maxgirkins.songle;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-
-import com.google.gson.Gson;
 
 import static com.example.maxgirkins.songle.Songle.songle;
 
