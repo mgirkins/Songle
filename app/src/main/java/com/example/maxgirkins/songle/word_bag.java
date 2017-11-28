@@ -22,7 +22,6 @@ public class word_bag extends AppCompatActivity {
         super.onResume();
         song = songle.getSongsWhenExist().getActiveSong();
         Log.i(TAG, song.getTitle());
-        ConstraintLayout c = findViewById(R.id.word_bag_layout);
         String lyrics1 = song.toString();
         TextView lyrics = findViewById(R.id.textView_lyrics);
         lyrics.setText(lyrics1);

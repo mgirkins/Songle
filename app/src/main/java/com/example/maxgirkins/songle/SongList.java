@@ -22,6 +22,18 @@ public class SongList {
     public Song getSong(Integer num){
         return songs.get(num-1);
     }
+    public List<Song> getAllSongs(){
+        return songs;
+    }
+    public Integer getCompletedSongsCount(){
+        Integer count = 0;
+        for (int i=0; i<songs.size(); i++){
+            if (songs.get(i).isCompleted()){
+                count += 1;
+            }
+        }
+        return count;
+    }
     public List<String> getTitles(){
         List<String> titles = new ArrayList<>();
         for (int i = 0; i< songs.size(); i++){

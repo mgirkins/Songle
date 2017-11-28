@@ -311,6 +311,9 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_manage) {
             Intent goSettings = new Intent(this, SettingsActivity.class);
             startActivity(goSettings);
+        } else if (id == R.id.completed_songs) {
+            Intent goGuess = new Intent(this, Completed_songs_activity.class);
+            startActivity(goGuess);
         }
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
