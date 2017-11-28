@@ -28,12 +28,12 @@ public class Songle extends Application implements DownloadLyricsResponse{
 
     @Override
     public void onCreate(){
+        super.onCreate();
         songle = this;
         main = new MainActivity();
         settings = getSharedPreferences(PREFS, MODE_PRIVATE);
         level = settings.getInt("level", 4);
         songs = new SongList();
-        super.onCreate();
         getData();
         downloadSongInfo();
         importSongLyrics(songs.getActiveSong().getNum(),songs,level);
@@ -47,8 +47,17 @@ public class Songle extends Application implements DownloadLyricsResponse{
         getData();
         return songs;
     }
+    public SongList getSongsWhenExist(){
+        return songs;
+    }
     public void setSongs(SongList songsUpdate) {
-        this.songs = songsUpdate;
+        songs = songsUpdate;
+        try {
+            saveData();
+        } catch (IOException | IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+        Log.i(TAG,"Songs updated");
     }
     public SharedPreferences getSettings(){
         return settings;

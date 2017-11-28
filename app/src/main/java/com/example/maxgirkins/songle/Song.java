@@ -19,7 +19,7 @@ public class Song {
     private List<Lyric> lyrics;
     private  Integer completed;
     private Long completedAt;
-    private final String TAG = "SongClass";
+    private final String TAG2 = "SongClass";
 
     public Song(String title, String artist, Integer num) {
         this.title = title;
@@ -40,6 +40,15 @@ public class Song {
 
     public List<Lyric> getLyrics() {
         return lyrics;
+    }
+    public Integer getCompletedLyricsCount(){
+        Integer count = 0;
+        for (int i=0; i<lyrics.size();i++){
+            if (lyrics.get(i).isCollected()){
+                count +=1;
+            }
+        }
+        return count;
     }
     public void setLyrics(List<Lyric> l){
         this.lyrics = l;
@@ -75,7 +84,7 @@ public class Song {
                 s = s+lyrics.get(i).toCensoredString() +" ";
             }
         }
-        Log.i(TAG,s);
+        Log.i(TAG2,s);
         return s;
     }
 }

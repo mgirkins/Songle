@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity
     private Location mLastLocation;
     private NetworkReceiver receiver = new NetworkReceiver();
     private static final String TAG = "MapsActivity";
-    private static SongList songs;
+    private SongList songs;
     private static  final String PREFS = "PreferencesFile";
     private transient Date dater;
     private Boolean mapReady;
@@ -81,6 +81,7 @@ public class MainActivity extends AppCompatActivity
         }
         dater =  new Date();
         mapReady = false;
+        songs = songle.getSongs();
 
     }
 
@@ -93,12 +94,21 @@ public class MainActivity extends AppCompatActivity
     @Override
     public  void onResume(){
         super.onResume();
-        songs = songle.getSongs();
+
         settings = songle.getSettings();
+        Integer numCollectedLyrics = 0;
+        for (int j=0; j<songs.getActiveSong().getLyrics().size();j++){
+            if (songs.getActiveSong().getLyrics().get(j).isCollected()){
+                numCollectedLyrics += 1;
+            }
+        }
+        Log.i(TAG, "numCollectedLyrics: " + numCollectedLyrics.toString());
+        Log.i(TAG,"MapsAcvtivity resumed");
         if (mapReady){
             populateMap();
+            songs = songle.getSongsWhenExist();
         }
-        Log.i(TAG,"MapsAcvtivity resumed");
+
     }
     @Override
     public void onBackPressed() {
@@ -167,16 +177,14 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void populateMap() {
+        Log.i(TAG, "PopulateMap Called");
         Integer lyricsLength = songs.getActiveSong().getLyrics().size();
         for (int i = 0; i<lyricsLength; i++){
             Lyric l = songs.getActiveSong().getLyrics().get(i);
             LatLng coords = l.getCoords(songle.getLevel());
             Boolean collected = l.isCollected();
-            Log.i(TAG, "CollectedBool" + collected.toString());
             if (!coords.equals(new LatLng(0.0,0.0)) && !collected) {
                 l.setMapMarker(mMap.addMarker(new MarkerOptions().position(coords)));
-                Log.i(TAG,Integer.toString(songle.getLevel()));
-
             }
         }
     }
@@ -263,9 +271,7 @@ public class MainActivity extends AppCompatActivity
             Lyric l = songs.getActiveSong().getLyrics().get(i);
             LatLng a = l.getCoords(songle.getLevel());
             if (getDistanceBetween(b,a) < 20){
-                Log.i(TAG, Double.toString(getDistanceBetween(b,a)));
                 l.setCollectedAt(dater.getTime());
-                Log.i(TAG, "Collectd: " + l.isCollected().toString());
                 try {
                     l.getMapMarker().remove();
                 } catch (NullPointerException n){

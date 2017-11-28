@@ -24,7 +24,7 @@ public class Lyric {
     private List<LatLng> coords;
     private Marker mapMarker;
     private List<String> classification;
-    private final String TAG = "LyricClass";
+    private final String TAG3 = "LyricClass";
 
     public Lyric(String word, Integer[] songPosition){
         this.word = word;

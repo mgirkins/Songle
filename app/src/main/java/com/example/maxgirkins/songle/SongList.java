@@ -12,7 +12,7 @@ import java.util.List;
 public class SongList {
     private List<Song> songs;
     private Integer activeSong;
-    protected final String TAG = "SonglistClass";
+    protected final String TAG1 = "SonglistClass";
 
     public SongList(){
         activeSong = -1;
@@ -50,7 +50,7 @@ public class SongList {
     }
     public Song newActiveSong(){
         activeSong = (int) (Math.random() * uncompletedSongs().size());
-        Log.i(TAG, songs.get(uncompletedSongs().get(activeSong)).getTitle());
+        Log.i(TAG1, songs.get(uncompletedSongs().get(activeSong)).getTitle());
         return songs.get(uncompletedSongs().get(activeSong));
     }
 
