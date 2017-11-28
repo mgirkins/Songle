@@ -7,7 +7,7 @@
     tools:context="com.example.maxgirkins.songle.Guess">
 
     <AutoCompleteTextView
-        android:id="@+id/autoCompleteTextView"
+        android:id="@+id/guessAutoCompleteTextView"
         android:layout_width="259dp"
         android:layout_height="52dp"
         android:layout_marginStart="16dp"
@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/guess_button"
         android:layout_width="73dp"
         android:layout_height="34dp"
         android:layout_marginEnd="8dp"

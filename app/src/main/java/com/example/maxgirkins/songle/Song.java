@@ -37,6 +37,9 @@ public class Song {
     public String getArtist() {
         return artist;
     }
+    public String getArtistAndTitle(){
+        return title + " - " + artist;
+    }
 
     public List<Lyric> getLyrics() {
         return lyrics;
@@ -64,7 +67,10 @@ public class Song {
             return false;
         }
     }
-
+    public void setCompleted(Long time){
+        this.completed = 1;
+        this.completedAt = time;
+    }
     public Long getCompletedAt() {
         return completedAt;
     }

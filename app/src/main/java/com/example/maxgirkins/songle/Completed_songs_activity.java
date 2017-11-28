@@ -1,6 +1,5 @@
 package com.example.maxgirkins.songle;
 
-import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
