@@ -322,7 +322,7 @@ public class MainActivity extends AppCompatActivity
 
 
     public void onLyricsDownloaded() throws InterruptedException {
-        songs = songle.getSongs();
+        songs = songle.getSongsWhenExist();
         Log.i(TAG,"onLyricsDownloaded Called!");
     }
 

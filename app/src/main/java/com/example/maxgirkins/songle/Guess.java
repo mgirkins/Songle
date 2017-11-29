@@ -1,9 +1,9 @@
 package com.example.maxgirkins.songle;
 
-import android.content.SharedPreferences;
+import android.app.DialogFragment;
+import android.app.FragmentManager;
+import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -38,12 +38,10 @@ public class Guess extends AppCompatActivity {
             public void onClick(View v) {
                 Log.i(TAG, "onClickCalled");
                 Log.i(TAG, textView.getText().toString());
-                Log.i(TAG,songs.getTitles().get(songs.getActiveSong().getNum()));
-                if (textView.getText().toString().equals(songs.getTitles().get(songs.getActiveSong().getNum()))){
-
+                Log.i(TAG,songs.getActiveSong().getArtistAndTitle());
+                if (textView.getText().toString().equals(songs.getActiveSong().getArtistAndTitle())){
                     Log.i(TAG,"CONGRATULATIONS!!!!");
-                    songs.getActiveSong().setCompleted(date.getTime());
-                    songs.newActiveSong();
+                    onCorrect();
                 }
             }
         });
@@ -51,6 +49,27 @@ public class Guess extends AppCompatActivity {
     public void onPause(){
         super.onPause();
         songle.setSongs(songs);
+    }
+
+    private void onCorrect(){
+
+        Bundle bundle = new Bundle();
+        bundle.putString("title", songs.getActiveSong().getArtistAndTitle());
+        bundle.putString("posBtn", "New Game");
+        bundle.putString("negBtn", "View on Youtube");
+        GuessDialog g = new GuessDialog();
+        g.setArguments(bundle);
+        g.show(this.getFragmentManager(),"GuessDialog");
+    }
+    public void doPositiveClick(){
+        songs.getActiveSong().setCompleted(date.getTime());
+        songs.newActiveSong();
+        Intent mapsIntent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(mapsIntent);
+    }
+    public void doNegativeClick(){
+        songs.getActiveSong().setCompleted(date.getTime());
+        songs.newActiveSong();
     }
 
 

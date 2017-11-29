@@ -79,7 +79,7 @@ public class Lyric {
         } else {
             String str = "";
             for (int i=0;i<word.length();i++){
-                str = str + "-";
+                str = str + '\u25A0';
             }
             return str;
         }

@@ -1,10 +1,13 @@
 package com.example.maxgirkins.songle;
 
+import android.content.Intent;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import static com.example.maxgirkins.songle.Songle.songle;
@@ -27,6 +30,14 @@ public class word_bag extends AppCompatActivity {
         lyrics.setText(lyrics1);
         lyrics.setMovementMethod(new ScrollingMovementMethod());
         Log.i(TAG, song.getCompletedLyricsCount().toString());
+        Button guessButton = findViewById(R.id.word_bag_guess_button);
+        guessButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent goGuess = new Intent(getApplicationContext(), Guess.class);
+                startActivity(goGuess);
+            }
+        });
     }
     @Override
     protected void onPause(){
