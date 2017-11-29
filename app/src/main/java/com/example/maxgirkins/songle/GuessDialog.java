@@ -11,12 +11,11 @@ import android.support.v7.app.AlertDialog;
  */
 
 public class GuessDialog extends DialogFragment {
-    public static GuessDialog newInstance(String title, String posBtn, String negBtn) {
+    public static GuessDialog newInstance(String title, String youtubeLink) {
         GuessDialog frag = new GuessDialog();
         Bundle args = new Bundle();
         args.putString("title", title);
-        args.putString("posBtn", posBtn);
-        args.putString("negBtn", negBtn);
+        args.putString("youtubeLink", youtubeLink);
         frag.setArguments(args);
         return frag;
     }
@@ -24,24 +23,23 @@ public class GuessDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         String title = getArguments().getString("title");
-        String posBtn = getArguments().getString("posBtn");
-        String negBtn = getArguments().getString("negBtn");
         return new AlertDialog.Builder(getActivity())
-                .setTitle(title)
-                .setPositiveButton(posBtn,
+                .setTitle("Correct!")
+                .setPositiveButton("New Game",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 ((Guess)getActivity()).doPositiveClick();
                             }
                         }
                 )
-                .setNegativeButton(negBtn,
+                .setNegativeButton("Listen on youtube",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 ((Guess)getActivity()).doNegativeClick();
                             }
                         }
                 )
+                .setMessage("You're right, " + title+" is the correct song. Congratulations!")
                 .create();
     }
 }

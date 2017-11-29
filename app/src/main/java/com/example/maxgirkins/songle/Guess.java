@@ -3,6 +3,7 @@ package com.example.maxgirkins.songle;
 import android.app.DialogFragment;
 import android.app.FragmentManager;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -27,6 +28,7 @@ public class Guess extends AppCompatActivity {
 
         songs = songle.getSongsWhenExist();
         songTitles = songs.getTitles().toArray(new String[songs.getNumSongs()]);
+        Log.i(TAG, "youtube link for active song: " +songs.getActiveSong().getYoutubeLink());
         setContentView(R.layout.activity_guess);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_dropdown_item_1line, songTitles);
@@ -48,7 +50,10 @@ public class Guess extends AppCompatActivity {
     }
     public void onPause(){
         super.onPause();
-        songle.setSongs(songs);
+    }
+    public void onResume(){
+        super.onResume();
+        songs = songle.getSongsWhenExist();
     }
 
     private void onCorrect(){
@@ -64,12 +69,19 @@ public class Guess extends AppCompatActivity {
     public void doPositiveClick(){
         songs.getActiveSong().setCompleted(date.getTime());
         songs.newActiveSong();
+        songle.setSongs(songs);
         Intent mapsIntent = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(mapsIntent);
     }
     public void doNegativeClick(){
+        String url = songle.getSongsWhenExist().getActiveSong().getYoutubeLink();
         songs.getActiveSong().setCompleted(date.getTime());
         songs.newActiveSong();
+        songle.setSongs(songs);
+        Intent lVideoIntent = new Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse(url));
+        startActivity(lVideoIntent);
     }
 
 

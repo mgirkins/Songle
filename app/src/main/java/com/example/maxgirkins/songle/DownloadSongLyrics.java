@@ -26,6 +26,7 @@ public class DownloadSongLyrics extends AsyncTask<String, Void, List<Lyric>> {
     @Override
     protected void onPostExecute(List<Lyric> lyrics) {
         songle.getSongs().getActiveSong().addLyrics(lyrics);
+        Log.i(TAG,songle.getSongsWhenExist().getActiveSong().getYoutubeLink());
         super.onPostExecute(lyrics);
         songle.onLyricsDownloaded(lyrics);
         Log.i(TAG, "CALL ON ME");

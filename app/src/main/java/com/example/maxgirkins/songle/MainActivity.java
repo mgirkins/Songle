@@ -49,10 +49,10 @@ public class MainActivity extends AppCompatActivity
     private Location mLastLocation;
     private NetworkReceiver receiver = new NetworkReceiver();
     private static final String TAG = "MapsActivity";
-    private SongList songs;
+    private static SongList songs;
     private static  final String PREFS = "PreferencesFile";
     private transient Date dater;
-    private Boolean mapReady;
+    private Boolean mapReady = false;
     SharedPreferences settings;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,18 +69,8 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync( this);
-        if (mGoogleApiClient == null) {
-            mGoogleApiClient = new GoogleApiClient.Builder(this)
-                    .addConnectionCallbacks(this)
-                    .addOnConnectionFailedListener(this)
-                    .addApi(LocationServices.API)
-                    .build();
-        }
+
         dater =  new Date();
-        mapReady = false;
         songs = songle.getSongs();
 
     }
@@ -94,19 +84,26 @@ public class MainActivity extends AppCompatActivity
     @Override
     public  void onResume(){
         super.onResume();
-
+        songs = songle.getSongsWhenExist();
         settings = songle.getSettings();
-        Integer numCollectedLyrics = 0;
-        for (int j=0; j<songs.getActiveSong().getLyrics().size();j++){
-            if (songs.getActiveSong().getLyrics().get(j).isCollected()){
-                numCollectedLyrics += 1;
-            }
-        }
-        Log.i(TAG, "numCollectedLyrics: " + numCollectedLyrics.toString());
         Log.i(TAG,"MapsAcvtivity resumed");
+        if (mMap == null) {
+            SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                    .findFragmentById(R.id.map);
+            mapFragment.getMapAsync( this);
+            if (mGoogleApiClient == null) {
+                mGoogleApiClient = new GoogleApiClient.Builder(this)
+                        .addConnectionCallbacks(this)
+                        .addOnConnectionFailedListener(this)
+                        .addApi(LocationServices.API)
+                        .build();
+            }
+            mGoogleApiClient.connect();
+
+        }
         if (mapReady){
             populateMap();
-            songs = songle.getSongsWhenExist();
+
         }
 
     }
@@ -145,13 +142,14 @@ public class MainActivity extends AppCompatActivity
         mapReady = true;
         // Add a marker in Edinburgh and move the camera
         LatLng edinburghCentral = new LatLng(55.944425, -3.188396);
-        mMap.addMarker(new MarkerOptions().position(edinburghCentral));
+        //mMap.addMarker(new MarkerOptions().position(edinburghCentral));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(edinburghCentral, 16));
 
 
         try {
             // Visualise current position with a small blue circle
             mMap.setMyLocationEnabled(true);
+            mMap.getUiSettings().setMyLocationButtonEnabled(true);
         } catch (SecurityException se) {
             System.out.println("Security exception thrown [onMapReady]");
         }
@@ -179,12 +177,13 @@ public class MainActivity extends AppCompatActivity
     public void populateMap() {
         Log.i(TAG, "PopulateMap Called");
         Integer lyricsLength = songs.getActiveSong().getLyrics().size();
+
         for (int i = 0; i<lyricsLength; i++){
-            Lyric l = songs.getActiveSong().getLyrics().get(i);
+            Lyric l = songle.getSongsWhenExist().getActiveSong().getLyrics().get(i);
             LatLng coords = l.getCoords(songle.getLevel());
             Boolean collected = l.isCollected();
-            if (!coords.equals(new LatLng(0.0,0.0)) && !collected) {
-                l.setMapMarker(mMap.addMarker(new MarkerOptions().position(coords)));
+            if (!coords.equals(new LatLng(0.0,0.0)) && !collected && mapReady) {
+                l.setMapMarker(this.mMap.addMarker(new MarkerOptions().position(coords)));
             }
         }
     }
@@ -210,7 +209,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onStart() {
         super.onStart();
-        mGoogleApiClient.connect();
+
     }
 
     @Override
@@ -323,6 +322,7 @@ public class MainActivity extends AppCompatActivity
 
     public void onLyricsDownloaded() throws InterruptedException {
         songs = songle.getSongsWhenExist();
+        populateMap();
         Log.i(TAG,"onLyricsDownloaded Called!");
     }
 

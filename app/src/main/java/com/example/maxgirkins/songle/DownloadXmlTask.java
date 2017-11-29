@@ -14,6 +14,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
+import static com.example.maxgirkins.songle.Songle.songle;
+
 public class DownloadXmlTask extends AsyncTask<String, Void, SongList> {
 
     private static final String TAG = "DownloaderA";
@@ -29,10 +31,17 @@ public class DownloadXmlTask extends AsyncTask<String, Void, SongList> {
         }
         return s;
     }
+
+    @Override
+    protected void onPostExecute(SongList songList) {
+        super.onPostExecute(songList);
+        songle.setSongs(songList);
+    }
+
     private void loadXmlFromNetwork(String urlString) throws XmlPullParserException, IOException {
         try (InputStream stream = downloadUrl(urlString)){
             SongInfoParser p = new SongInfoParser();
-            this.s = p.parse(stream);
+            s = p.parse(stream);
         } catch (IOException i) {
             i.printStackTrace();
         }

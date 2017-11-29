@@ -31,6 +31,7 @@ public class Lyric {
         this.songPosition = songPosition;
         this.coords = new ArrayList<>(Arrays.asList(new LatLng(0,0),new LatLng(0,0),new LatLng(0,0),new LatLng(0,0),new LatLng(0,0)));
         this.classification = new ArrayList<>(Arrays.asList("unclassified", "unclassified", "unclassified","unclassified","unclassified"));
+        this.collected = false;
     }
 
     public String getLyric(){

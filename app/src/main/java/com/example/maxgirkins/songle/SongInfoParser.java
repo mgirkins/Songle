@@ -49,7 +49,7 @@ public class SongInfoParser {
     }
     private Song readSong(XmlPullParser parser) throws XmlPullParserException, IOException {
         parser.require(XmlPullParser.START_TAG, ns, "Song");
-        String title = null; String artist = null; Integer number = 0;
+        String title = null; String artist = null; Integer number = 0; String link = null;
         while (parser.next() != XmlPullParser.END_TAG) {
             if (parser.getEventType() != XmlPullParser.START_TAG)
             continue;
@@ -60,11 +60,14 @@ public class SongInfoParser {
                 artist = readArtist(parser);
             } else if (name.equals("Number")) {
                 number = readNumber(parser);
-            } else {
+            } else if (name.equals("Link")) {
+                link = readLink(parser);
+                Log.i(TAG, link);
+            }else {
                 skip(parser);
             }
         }
-        return new Song(title, artist, number);
+        return new Song(title, artist, number, link);
     }
 
     private String readTitle(XmlPullParser parser) throws IOException, XmlPullParserException {
@@ -77,13 +80,20 @@ public class SongInfoParser {
         parser.require(XmlPullParser.START_TAG, ns, "Number");
         String num = readText(parser);
         parser.require(XmlPullParser.END_TAG, ns, "Number");
-        return Integer.parseInt(num);
+        Log.i(TAG,Integer.toString(Integer.parseInt(num)-1));
+        return Integer.parseInt(num)-1;
     }
     private String readArtist(XmlPullParser parser) throws IOException, XmlPullParserException {
         parser.require(XmlPullParser.START_TAG, ns, "Artist");
         String summary = readText(parser);
         parser.require(XmlPullParser.END_TAG, ns, "Artist");
         return summary;
+    }
+    private String readLink(XmlPullParser parser) throws IOException, XmlPullParserException {
+        parser.require(XmlPullParser.START_TAG, ns, "Link");
+        String link = readText(parser);
+        parser.require(XmlPullParser.END_TAG, ns, "Link");
+        return link;
     }
     private String readText(XmlPullParser parser) throws IOException, XmlPullParserException {
         String result = "";

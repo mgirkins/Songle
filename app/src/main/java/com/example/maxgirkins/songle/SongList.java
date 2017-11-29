@@ -5,6 +5,8 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.maxgirkins.songle.Songle.songle;
+
 /**
  * Created by MaxGirkins on 22/11/2017.
  */
@@ -20,7 +22,7 @@ public class SongList {
     }
 
     public Song getSong(Integer num){
-        return songs.get(num-1);
+        return songs.get(num);
     }
     public List<Song> getAllSongs(){
         return songs;
@@ -53,17 +55,18 @@ public class SongList {
     public Song getActiveSong(){
 
         if (activeSong == -1){
-            return newActiveSong();
+            newActiveSong();
+            return getActiveSong();
         } else {
             return songs.get(activeSong);
         }
 
 
     }
-    public Song newActiveSong(){
+    public void newActiveSong(){
         activeSong = (int) (Math.random() * uncompletedSongs().size());
         Log.i(TAG1, songs.get(uncompletedSongs().get(activeSong)).getTitle());
-        return songs.get(uncompletedSongs().get(activeSong));
+        songle.importSongLyrics(activeSong,songle.getSongs(),songle.getLevel());
     }
 
     private List<Integer> uncompletedSongs(){

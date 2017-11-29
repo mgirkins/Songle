@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.google.android.gms.maps.GoogleMap;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -25,6 +26,7 @@ public class Songle extends Application implements DownloadLyricsResponse{
     private Integer level;
     private MainActivity main;
     private Gson gson = new Gson();
+    private static GoogleMap gmap;
 
     @Override
     public void onCreate(){
@@ -37,6 +39,7 @@ public class Songle extends Application implements DownloadLyricsResponse{
         getData();
         downloadSongInfo();
         importSongLyrics(songs.getActiveSong().getNum(),songs,level);
+
     }
 
     public Integer getLevel(){
@@ -79,7 +82,7 @@ public class Songle extends Application implements DownloadLyricsResponse{
     public void downloadSongInfo(){
         download = new DownloadXmlTask();
         try {
-
+            Log.i(TAG, "songs downloading");
             this.songs = download.execute("http://www.inf.ed.ac.uk/teaching/courses/selp/data/songs/songs.xml").get();
         } catch (InterruptedException | ExecutionException i){
             i.printStackTrace();

@@ -15,19 +15,22 @@ public class Song {
 
     private String title;
     private String artist;
+    private String youtubeLink;
     private Integer num;
     private List<Lyric> lyrics;
     private  Integer completed;
     private Long completedAt;
     private final String TAG2 = "SongClass";
 
-    public Song(String title, String artist, Integer num) {
+    public Song(String title, String artist, Integer num, String youtubeLink) {
         this.title = title;
         this.artist = artist;
         this.num = num;
         this.lyrics = new ArrayList<>();
         this.completed = 0;
         this.completedAt = null;
+        this.youtubeLink = youtubeLink;
+        Log.i(TAG2, "song initialised with youtube link: " + youtubeLink);
     }
 
     public String getTitle() {
@@ -92,5 +95,13 @@ public class Song {
         }
         Log.i(TAG2,s);
         return s;
+    }
+
+    public String getYoutubeLink() {
+        return youtubeLink;
+    }
+
+    public void setYoutubeLink(String youtubeLink) {
+        this.youtubeLink = youtubeLink;
     }
 }
