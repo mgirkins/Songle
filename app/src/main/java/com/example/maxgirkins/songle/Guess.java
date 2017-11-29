@@ -1,7 +1,5 @@
 package com.example.maxgirkins.songle;
 
-import android.app.DialogFragment;
-import android.app.FragmentManager;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,7 +15,6 @@ import java.util.Date;
 import static com.example.maxgirkins.songle.Songle.songle;
 
 public class Guess extends AppCompatActivity {
-    SongList songs;
     String[] songTitles;
     private static final String TAG = "GuessActivity";
     Date date = new Date();
@@ -26,24 +23,21 @@ public class Guess extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        songs = songle.getSongsWhenExist();
-        songTitles = songs.getTitles().toArray(new String[songs.getNumSongs()]);
-        Log.i(TAG, "youtube link for active song: " +songs.getActiveSong().getYoutubeLink());
+        songTitles = songle.getSongs().getTitles().toArray(new String[songle.getSongs().getNumSongs()]);
+        Log.i(TAG, "youtube link for active song: " +songle.getSongs().getActiveSong().getYoutubeLink());
         setContentView(R.layout.activity_guess);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_dropdown_item_1line, songTitles);
         final AutoCompleteTextView textView = findViewById(R.id.guessAutoCompleteTextView);
         textView.setAdapter(adapter);
-        Log.i(TAG,songs.getTitles().toString());
+        Log.i(TAG,songle.getSongs().getTitles().toString());
         Button guessButton = findViewById(R.id.guess_button);
         guessButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Log.i(TAG, "onClickCalled");
-                Log.i(TAG, textView.getText().toString());
-                Log.i(TAG,songs.getActiveSong().getArtistAndTitle());
-                if (textView.getText().toString().equals(songs.getActiveSong().getArtistAndTitle())){
-                    Log.i(TAG,"CONGRATULATIONS!!!!");
+                if (textView.getText().toString().equals(songle.getSongs().getActiveSong().getArtistAndTitle())){
                     onCorrect();
+                } else {
+                    onIncorrect();
                 }
             }
         });
@@ -53,35 +47,40 @@ public class Guess extends AppCompatActivity {
     }
     public void onResume(){
         super.onResume();
-        songs = songle.getSongsWhenExist();
     }
 
     private void onCorrect(){
-
         Bundle bundle = new Bundle();
-        bundle.putString("title", songs.getActiveSong().getArtistAndTitle());
-        bundle.putString("posBtn", "New Game");
-        bundle.putString("negBtn", "View on Youtube");
+        bundle.putString("title", songle.getSongs().getActiveSong().getArtistAndTitle());
         GuessDialog g = new GuessDialog();
         g.setArguments(bundle);
         g.show(this.getFragmentManager(),"GuessDialog");
     }
+    private void onIncorrect(){
+        GuessDialogIncorrect g = new GuessDialogIncorrect();
+        g.show(this.getFragmentManager(),"GuessDialog");
+    }
     public void doPositiveClick(){
-        songs.getActiveSong().setCompleted(date.getTime());
-        songs.newActiveSong();
-        songle.setSongs(songs);
+        songle.getSongs().getActiveSong().setCompleted(date.getTime());
+        songle.getSongs().newActiveSong();
         Intent mapsIntent = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(mapsIntent);
     }
     public void doNegativeClick(){
-        String url = songle.getSongsWhenExist().getActiveSong().getYoutubeLink();
-        songs.getActiveSong().setCompleted(date.getTime());
-        songs.newActiveSong();
-        songle.setSongs(songs);
+        String url = songle.getSongs().getActiveSong().getYoutubeLink();
+        songle.getSongs().getActiveSong().setCompleted(date.getTime());
+        songle.getSongs().newActiveSong();
         Intent lVideoIntent = new Intent(
                 Intent.ACTION_VIEW,
                 Uri.parse(url));
         startActivity(lVideoIntent);
+    }
+    public void doPositiveClickIncorrect(){
+
+    }
+    public void doNegativeClickIncorrect(){
+        Intent mapIntent = new Intent(getApplicationContext(),MainActivity.class);
+        startActivity(mapIntent);
     }
 
 

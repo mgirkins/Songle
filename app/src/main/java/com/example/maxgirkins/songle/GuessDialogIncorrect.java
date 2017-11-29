@@ -10,27 +10,26 @@ import android.support.v7.app.AlertDialog;
  * Created by MaxGirkins on 29/11/2017.
  */
 
-public class GuessDialog extends DialogFragment {
+public class GuessDialogIncorrect extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        String title = getArguments().getString("title");
         return new AlertDialog.Builder(getActivity())
-                .setTitle("Correct!")
-                .setPositiveButton("New Game",
+                .setTitle("Sorry!")
+                .setPositiveButton("Try Again",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
-                                ((Guess)getActivity()).doPositiveClick();
+                                ((Guess)getActivity()).doPositiveClickIncorrect();
                             }
                         }
                 )
-                .setNegativeButton("Listen on youtube",
+                .setNegativeButton("Look for more Lyrics",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
-                                ((Guess)getActivity()).doNegativeClick();
+                                ((Guess)getActivity()).doNegativeClickIncorrect();
                             }
                         }
                 )
-                .setMessage("You're right, " + title +" is the correct song. Congratulations!")
+                .setMessage("Sorry, that was not the Song you were looking for.")
                 .create();
     }
 }

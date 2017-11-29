@@ -1,7 +1,6 @@
 package com.example.maxgirkins.songle;
 
 import android.content.Intent;
-import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
@@ -13,7 +12,6 @@ import android.widget.TextView;
 import static com.example.maxgirkins.songle.Songle.songle;
 
 public class word_bag extends AppCompatActivity {
-    //private Song song;
     protected final String TAG = "WordBagActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,13 +21,11 @@ public class word_bag extends AppCompatActivity {
     @Override
     protected void onResume(){
         super.onResume();
-        //song = songle.getSongsWhenExist().getActiveSong();
-        Log.i(TAG, songle.getSongsWhenExist().getActiveSong().getTitle());
-        String lyrics1 = songle.getSongsWhenExist().getActiveSong().toString();
+        String lyrics1 = songle.getSongs().getActiveSong().toString();
         TextView lyrics = findViewById(R.id.textView_lyrics);
         lyrics.setText(lyrics1);
         lyrics.setMovementMethod(new ScrollingMovementMethod());
-        Log.i(TAG, songle.getSongsWhenExist().getActiveSong().getCompletedLyricsCount().toString());
+        Log.i(TAG, songle.getSongs().getActiveSong().getCompletedLyricsCount().toString());
         Button guessButton = findViewById(R.id.word_bag_guess_button);
         guessButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -38,9 +34,5 @@ public class word_bag extends AppCompatActivity {
                 startActivity(goGuess);
             }
         });
-    }
-    @Override
-    protected void onPause(){
-        super.onPause();
     }
 }

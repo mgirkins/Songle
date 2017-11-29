@@ -26,7 +26,6 @@ public class Songle extends Application implements DownloadLyricsResponse{
     private Integer level;
     private MainActivity main;
     private Gson gson = new Gson();
-    private static GoogleMap gmap;
 
     @Override
     public void onCreate(){
@@ -38,19 +37,17 @@ public class Songle extends Application implements DownloadLyricsResponse{
         songs = new SongList();
         getData();
         downloadSongInfo();
-        importSongLyrics(songs.getActiveSong().getNum(),songs,level);
+        importSongLyrics(songs.getActiveSong().getNum(),level);
 
     }
-
     public Integer getLevel(){
         return level;
     }
-
-    public SongList getSongs() {
+    public SongList getSongsFirstRun() {
         getData();
         return songs;
     }
-    public SongList getSongsWhenExist(){
+    public SongList getSongs(){
         return songs;
     }
     public void setSongs(SongList songsUpdate) {
@@ -89,7 +86,7 @@ public class Songle extends Application implements DownloadLyricsResponse{
         }
 
     }
-    public void importSongLyrics(Integer num, SongList songList, Integer level){
+    public void importSongLyrics(Integer num, Integer level){
         String numForm = num.toString();
         if (numForm.length() == 1){
             numForm = "0" + numForm;

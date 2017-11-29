@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         dater =  new Date();
-        //songs = songle.getSongs();
+        //songs = songle.getSongsFirstRun();
 
     }
 
@@ -79,12 +79,13 @@ public class MainActivity extends AppCompatActivity
     protected void onPause() {
         super.onPause();
         //songle.setSongs(songs);
+        mMap.clear();
         Log.i(TAG,"MapsActivity Paused");
     }
     @Override
     public  void onResume(){
         super.onResume();
-        //songs = songle.getSongsWhenExist();
+        //songs = songle.getSongs();
         settings = songle.getSettings();
         Log.i(TAG,"MapsAcvtivity resumed");
         if (mMap == null) {
@@ -176,10 +177,10 @@ public class MainActivity extends AppCompatActivity
 
     public void populateMap() {
         Log.i(TAG, "PopulateMap Called");
-        Integer lyricsLength = songle.getSongsWhenExist().getActiveSong().getLyrics().size();
+        Integer lyricsLength = songle.getSongs().getActiveSong().getLyrics().size();
 
         for (int i = 0; i<lyricsLength; i++){
-            Lyric l = songle.getSongsWhenExist().getActiveSong().getLyrics().get(i);
+            Lyric l = songle.getSongs().getActiveSong().getLyrics().get(i);
             LatLng coords = l.getCoords(songle.getLevel());
             Boolean collected = l.isCollected();
             if (!coords.equals(new LatLng(0.0,0.0)) && !collected && mapReady) {
@@ -266,8 +267,8 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onLocationChanged(Location location) {
         LatLng b = new LatLng(location.getLatitude(), location.getLongitude());
-        for (int i=0; i<songle.getSongsWhenExist().getActiveSong().getLyrics().size();i++){
-            Lyric l = songle.getSongsWhenExist().getActiveSong().getLyrics().get(i);
+        for (int i = 0; i<songle.getSongs().getActiveSong().getLyrics().size(); i++){
+            Lyric l = songle.getSongs().getActiveSong().getLyrics().get(i);
             LatLng a = l.getCoords(songle.getLevel());
             if (getDistanceBetween(b,a) < 20){
                 l.setCollectedAt(dater.getTime());
@@ -321,7 +322,7 @@ public class MainActivity extends AppCompatActivity
 
 
     public void onLyricsDownloaded() throws InterruptedException {
-//        songs = songle.getSongsWhenExist();
+//        songs = songle.getSongs();
         populateMap();
         Log.i(TAG,"onLyricsDownloaded Called!");
     }

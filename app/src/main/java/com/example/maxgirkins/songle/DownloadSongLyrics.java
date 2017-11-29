@@ -15,23 +15,12 @@ import static com.example.maxgirkins.songle.Songle.songle;
 public class DownloadSongLyrics extends AsyncTask<String, Void, List<Lyric>> {
     private static final String TAG = "DownloaderA";
     private List<Lyric> s = new ArrayList<>();
-    //private Integer level;
-    //private SongList songs;
-
-    /*public DownloadSongLyrics(Integer level, SongList s){
-        this.level = level;
-        this.songs = s;
-    }*/
-
     @Override
     protected void onPostExecute(List<Lyric> lyrics) {
-        songle.getSongsWhenExist().getActiveSong().addLyrics(lyrics);
-        Log.i(TAG,songle.getSongsWhenExist().getActiveSong().getYoutubeLink());
         super.onPostExecute(lyrics);
+        songle.getSongs().getActiveSong().addLyrics(lyrics);
         songle.onLyricsDownloaded(lyrics);
-        Log.i(TAG, "CALL ON ME");
     }
-
     @Override
     protected List<Lyric> doInBackground(String... urls) {
         try {
@@ -47,7 +36,6 @@ public class DownloadSongLyrics extends AsyncTask<String, Void, List<Lyric>> {
     }
     private void loadXmlFromNetwork(String urlString) throws
             XmlPullParserException, IOException {
-
         try (InputStream stream = downloadUrl(urlString)) {
             if (urlString.substring(urlString.length() - 3).equals("txt")) {
                 SongLyricParser q = new SongLyricParser();

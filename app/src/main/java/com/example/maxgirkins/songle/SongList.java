@@ -66,7 +66,7 @@ public class SongList {
     public void newActiveSong(){
         activeSong = (int) (Math.random() * uncompletedSongs().size());
         Log.i(TAG1, songs.get(uncompletedSongs().get(activeSong)).getTitle());
-        songle.importSongLyrics(activeSong,songle.getSongsWhenExist(),songle.getLevel());
+        songle.importSongLyrics(activeSong,songle.getLevel());
     }
 
     private List<Integer> uncompletedSongs(){
