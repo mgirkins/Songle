@@ -35,7 +35,7 @@ public class DownloadXmlTask extends AsyncTask<String, Void, SongList> {
     @Override
     protected void onPostExecute(SongList songList) {
         super.onPostExecute(songList);
-        songle.setSongs(songList);
+        //songle.setSongs(songList);
     }
 
     private void loadXmlFromNetwork(String urlString) throws XmlPullParserException, IOException {

@@ -16,10 +16,10 @@ public class DownloadMapInfo extends AsyncTask<String, Void, List<Lyric>> {
     private static final String TAG = "DownloaderMapInfo";
     private List<Lyric> b;
     private Integer level;
-    public DownloadMapInfo(List<Lyric> s, Integer level){
+    /*public DownloadMapInfo(List<Lyric> s, Integer level){
         this.b = s;
         this.level = level;
-    }
+    }*/
 
     @Override
     protected void onPostExecute(List<Lyric> lyrics) {

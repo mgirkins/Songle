@@ -13,7 +13,7 @@ import android.widget.TextView;
 import static com.example.maxgirkins.songle.Songle.songle;
 
 public class word_bag extends AppCompatActivity {
-    private Song song;
+    //private Song song;
     protected final String TAG = "WordBagActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,13 +23,13 @@ public class word_bag extends AppCompatActivity {
     @Override
     protected void onResume(){
         super.onResume();
-        song = songle.getSongsWhenExist().getActiveSong();
-        Log.i(TAG, song.getTitle());
-        String lyrics1 = song.toString();
+        //song = songle.getSongsWhenExist().getActiveSong();
+        Log.i(TAG, songle.getSongsWhenExist().getActiveSong().getTitle());
+        String lyrics1 = songle.getSongsWhenExist().getActiveSong().toString();
         TextView lyrics = findViewById(R.id.textView_lyrics);
         lyrics.setText(lyrics1);
         lyrics.setMovementMethod(new ScrollingMovementMethod());
-        Log.i(TAG, song.getCompletedLyricsCount().toString());
+        Log.i(TAG, songle.getSongsWhenExist().getActiveSong().getCompletedLyricsCount().toString());
         Button guessButton = findViewById(R.id.word_bag_guess_button);
         guessButton.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -15,17 +15,17 @@ import static com.example.maxgirkins.songle.Songle.songle;
 public class DownloadSongLyrics extends AsyncTask<String, Void, List<Lyric>> {
     private static final String TAG = "DownloaderA";
     private List<Lyric> s = new ArrayList<>();
-    private Integer level;
-    private SongList songs;
+    //private Integer level;
+    //private SongList songs;
 
-    public DownloadSongLyrics(Integer level, SongList s){
+    /*public DownloadSongLyrics(Integer level, SongList s){
         this.level = level;
         this.songs = s;
-    }
+    }*/
 
     @Override
     protected void onPostExecute(List<Lyric> lyrics) {
-        songle.getSongs().getActiveSong().addLyrics(lyrics);
+        songle.getSongsWhenExist().getActiveSong().addLyrics(lyrics);
         Log.i(TAG,songle.getSongsWhenExist().getActiveSong().getYoutubeLink());
         super.onPostExecute(lyrics);
         songle.onLyricsDownloaded(lyrics);
@@ -53,7 +53,7 @@ public class DownloadSongLyrics extends AsyncTask<String, Void, List<Lyric>> {
                 SongLyricParser q = new SongLyricParser();
                 s = q.parse(stream);
             } else if (urlString.substring(urlString.length() - 3).equals("kml")){
-                MapInfoParser p = new MapInfoParser(s, level);
+                MapInfoParser p = new MapInfoParser(s, songle.getLevel());
                 s = p.parse(stream);
             }
         } catch (IOException i) {

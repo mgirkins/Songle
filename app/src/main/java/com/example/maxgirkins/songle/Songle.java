@@ -97,7 +97,7 @@ public class Songle extends Application implements DownloadLyricsResponse{
         String[] strings = {"http://www.inf.ed.ac.uk/teaching/courses/selp/data/songs/" + numForm + "/lyrics.txt","http://www.inf.ed.ac.uk/teaching/courses/selp/data/songs/"+numForm+"/map"+(level+1)+".kml"};
 
         try {
-            downloadsongs = new DownloadSongLyrics(level, songList);
+            downloadsongs = new DownloadSongLyrics();
             this.songs.getSong(num).addLyrics(downloadsongs.execute(strings).get());
         } catch (InterruptedException | ExecutionException i){
             i.printStackTrace();
