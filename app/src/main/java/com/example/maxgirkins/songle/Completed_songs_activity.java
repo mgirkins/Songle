@@ -44,7 +44,7 @@ public class Completed_songs_activity extends AppCompatActivity {
             } else {
                 String redact = "";
                 for (int j=0; j<s.getTitle().length(); j++){
-                    redact += "*";
+                    redact += '\u25A0';
                 }
                 TextView t = new TextView(this);
                 t.setText(redact);

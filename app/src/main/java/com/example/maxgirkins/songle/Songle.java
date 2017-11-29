@@ -26,6 +26,7 @@ public class Songle extends Application implements DownloadLyricsResponse{
     private Integer level;
     private MainActivity main;
     private Gson gson = new Gson();
+    private UserStatistics stats;
 
     @Override
     public void onCreate(){
@@ -50,31 +51,26 @@ public class Songle extends Application implements DownloadLyricsResponse{
     public SongList getSongs(){
         return songs;
     }
-    public void setSongs(SongList songsUpdate) {
-        songs = songsUpdate;
-        try {
-            saveData();
-        } catch (IOException | IllegalArgumentException e) {
-            e.printStackTrace();
-        }
-        Log.i(TAG,"Songs updated");
-    }
+
     public SharedPreferences getSettings(){
         return settings;
     }
 
     public void getData(){
-        String json = settings.getString("Data", "");
-        this.songs = gson.fromJson(json, SongList.class);
-        Log.i(TAG, "i'm back");
+        String jsonSongs = settings.getString("Data", "");
+        this.songs = gson.fromJson(jsonSongs, SongList.class);
+        String jsonStats = settings.getString("Stats", "");
+        this.stats = gson.fromJson(jsonStats, UserStatistics.class);
     }
     public void saveData() throws IOException {
         SharedPreferences.Editor editor = settings.edit();
-        String json2;
-        json2 = gson.toJson(songs);
-        editor.putString("Data", json2);
-        editor.apply();
-        Log.i(TAG, "Data Saved");
+        String jsonSongs;
+        jsonSongs = gson.toJson(songs);
+        editor.putString("Data", jsonSongs);
+        String jsonStats;
+        jsonStats = gson.toJson(songs);
+        editor.putString("Stats", jsonStats);
+        editor.commit();
     }
     public void downloadSongInfo(){
         download = new DownloadXmlTask();
@@ -109,5 +105,9 @@ public class Songle extends Application implements DownloadLyricsResponse{
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    public UserStatistics getStats() {
+        return stats;
     }
 }

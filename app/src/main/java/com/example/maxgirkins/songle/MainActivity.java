@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity
     private static  final String PREFS = "PreferencesFile";
     private transient Date dater;
     private Boolean mapReady = false;
+    private LatLng lastPosition;
     SharedPreferences settings;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -267,6 +268,12 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onLocationChanged(Location location) {
         LatLng b = new LatLng(location.getLatitude(), location.getLongitude());
+        if (lastPosition != null){
+            double travel = getDistanceBetween(b,lastPosition);
+            songle.getSongs().getActiveSong().setDistanceWalked(travel);
+            songle.getStats().setTotalDistance(travel);
+            lastPosition = b;
+        }
         for (int i = 0; i<songle.getSongs().getActiveSong().getLyrics().size(); i++){
             Lyric l = songle.getSongs().getActiveSong().getLyrics().get(i);
             LatLng a = l.getCoords(songle.getLevel());

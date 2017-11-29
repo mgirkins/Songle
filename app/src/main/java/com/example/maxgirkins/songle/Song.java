@@ -20,6 +20,7 @@ public class Song {
     private List<Lyric> lyrics;
     private  Integer completed;
     private Long completedAt;
+    private double distanceWalked;
     private final String TAG2 = "SongClass";
 
     public Song(String title, String artist, Integer num, String youtubeLink) {
@@ -30,6 +31,7 @@ public class Song {
         this.completed = 0;
         this.completedAt = null;
         this.youtubeLink = youtubeLink;
+        this.distanceWalked = 0.0;
         Log.i(TAG2, "song initialised with youtube link: " + youtubeLink);
     }
 
@@ -103,5 +105,13 @@ public class Song {
 
     public void setYoutubeLink(String youtubeLink) {
         this.youtubeLink = youtubeLink;
+    }
+
+    public double getDistanceWalked() {
+        return distanceWalked;
+    }
+
+    public void setDistanceWalked(double distance) {
+        this.distanceWalked += distanceWalked;
     }
 }
