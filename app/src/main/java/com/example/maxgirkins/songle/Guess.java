@@ -23,14 +23,22 @@ public class Guess extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        songTitles = songle.getSongs().getTitles().toArray(new String[songle.getSongs().getNumSongs()]);
-        Log.i(TAG, "youtube link for active song: " +songle.getSongs().getActiveSong().getYoutubeLink());
+
         setContentView(R.layout.activity_guess);
+
+    }
+    public void onPause(){
+        super.onPause();
+    }
+    public void onResume(){
+        super.onResume();
+        songTitles = songle.getSongs().getTitlesAndArtist().toArray(new String[songle.getSongs().getNumSongs()]);
+        Log.i(TAG, songle.getSongs().getActiveSong().getArtistAndTitle());
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_dropdown_item_1line, songTitles);
         final AutoCompleteTextView textView = findViewById(R.id.guessAutoCompleteTextView);
         textView.setAdapter(adapter);
-        Log.i(TAG,songle.getSongs().getTitles().toString());
+        Log.i(TAG,songle.getSongs().getTitlesAndArtist().toString());
         Button guessButton = findViewById(R.id.guess_button);
         guessButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -41,12 +49,6 @@ public class Guess extends AppCompatActivity {
                 }
             }
         });
-    }
-    public void onPause(){
-        super.onPause();
-    }
-    public void onResume(){
-        super.onResume();
     }
 
     private void onCorrect(){

@@ -36,12 +36,39 @@ public class SongList {
         }
         return count;
     }
-    public List<String> getTitles(){
+    public List<String> getTitlesAndArtist(){
         List<String> titles = new ArrayList<>();
         for (int i = 0; i< songs.size(); i++){
             titles.add(songs.get(i).getTitle() + " - " + songs.get(i).getArtist());
         }
         return titles;
+    }
+    public List<String> getCompletedTitles(){
+        List<String> titles = new ArrayList<>();
+        for (int i = 0; i< songs.size(); i++){
+            if (songs.get(i).isCompleted()){
+            titles.add(songs.get(i).getTitle());
+            }
+        }
+        return titles;
+    }
+    public List<String> getCompletedArtists(){
+        List<String> artists = new ArrayList<>();
+        for (int i = 0; i< songs.size(); i++){
+            if (songs.get(i).isCompleted()){
+                artists.add(songs.get(i).getArtist());
+            }
+        }
+        return artists;
+    }
+    public List<String> getCompletedYoutubeLinks(){
+        List<String> links = new ArrayList<>();
+        for (int i = 0; i< songs.size(); i++){
+            if (songs.get(i).isCompleted()){
+                links.add(songs.get(i).getYoutubeLink());
+            }
+        }
+        return links;
     }
 
     public Integer getNumSongs(){

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import com.google.android.gms.location.LocationListener;
 
@@ -29,6 +30,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -185,7 +187,28 @@ public class MainActivity extends AppCompatActivity
             LatLng coords = l.getCoords(songle.getLevel());
             Boolean collected = l.isCollected();
             if (!coords.equals(new LatLng(0.0,0.0)) && !collected && mapReady) {
-                l.setMapMarker(this.mMap.addMarker(new MarkerOptions().position(coords)));
+                String classification = l.getClassification(songle.getLevel());
+                Log.i(TAG, classification);
+                switch (classification){
+                    case "unclassified":
+                        l.setMapMarker(this.mMap.addMarker(new MarkerOptions().position(coords).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_marker_unclassified))));
+                        break;
+                    case "boring":
+                        l.setMapMarker(this.mMap.addMarker(new MarkerOptions().position(coords).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_marker_boring))));
+                        break;
+                    case  "notboring":
+                        l.setMapMarker(this.mMap.addMarker(new MarkerOptions().position(coords).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_marker_notboring))));
+                        break;
+                    case "interesting":
+                        l.setMapMarker(this.mMap.addMarker(new MarkerOptions().position(coords).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_marker_interesting))));
+                        break;
+                    case "veryinteresting":
+                        l.setMapMarker(this.mMap.addMarker(new MarkerOptions().position(coords).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_marker_veryinteresting))));
+                        break;
+                    default:
+                        break;
+                }
+
             }
         }
     }
