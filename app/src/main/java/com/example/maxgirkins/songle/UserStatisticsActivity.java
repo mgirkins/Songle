@@ -30,6 +30,10 @@ public class UserStatisticsActivity extends AppCompatActivity{
     }
     private void makeDistanceCounts(){
         TextView total_distance = findViewById(R.id.distance_all_time);
-        total_distance.setText(Double.toString(songle.getStats().getTotalDistance()) + songle.getSettings().getUnits());
+        Double total_dist = songle.getStats().getTotalDistance();
+        total_distance.setText(String.format("%.02f",total_dist) + songle.getSettings().getUnits());
+        TextView distance_for_song = findViewById(R.id.distance_walked_for_song);
+        Double song_dist = songle.getSongs().getActiveSong().getDistanceWalked();
+        distance_for_song.setText(String.format("%.02f",song_dist) + songle.getSettings().getUnits() );
     }
 }

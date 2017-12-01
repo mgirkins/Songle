@@ -107,11 +107,12 @@ public class Song {
         this.youtubeLink = youtubeLink;
     }
 
-    public double getDistanceWalked() {
-        return distanceWalked;
+    public Double getDistanceWalked() {
+
+        return distanceWalked/1000;
     }
 
     public void setDistanceWalked(double distance) {
-        this.distanceWalked += distanceWalked;
+        this.distanceWalked += distance;
     }
 }

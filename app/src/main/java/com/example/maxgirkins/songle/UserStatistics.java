@@ -11,7 +11,7 @@ public class UserStatistics {
         }
 
     public double getTotalDistance() {
-        return totalDistance;
+        return totalDistance/1000;
     }
 
     public void addToTotalDistance(double distance) {

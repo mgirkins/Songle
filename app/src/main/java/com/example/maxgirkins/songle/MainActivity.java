@@ -23,6 +23,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -87,7 +88,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     public  void onResume(){
         super.onResume();
-        //songs = songle.getSongs();
         settings = songle.getSharedPreferences();
         Log.i(TAG,"MapsAcvtivity resumed");
         if (mMap == null) {
@@ -113,31 +113,12 @@ public class MainActivity extends AppCompatActivity
     }
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
         }
-    }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        return true;
-    }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     public void onMapReady(GoogleMap googleMap) {
@@ -230,13 +211,6 @@ public class MainActivity extends AppCompatActivity
         return Math.sqrt(distance);
     }
 
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-    }
-
     @Override
     protected void onStop() {
         super.onStop();
@@ -271,7 +245,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onConnected(Bundle connectionHint) {
-        Log.i(TAG, "onconnectedCalled");
         try {
             createLocationRequest();
         } catch (java.lang.IllegalStateException ise) {
@@ -302,7 +275,12 @@ public class MainActivity extends AppCompatActivity
             Lyric l = songle.getSongs().getActiveSong().getLyrics().get(i);
             LatLng a = l.getCoords(songle.getSettings().getDifficulty());
             if (getDistanceBetween(b,a) < 20){
-                l.setCollectedAt(dater.getTime());
+                if (!(l.isCollected())){
+                    String message = "Congrats You found: " + l.getLyric().toUpperCase();
+                    Toast.makeText(getApplicationContext(),message,Toast.LENGTH_SHORT).show();
+                    l.setCollectedAt(dater.getTime());
+                }
+
                 try {
                     l.getMapMarker().remove();
                 } catch (NullPointerException n){
@@ -353,7 +331,6 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
 
     public void onLyricsDownloaded() throws InterruptedException {
         populateMap();

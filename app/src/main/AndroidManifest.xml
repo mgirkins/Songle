@@ -44,6 +44,14 @@
             android:value="com.example.maxgirkins.songle.MapsActivity" />
         </activity>
         <activity
+            android:name=".Completed_songs_activity"
+            android:label="@string/completed_songs_acitivty_title"
+            android:parentActivityName=".MapsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.maxgirkins.songle.MapsActivity" />
+        </activity>
+        <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"
             android:parentActivityName=".MapsActivity">
@@ -56,16 +64,6 @@
         <activity
             android:name=".Help"
             android:label="@string/help_title"
-            android:parentActivityName=".MapsActivity">
-
-            <!-- Parent activity meta-data to support 4.0 and lower -->
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.maxgirkins.songle.MapsActivity" />
-        </activity>
-        <activity
-            android:name=".Statistics"
-            android:label="@string/statistics_activity_title"
             android:parentActivityName=".MapsActivity">
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
@@ -103,14 +101,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Completed_songs_activity"
-            android:label="@string/completed_songs_acitivty_title"
-            android:parentActivityName=".Statistics">
-
-            <!-- Parent activity meta-data to support 4.0 and lower -->
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.maxgirkins.songle.Statistics" /></activity>
     </application>
 
 </manifest>
