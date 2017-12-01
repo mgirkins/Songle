@@ -58,7 +58,7 @@ public class Songle extends Application implements DownloadLyricsResponse{
         main = new MainActivity();
         settings = new Settings();
         sharedPreferences = getSharedPreferences(PREFS, MODE_PRIVATE);
-        level = sharedPreferences.getInt("level", 0);
+        level = sharedPreferences.getInt("level", 4);
         settings.setDifficulty(level);
         String units = sharedPreferences.getString("units", "km");
         settings.setUnits(units);
@@ -74,10 +74,10 @@ public class Songle extends Application implements DownloadLyricsResponse{
     public void getData(){
         String jsonSongs = sharedPreferences.getString("Data", "");
         this.songs = gson.fromJson(jsonSongs, SongList.class);
-        String jsonStats = sharedPreferences.getString("Stats", "");
-        this.stats = gson.fromJson(jsonStats, UserStatistics.class);
-        String jsonSettings = sharedPreferences.getString("Settings", "");
-        this.settings = gson.fromJson(jsonSettings,Settings.class);
+        //String jsonStats = sharedPreferences.getString("Stats", "");
+        //this.stats = gson.fromJson(jsonStats, UserStatistics.class);
+        //String jsonSettings = sharedPreferences.getString("Settings", "");
+        //this.settings = gson.fromJson(jsonSettings,Settings.class);
     }
     public void saveData() throws IOException {
         SharedPreferences.Editor editor = sharedPreferences.edit();

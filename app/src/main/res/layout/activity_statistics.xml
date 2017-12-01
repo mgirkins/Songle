@@ -29,7 +29,7 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
         <ProgressBar
-            android:id="@+id/progressBar2"
+            android:id="@+id/total_game_completion"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -43,7 +43,7 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
         <ProgressBar
-            android:id="@+id/progressBar3"
+            android:id="@+id/song_completion"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -93,9 +93,10 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
         <TextView
+            android:id="@+id/distance_all_time"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="323.5km" />
+            android:text="0.0" />
 
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

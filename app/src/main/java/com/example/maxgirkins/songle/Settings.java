@@ -5,7 +5,7 @@ package com.example.maxgirkins.songle;
  */
 
 public class Settings {
-    private Integer difficulty;
+    private Integer difficulty = 4;
     private Boolean nightMode;
     private String units;
 

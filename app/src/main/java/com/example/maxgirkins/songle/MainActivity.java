@@ -21,6 +21,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
@@ -71,16 +74,13 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
         dater =  new Date();
-        //songs = songle.getSongsFirstRun();
 
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        //songle.setSongs(songs);
         mMap.clear();
         Log.i(TAG,"MapsActivity Paused");
     }
@@ -105,6 +105,7 @@ public class MainActivity extends AppCompatActivity
 
         }
         if (mapReady){
+            mGoogleApiClient.connect();
             populateMap();
 
         }
@@ -270,6 +271,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onConnected(Bundle connectionHint) {
+        Log.i(TAG, "onconnectedCalled");
         try {
             createLocationRequest();
         } catch (java.lang.IllegalStateException ise) {
@@ -294,8 +296,8 @@ public class MainActivity extends AppCompatActivity
             double travel = getDistanceBetween(b,lastPosition);
             songle.getSongs().getActiveSong().setDistanceWalked(travel);
             songle.getStats().addToTotalDistance(travel);
-            lastPosition = b;
         }
+        lastPosition = b;
         for (int i = 0; i<songle.getSongs().getActiveSong().getLyrics().size(); i++){
             Lyric l = songle.getSongs().getActiveSong().getLyrics().get(i);
             LatLng a = l.getCoords(songle.getSettings().getDifficulty());
@@ -334,6 +336,9 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_guess) {
             Intent goGuess = new Intent(this, Guess.class);
             startActivity(goGuess);
+        } else if (id == R.id.statistics) {
+            Intent goStats = new Intent(this, UserStatisticsActivity.class);
+            startActivity(goStats);
         } else if (id == R.id.nav_help) {
             Intent goHelp = new Intent(this, Help.class);
             startActivity(goHelp);
@@ -351,7 +356,6 @@ public class MainActivity extends AppCompatActivity
 
 
     public void onLyricsDownloaded() throws InterruptedException {
-//        songs = songle.getSongs();
         populateMap();
         Log.i(TAG,"onLyricsDownloaded Called!");
     }

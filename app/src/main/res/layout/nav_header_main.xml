@@ -40,12 +40,4 @@
         android:progress="68"
         android:progressTint="@color/colorAccent" />
 
-    <Button
-        android:id="@+id/button3"
-        android:layout_width="55dp"
-        android:layout_height="25dp"
-        android:background="@color/colorPrimaryDark"
-        android:text="More >"
-        android:textSize="10sp" />
-
 </LinearLayout>
