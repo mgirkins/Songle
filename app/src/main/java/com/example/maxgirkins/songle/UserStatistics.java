@@ -14,7 +14,7 @@ public class UserStatistics {
         return totalDistance;
     }
 
-    public void setTotalDistance(double distance) {
+    public void addToTotalDistance(double distance) {
         this.totalDistance += distance;
     }
 }

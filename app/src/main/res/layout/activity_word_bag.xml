@@ -35,7 +35,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button2"
+        app:layout_constraintTop_toBottomOf="@+id/reset_progress_button"
         app:layout_constraintVertical_chainStyle="spread" />
 
 </android.support.constraint.ConstraintLayout>

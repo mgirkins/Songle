@@ -41,7 +41,7 @@ public class DownloadSongLyrics extends AsyncTask<String, Void, List<Lyric>> {
                 SongLyricParser q = new SongLyricParser();
                 s = q.parse(stream);
             } else if (urlString.substring(urlString.length() - 3).equals("kml")){
-                MapInfoParser p = new MapInfoParser(s, songle.getLevel());
+                MapInfoParser p = new MapInfoParser(s, songle.getSettings().getDifficulty());
                 s = p.parse(stream);
             }
         } catch (IOException i) {

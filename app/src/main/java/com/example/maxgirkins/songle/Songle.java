@@ -4,7 +4,6 @@ import android.app.Application;
 import android.content.SharedPreferences;
 import android.util.Log;
 
-import com.google.android.gms.maps.GoogleMap;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -22,27 +21,31 @@ public class Songle extends Application implements DownloadLyricsResponse{
     private DownloadXmlTask download;
     private DownloadSongLyrics downloadsongs;
     private static  final String PREFS = "PreferencesFile";
-    private SharedPreferences settings;
+    private SharedPreferences sharedPreferences;
     private Integer level;
     private MainActivity main;
     private Gson gson = new Gson();
     private UserStatistics stats;
+    private Settings settings;
+
 
     @Override
     public void onCreate(){
         super.onCreate();
         songle = this;
         main = new MainActivity();
-        settings = getSharedPreferences(PREFS, MODE_PRIVATE);
-        level = settings.getInt("level", 4);
+        settings = new Settings();
+        sharedPreferences = getSharedPreferences(PREFS, MODE_PRIVATE);
+        level = sharedPreferences.getInt("level", 0);
+        settings.setDifficulty(level);
+        String units = sharedPreferences.getString("units", "km");
+        settings.setUnits(units);
         songs = new SongList();
+        stats = new UserStatistics();
         getData();
         downloadSongInfo();
         importSongLyrics(songs.getActiveSong().getNum(),level);
 
-    }
-    public Integer getLevel(){
-        return level;
     }
     public SongList getSongsFirstRun() {
         getData();
@@ -51,26 +54,40 @@ public class Songle extends Application implements DownloadLyricsResponse{
     public SongList getSongs(){
         return songs;
     }
-
-    public SharedPreferences getSettings(){
-        return settings;
+    public void resetProgress(){
+        main = new MainActivity();
+        settings = new Settings();
+        sharedPreferences = getSharedPreferences(PREFS, MODE_PRIVATE);
+        level = sharedPreferences.getInt("level", 0);
+        settings.setDifficulty(level);
+        String units = sharedPreferences.getString("units", "km");
+        settings.setUnits(units);
+        songs = new SongList();
+        stats = new UserStatistics();
+        downloadSongInfo();
+        importSongLyrics(songs.getActiveSong().getNum(),level);
+    }
+    public SharedPreferences getSharedPreferences(){
+        return sharedPreferences;
     }
 
     public void getData(){
-        String jsonSongs = settings.getString("Data", "");
+        String jsonSongs = sharedPreferences.getString("Data", "");
         this.songs = gson.fromJson(jsonSongs, SongList.class);
-        String jsonStats = settings.getString("Stats", "");
+        String jsonStats = sharedPreferences.getString("Stats", "");
         this.stats = gson.fromJson(jsonStats, UserStatistics.class);
+        String jsonSettings = sharedPreferences.getString("Settings", "");
+        this.settings = gson.fromJson(jsonSettings,Settings.class);
     }
     public void saveData() throws IOException {
-        SharedPreferences.Editor editor = settings.edit();
-        String jsonSongs;
-        jsonSongs = gson.toJson(songs);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        String jsonSongs = gson.toJson(songs);
         editor.putString("Data", jsonSongs);
-        String jsonStats;
-        jsonStats = gson.toJson(songs);
+        String jsonStats = gson.toJson(songs);
         editor.putString("Stats", jsonStats);
-        editor.commit();
+        String jsonSettings = gson.toJson(settings);
+        editor.putString("Settings", jsonSettings);
+        editor.apply();
     }
     public void downloadSongInfo(){
         download = new DownloadXmlTask();
@@ -83,7 +100,7 @@ public class Songle extends Application implements DownloadLyricsResponse{
 
     }
     public void importSongLyrics(Integer num, Integer level){
-        String numForm = num.toString();
+        String numForm = Integer.toString(num+1);
         if (numForm.length() == 1){
             numForm = "0" + numForm;
         }
@@ -109,5 +126,8 @@ public class Songle extends Application implements DownloadLyricsResponse{
 
     public UserStatistics getStats() {
         return stats;
+    }
+    public Settings getSettings(){
+        return settings;
     }
 }

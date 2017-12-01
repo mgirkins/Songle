@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
-import android.graphics.BitmapFactory;
 import android.location.Location;
 import com.google.android.gms.location.LocationListener;
 
@@ -89,7 +88,7 @@ public class MainActivity extends AppCompatActivity
     public  void onResume(){
         super.onResume();
         //songs = songle.getSongs();
-        settings = songle.getSettings();
+        settings = songle.getSharedPreferences();
         Log.i(TAG,"MapsAcvtivity resumed");
         if (mMap == null) {
             SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -184,10 +183,10 @@ public class MainActivity extends AppCompatActivity
 
         for (int i = 0; i<lyricsLength; i++){
             Lyric l = songle.getSongs().getActiveSong().getLyrics().get(i);
-            LatLng coords = l.getCoords(songle.getLevel());
+            LatLng coords = l.getCoords(songle.getSettings().getDifficulty());
             Boolean collected = l.isCollected();
             if (!coords.equals(new LatLng(0.0,0.0)) && !collected && mapReady) {
-                String classification = l.getClassification(songle.getLevel());
+                String classification = l.getClassification(songle.getSettings().getDifficulty());
                 Log.i(TAG, classification);
                 switch (classification){
                     case "unclassified":
@@ -294,12 +293,12 @@ public class MainActivity extends AppCompatActivity
         if (lastPosition != null){
             double travel = getDistanceBetween(b,lastPosition);
             songle.getSongs().getActiveSong().setDistanceWalked(travel);
-            songle.getStats().setTotalDistance(travel);
+            songle.getStats().addToTotalDistance(travel);
             lastPosition = b;
         }
         for (int i = 0; i<songle.getSongs().getActiveSong().getLyrics().size(); i++){
             Lyric l = songle.getSongs().getActiveSong().getLyrics().get(i);
-            LatLng a = l.getCoords(songle.getLevel());
+            LatLng a = l.getCoords(songle.getSettings().getDifficulty());
             if (getDistanceBetween(b,a) < 20){
                 l.setCollectedAt(dater.getTime());
                 try {

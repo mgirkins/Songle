@@ -97,11 +97,5 @@
             android:layout_height="wrap_content"
             android:text="323.5km" />
 
-        <Button
-            android:id="@+id/button5"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorAccent"
-            android:text="Completed songs" />
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

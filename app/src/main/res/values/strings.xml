@@ -14,7 +14,7 @@
     <string name="pref_description_dark_mode">Enables dark mode throughout the app to reduce eye strain.
     </string>
 
-    <string name="pref_difficulty">Difficulty</string>
+    <string name="pref_difficulty">Difficulty Level:</string>
 
 
     <string-array name="list_preference_entries">
