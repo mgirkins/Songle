@@ -96,7 +96,12 @@ public class SongList {
 
     }
     public void newActiveSong(){
-        activeSongNum = (int) (Math.random() * uncompletedSongs().size());
+        Integer num = (int) (Math.random() * uncompletedSongs().size());
+        if (num == activeSongNum){
+            newActiveSong();
+        } else {
+            activeSongNum = num;
+        }
         Log.i(TAG1, songs.get(uncompletedSongs().get(activeSongNum)).getTitle());
         songle.importSongLyrics(activeSongNum,songle.getSettings().getDifficulty());
     }

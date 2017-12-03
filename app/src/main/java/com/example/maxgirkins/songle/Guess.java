@@ -66,14 +66,14 @@ public class Guess extends AppCompatActivity {
         g.show(this.getFragmentManager(),"GuessDialog");
     }
     public void doPositiveClick(){
-        songle.getSongs().getActiveSong().setCompleted(date.getTime());
+        songle.getSongs().getActiveSong().setCompleted();
         songle.getSongs().newActiveSong();
         Intent mapsIntent = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(mapsIntent);
     }
     public void doNegativeClick(){
         String url = songle.getSongs().getActiveSong().getYoutubeLink();
-        songle.getSongs().getActiveSong().setCompleted(date.getTime());
+        songle.getSongs().getActiveSong().setCompleted();
         songle.getSongs().newActiveSong();
         Intent lVideoIntent = new Intent(
                 Intent.ACTION_VIEW,
@@ -81,7 +81,8 @@ public class Guess extends AppCompatActivity {
         startActivity(lVideoIntent);
     }
     public void doPositiveClickIncorrect(){
-
+        AutoCompleteTextView textView = findViewById(R.id.guessAutoCompleteTextView);
+        textView.setText("");
     }
     public void doNegativeClickIncorrect(){
         Intent mapIntent = new Intent(getApplicationContext(),MainActivity.class);

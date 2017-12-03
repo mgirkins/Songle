@@ -3,16 +3,9 @@ package com.example.maxgirkins.songle;
 import android.app.Application;
 import android.content.SharedPreferences;
 import android.util.Log;
-import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -70,22 +63,13 @@ public class Songle extends Application implements DownloadLyricsResponse{
     }
 
     public void getData(){
-
         String jsonSongs = sharedPreferences.getString("Songs", "");
         String jsonSettings = sharedPreferences.getString("Settings", "");
         String jsonStats = sharedPreferences.getString("Stats", "");
         this.stats = gson.fromJson(jsonStats, UserStatistics.class);
-        Log.i(TAG,jsonStats);
         this.songs = gson.fromJson(jsonSongs, SongList.class);
-        Log.i(TAG,jsonSongs);
         this.settings = gson.fromJson(jsonSettings,Settings.class);
-        Log.i(TAG,jsonSettings);
         Log.i(TAG,"Data's back");
-        //
-        //String jsonStats = sharedPreferences.getString("Stats", "");
-        //
-        //String jsonSettings = sharedPreferences.getString("Settings", "");
-        //
     }
     public void saveData() throws IOException {
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -117,6 +101,7 @@ public class Songle extends Application implements DownloadLyricsResponse{
     }
     public void importSongLyrics(Integer num, Integer level){
         String numForm = Integer.toString(num+1);
+        //make url friendly
         if (numForm.length() == 1){
             numForm = "0" + numForm;
         }

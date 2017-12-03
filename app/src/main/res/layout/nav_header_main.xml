@@ -16,14 +16,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:text="Distance walked today:"
+        android:text="Distance walked for this song: "
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/drawer_header_distnace_for_song"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="2.73km"
         android:textColor="@android:color/white" />
 
     <TextView
@@ -34,10 +33,11 @@
         android:textColor="@android:color/white" />
 
     <ProgressBar
+        android:id="@+id/drawer_header_song_completion"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:progress="68"
+        android:progress="0"
         android:progressTint="@color/colorAccent" />
 
 </LinearLayout>

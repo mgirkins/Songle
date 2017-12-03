@@ -4,10 +4,7 @@ import android.util.Log;
 
 import com.google.gson.annotations.Expose;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -29,8 +26,6 @@ public class Song {
     @Expose
     private  Integer completed;
     @Expose
-    private Long completedAt;
-    @Expose
     private double distanceWalked;
     private final String TAG2 = "SongClass";
 
@@ -40,7 +35,6 @@ public class Song {
         this.num = num;
         this.lyrics = new ArrayList<>();
         this.completed = 0;
-        this.completedAt = null;
         this.youtubeLink = youtubeLink;
         this.distanceWalked = 0.0;
         Log.i(TAG2, "song initialised with youtube link: " + youtubeLink);
@@ -69,9 +63,7 @@ public class Song {
         }
         return count;
     }
-    public void setLyrics(List<Lyric> l){
-        this.lyrics = l;
-    }
+
     public void addLyrics(List<Lyric>l){
         this.lyrics = l;
     }
@@ -83,12 +75,8 @@ public class Song {
             return false;
         }
     }
-    public void setCompleted(Long time){
+    public void setCompleted(){
         this.completed = 1;
-        this.completedAt = time;
-    }
-    public Long getCompletedAt() {
-        return completedAt;
     }
 
     public Integer getNum() {

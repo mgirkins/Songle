@@ -20,6 +20,9 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -59,21 +62,46 @@ public class MainActivity extends AppCompatActivity
     SharedPreferences settings;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
+        setupView();
+        dater =  new Date();
+
+    }
+
+    private void setupView() {
+        setTitle("Songle");
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        setTitle("Songle");
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
+        ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(
+                this,                  /* host Activity */
+                drawer,         /* DrawerLayout object */
+                toolbar,  /* nav drawer icon to replace 'Up' caret */
+                R.string.drawer_open,  /* "open drawer" description */
+                R.string.drawer_close  /* "close drawer" description */
+        ) {
+
+            /** Called when a drawer has settled in a completely closed state. */
+            public void onDrawerClosed(View view) {
+                super.onDrawerClosed(view);
+            }
+
+            /** Called when a drawer has settled in a completely open state. */
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                TextView distance_for_song = findViewById(R.id.drawer_header_distnace_for_song);
+                Double total_dist = songle.getSongs().getActiveSong().getDistanceWalked();
+                distance_for_song.setText(String.format("%.02f",total_dist) + songle.getSettings().getUnits());
+                ProgressBar song_completion = findViewById(R.id.drawer_header_song_completion);
+                song_completion.setMax(songle.getSongs().getActiveSong().getLyrics().size());
+                song_completion.setProgress(songle.getSongs().getActiveSong().getCompletedLyricsCount());
+            }
+        };
+        drawer.addDrawerListener(mDrawerToggle);
+        mDrawerToggle.syncState();
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        dater =  new Date();
-
     }
 
     @Override
