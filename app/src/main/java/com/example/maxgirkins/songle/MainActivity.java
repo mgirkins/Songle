@@ -19,10 +19,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -83,6 +80,11 @@ public class MainActivity extends AppCompatActivity
     protected void onPause() {
         super.onPause();
         mMap.clear();
+        try {
+            songle.saveData();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         Log.i(TAG,"MapsActivity Paused");
     }
     @Override
@@ -278,7 +280,7 @@ public class MainActivity extends AppCompatActivity
                 if (!(l.isCollected())){
                     String message = "Congrats You found: " + l.getLyric().toUpperCase();
                     Toast.makeText(getApplicationContext(),message,Toast.LENGTH_SHORT).show();
-                    l.setCollectedAt(dater.getTime());
+                    l.setCollected();
                 }
 
                 try {

@@ -5,7 +5,9 @@ import android.util.Log;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.gson.annotations.Expose;
 
+import java.io.Serializable;
 import java.sql.Array;
 import java.util.Date;
 import java.util.ArrayList;
@@ -17,14 +19,17 @@ import java.util.List;
  */
 
 public class Lyric {
+    @Expose
     private String word;
+    @Expose
     private Boolean collected;
-    private Long collectedAt;
+    @Expose
     private Integer[] songPosition;
+    @Expose
     private List<LatLng> coords;
     private Marker mapMarker;
+    @Expose
     private List<String> classification;
-    private final String TAG3 = "LyricClass";
 
     public Lyric(String word, Integer[] songPosition){
         this.word = word;
@@ -38,9 +43,8 @@ public class Lyric {
         return word;
     }
 
-    public void setCollectedAt(Long now){
+    public void setCollected(){
         this.collected = true;
-        this.collectedAt = now;
     }
 
     public Marker getMapMarker() {
@@ -65,9 +69,7 @@ public class Lyric {
     public Boolean isCollected(){
         return collected;
     }
-    public Long getCollectedAt(Integer level) {
-        return collectedAt;
-    }
+
     public Integer[] getSongPosition() {
         return songPosition;
     }

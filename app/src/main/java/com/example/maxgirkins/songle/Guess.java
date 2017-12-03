@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+
+import java.io.IOException;
 import java.util.Date;
 import static com.example.maxgirkins.songle.Songle.songle;
 
@@ -25,6 +27,11 @@ public class Guess extends AppCompatActivity {
     }
     public void onPause(){
         super.onPause();
+        try {
+            songle.saveData();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     public void onResume(){
         super.onResume();

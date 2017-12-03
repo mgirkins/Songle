@@ -35,6 +35,7 @@ import android.widget.TextView;
 
 import static com.example.maxgirkins.songle.Songle.songle;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 
@@ -102,6 +103,11 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         songle.importSongLyrics(songle.getSongs().getActiveSong().getNum(),songle.getSettings().getDifficulty());
+        try {
+            songle.saveData();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void doPositiveClickResetBtn() {

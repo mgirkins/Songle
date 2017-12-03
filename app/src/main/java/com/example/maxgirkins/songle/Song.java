@@ -2,6 +2,9 @@ package com.example.maxgirkins.songle;
 
 import android.util.Log;
 
+import com.google.gson.annotations.Expose;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -13,13 +16,21 @@ import java.util.List;
 
 public class Song {
 
+    @Expose
     private String title;
+    @Expose
     private String artist;
+    @Expose
     private String youtubeLink;
+    @Expose
     private Integer num;
+    @Expose
     private List<Lyric> lyrics;
+    @Expose
     private  Integer completed;
+    @Expose
     private Long completedAt;
+    @Expose
     private double distanceWalked;
     private final String TAG2 = "SongClass";
 

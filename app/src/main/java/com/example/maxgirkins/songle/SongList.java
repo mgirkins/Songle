@@ -2,6 +2,9 @@ package com.example.maxgirkins.songle;
 
 import android.util.Log;
 
+import com.google.gson.annotations.Expose;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,12 +15,14 @@ import static com.example.maxgirkins.songle.Songle.songle;
  */
 
 public class SongList {
+    @Expose
     private List<Song> songs;
-    private Integer activeSong;
-    protected final String TAG1 = "SonglistClass";
+    @Expose
+    private Integer activeSongNum;
+    private final String TAG1 = "SonglistClass";
 
     public SongList(){
-        activeSong = -1;
+        activeSongNum = -1;
         songs = new ArrayList<>();
     }
 
@@ -81,19 +86,19 @@ public class SongList {
 
     public Song getActiveSong(){
 
-        if (activeSong == -1){
+        if (activeSongNum == -1){
             newActiveSong();
             return getActiveSong();
         } else {
-            return songs.get(activeSong);
+            return songs.get(activeSongNum);
         }
 
 
     }
     public void newActiveSong(){
-        activeSong = (int) (Math.random() * uncompletedSongs().size());
-        Log.i(TAG1, songs.get(uncompletedSongs().get(activeSong)).getTitle());
-        songle.importSongLyrics(activeSong,songle.getSettings().getDifficulty());
+        activeSongNum = (int) (Math.random() * uncompletedSongs().size());
+        Log.i(TAG1, songs.get(uncompletedSongs().get(activeSongNum)).getTitle());
+        songle.importSongLyrics(activeSongNum,songle.getSettings().getDifficulty());
     }
 
     private List<Integer> uncompletedSongs(){
