@@ -91,8 +91,9 @@
     <string name="word_bag_title">Collected words</string>
     <string name="statistics_activity_title">Statistics</string>
     <string name="help_text">How to play Songle: \n\nWalk around The edinburgh university campus and collect lyrics to popular songs as you get near enough to the markers displayed on the map. You can see the lyrics you have already collected
-    by clicking the basket icon above the map, and you can guess the song by clicking guess at the top of the collected words screen.\n\nThe You can see your progress at any time from the map by clicking the hamburger icon at the top right
-    of the screen, this will display the menu and at the top you can see some statistics about how far you have walked. For more detailed information, click on the arrow to the right of these statistics.</string>
+    by opening the side drawer of the map and clicking "collected words", and you can guess the song by clicking guess at the top of the collected words screen.\n\nThe You can see your progress at any time from the map by clicking Statistics on the same menu.
+    \n\nSong lyrics show up on the map in different colours. The more red a lyric the more useful it will be to help you guess the song. Stars indicate the most useful words. The lyric colours will change depending on what level you are playing
+    at. On fiendish mode all lyrics appear grey and only a few show up on the map.</string>
     <string name="settings_night_mode">Night Mode</string>
     <string name="settings_night_mode_description">Save your eyes at night with a darker theme</string>
     <string name="settings_units">Units</string>
@@ -171,7 +172,7 @@
     70	Any way the wind blows.</string>
     <string name="word_bag_guess_button">Guess!</string>
     <string name="activity_guess_title">Guess</string>
-    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_main">Songle</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
