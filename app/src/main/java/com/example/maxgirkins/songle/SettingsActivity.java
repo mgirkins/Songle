@@ -6,9 +6,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
+import android.widget.Switch;
 import android.widget.TextView;
 import static com.example.maxgirkins.songle.Songle.songle;
 import java.io.IOException;
@@ -39,7 +41,6 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {}
         });
-
         final RadioGroup units = findViewById(R.id.settings_units_radio_group);
         if (songle.getSettings().getUnits().equals("Miles")){
             RadioButton m = findViewById(R.id.radio_miles);

@@ -57,13 +57,6 @@
             android:text=""
             android:textAlignment="center" />
 
-        <Switch
-            android:id="@+id/settings_night_mode_switch"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Night Mode"
-            android:textColor="?attr/textColorAlertDialogListItem" />
-
         <TextView
             android:id="@+id/textView11"
             android:layout_width="match_parent"

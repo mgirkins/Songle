@@ -18,7 +18,6 @@ public class Guess extends AppCompatActivity {
     String[] songTitles;
     private static final String TAG = "GuessActivity";
     Date date = new Date();
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -55,26 +54,35 @@ public class Guess extends AppCompatActivity {
     }
 
     private void onCorrect(){
-        Bundle bundle = new Bundle();
-        bundle.putString("title", songle.getSongs().getActiveSong().getArtistAndTitle());
-        GuessDialog g = new GuessDialog();
-        g.setArguments(bundle);
-        g.show(this.getFragmentManager(),"GuessDialog");
+        Log.i(TAG, songle.getSongs().getNumSongs().toString());
+        Log.i(TAG, songle.getSongs().getCompletedSongsCount().toString());
+        if (songle.getSongs().getNumSongs() == (songle.getSongs().getCompletedSongsCount()+1)){
+            songle.resetProgress();
+            Intent goCompleted = new Intent(getApplicationContext(),GameCompleted.class);
+            startActivity(goCompleted);
+        } else {
+            Bundle bundle = new Bundle();
+            bundle.putString("title", songle.getSongs().getActiveSong().getArtistAndTitle());
+            GuessDialog g = new GuessDialog();
+            g.setArguments(bundle);
+            g.show(this.getFragmentManager(),"GuessDialog");
+            songle.getSongs().getActiveSong().setCompleted();
+            songle.getSongs().newActiveSong();
+        }
+
     }
     private void onIncorrect(){
+        Log.i(TAG, songle.getSongs().getActiveSong().getArtistAndTitle());
         GuessDialogIncorrect g = new GuessDialogIncorrect();
         g.show(this.getFragmentManager(),"GuessDialog");
     }
     public void doPositiveClick(){
-        songle.getSongs().getActiveSong().setCompleted();
-        songle.getSongs().newActiveSong();
+
         Intent mapsIntent = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(mapsIntent);
     }
     public void doNegativeClick(){
         String url = songle.getSongs().getActiveSong().getYoutubeLink();
-        songle.getSongs().getActiveSong().setCompleted();
-        songle.getSongs().newActiveSong();
         Intent lVideoIntent = new Intent(
                 Intent.ACTION_VIEW,
                 Uri.parse(url));

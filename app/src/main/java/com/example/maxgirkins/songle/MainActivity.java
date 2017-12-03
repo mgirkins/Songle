@@ -118,6 +118,11 @@ public class MainActivity extends AppCompatActivity
     @Override
     public  void onResume(){
         super.onResume();
+        if (songle.getSettings().getNightMode()){
+            setTheme(R.style.Songle_Dark);
+        } else {
+            setTheme(R.style.Songle_Light);
+        }
         settings = songle.getSharedPreferences();
         Log.i(TAG,"MapsAcvtivity resumed");
         if (mMap == null) {

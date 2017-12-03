@@ -22,7 +22,6 @@ public class Songle extends Application implements DownloadLyricsResponse{
     private DownloadSongLyrics downloadsongs;
     private static  final String PREFS = "PreferencesFile";
     private SharedPreferences sharedPreferences;
-    private Integer level;
     private MainActivity main;
     private Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
     private UserStatistics stats;
@@ -47,16 +46,10 @@ public class Songle extends Application implements DownloadLyricsResponse{
     }
     public void resetProgress(){
         main = new MainActivity();
-        settings = new Settings();
-        sharedPreferences = getSharedPreferences(PREFS, MODE_PRIVATE);
-        level = sharedPreferences.getInt("level", 0);
-        settings.setDifficulty(level);
-        String units = sharedPreferences.getString("units", "km");
-        settings.setUnits(units);
         songs = new SongList();
         stats = new UserStatistics();
         downloadSongInfo();
-        importSongLyrics(songs.getActiveSong().getNum(),level);
+        importSongLyrics(songs.getActiveSong().getNum(),songle.getSettings().getDifficulty());
     }
     public SharedPreferences getSharedPreferences(){
         return sharedPreferences;

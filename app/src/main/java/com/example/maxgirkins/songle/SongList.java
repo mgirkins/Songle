@@ -7,6 +7,7 @@ import com.google.gson.annotations.Expose;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 import static com.example.maxgirkins.songle.Songle.songle;
 
@@ -96,13 +97,12 @@ public class SongList {
 
     }
     public void newActiveSong(){
-        Integer num = (int) (Math.random() * uncompletedSongs().size());
+        Integer num = ThreadLocalRandom.current().nextInt(0, uncompletedSongs().size());
         if (num == activeSongNum){
             newActiveSong();
         } else {
-            activeSongNum = num;
+            activeSongNum = uncompletedSongs().get(num);
         }
-        Log.i(TAG1, songs.get(uncompletedSongs().get(activeSongNum)).getTitle());
         songle.importSongLyrics(activeSongNum,songle.getSettings().getDifficulty());
     }
 
@@ -113,6 +113,7 @@ public class SongList {
                 indices.add(i);
             }
         }
+        Log.i(TAG1, indices.toString());
         return  indices;
     }
 }
