@@ -7,6 +7,8 @@ import com.google.gson.annotations.Expose;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.maxgirkins.songle.Songle.songle;
+
 /**
  * Created by MaxGirkins on 22/11/2017.
  */
@@ -94,7 +96,6 @@ public class Song {
                 s = s+lyrics.get(i).toCensoredString() +" ";
             }
         }
-        Log.i(TAG2,s);
         return s;
     }
 
@@ -102,13 +103,14 @@ public class Song {
         return youtubeLink;
     }
 
-    public void setYoutubeLink(String youtubeLink) {
-        this.youtubeLink = youtubeLink;
-    }
 
     public Double getDistanceWalked() {
+        if (songle.getSettings().getUnits().equals("Km")){
+            return distanceWalked/1000;
+        } else {
+            return (0.621371*(distanceWalked/1000));
+        }
 
-        return distanceWalked/1000;
     }
 
     public void setDistanceWalked(double distance) {

@@ -60,7 +60,28 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="0.0km" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Distance walked today:"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
+        <TextView
+            android:id="@+id/distance_walked_today"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="0.0km" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Distance walked this week:"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+        <TextView
+            android:id="@+id/distance_walked_week"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="0.0km" />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

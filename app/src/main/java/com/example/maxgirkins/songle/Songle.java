@@ -65,6 +65,8 @@ public class Songle extends Application implements DownloadLyricsResponse{
         Log.i(TAG,"Data's back");
     }
     public void saveData() throws IOException {
+        //stop distance travelled taking up loads of space.
+        stats.removeOldTravels();
         SharedPreferences.Editor editor = sharedPreferences.edit();
         String jsonSongs = gson.toJson(songs);
         Log.i(TAG,jsonSongs);

@@ -113,7 +113,6 @@ public class SongList {
                 indices.add(i);
             }
         }
-        Log.i(TAG1, indices.toString());
         return  indices;
     }
 }

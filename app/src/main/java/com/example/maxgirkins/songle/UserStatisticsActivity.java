@@ -1,11 +1,12 @@
 package com.example.maxgirkins.songle;
 
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import java.util.Date;
 
 import static com.example.maxgirkins.songle.Songle.songle;
 /**
@@ -13,6 +14,7 @@ import static com.example.maxgirkins.songle.Songle.songle;
  */
 
 public class UserStatisticsActivity extends AppCompatActivity{
+    Date dater = new Date();
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,5 +37,11 @@ public class UserStatisticsActivity extends AppCompatActivity{
         TextView distance_for_song = findViewById(R.id.distance_walked_for_song);
         Double song_dist = songle.getSongs().getActiveSong().getDistanceWalked();
         distance_for_song.setText(String.format("%.02f",song_dist) + songle.getSettings().getUnits() );
+        TextView day_distance = findViewById(R.id.distance_walked_today);
+        Double day_dist = songle.getStats().getTravelDistanceInRange(new Date(System.currentTimeMillis() - (24 * 60 * 60 * 1000)));
+        day_distance.setText(String.format("%.02f",day_dist) + songle.getSettings().getUnits());
+        TextView week_distance = findViewById(R.id.distance_walked_week);
+        Double week_dist = songle.getStats().getTravelDistanceInRange(new Date(System.currentTimeMillis() - (7 * 24 * 60 * 60 * 1000)));
+        week_distance.setText(String.format("%.02f",week_dist) + songle.getSettings().getUnits());
     }
 }

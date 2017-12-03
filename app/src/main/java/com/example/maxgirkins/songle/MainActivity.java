@@ -204,7 +204,6 @@ public class MainActivity extends AppCompatActivity
             Boolean collected = l.isCollected();
             if (!coords.equals(new LatLng(0.0,0.0)) && !collected && mapReady) {
                 String classification = l.getClassification(songle.getSettings().getDifficulty());
-                Log.i(TAG, classification);
                 switch (classification){
                     case "unclassified":
                         l.setMapMarker(this.mMap.addMarker(new MarkerOptions().position(coords).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_marker_unclassified))));
@@ -304,6 +303,7 @@ public class MainActivity extends AppCompatActivity
             double travel = getDistanceBetween(b,lastPosition);
             songle.getSongs().getActiveSong().setDistanceWalked(travel);
             songle.getStats().addToTotalDistance(travel);
+            songle.getStats().addTravels(travel,dater);
         }
         lastPosition = b;
         for (int i = 0; i<songle.getSongs().getActiveSong().getLyrics().size(); i++){
