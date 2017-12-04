@@ -219,7 +219,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         } catch (NullPointerException n){
-
+        } catch (IndexOutOfBoundsException i){
         }
     }
     //function to get distance in meters between two LatLngs.
@@ -308,7 +308,7 @@ public class MainActivity extends AppCompatActivity
             //move camera to keep up with user if they have moved more than 3 meters to enable them to
             //pan around the map when stationary without it jumping back to there current location all
             // the time.
-            if (travel > 3){
+            if (travel > 0.1){
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(b));
             }
 

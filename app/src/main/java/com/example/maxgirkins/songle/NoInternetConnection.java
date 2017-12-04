@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import static com.example.maxgirkins.songle.Songle.songle;
+
 public class NoInternetConnection extends AppCompatActivity {
 
     @Override
@@ -28,6 +30,7 @@ public class NoInternetConnection extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (isInternet(getApplicationContext())){
+                    songle.onCreate();
                     Intent main = new Intent(getApplicationContext(), MainActivity.class);
                     startActivity(main);
                 } else {

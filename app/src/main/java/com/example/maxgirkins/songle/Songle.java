@@ -33,7 +33,7 @@ public class Songle extends Application implements DownloadLyricsResponse{
     @Override
     public void onCreate(){
         super.onCreate();
-        //catch lack of internet before startup 
+        //catch lack of internet before startup
         if(!receiver.isInternet(getApplicationContext())){
             Intent goNoInternet = new Intent(getApplicationContext(), NoInternetConnection.class);
             goNoInternet.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -47,7 +47,12 @@ public class Songle extends Application implements DownloadLyricsResponse{
         stats = new UserStatistics();
         getData();
         downloadSongInfo();
-        importSongLyrics(songs.getActiveSong().getNum(),settings.getDifficulty());
+        try {
+            importSongLyrics(songs.getActiveSong().getNum(),settings.getDifficulty());
+        } catch (IndexOutOfBoundsException i){
+
+        }
+
     }
     public SongList getSongs(){
         return songs;
@@ -150,7 +155,10 @@ public class Songle extends Application implements DownloadLyricsResponse{
     public void onLyricsDownloaded(List<Lyric> list) {
         try {
             //calls populate map so map always up to date.
-            main.onLyricsDownloaded();
+            if (songs.getActiveSong() != null){
+                main.onLyricsDownloaded();
+            }
+
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
