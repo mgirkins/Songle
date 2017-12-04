@@ -12,9 +12,8 @@ import static com.example.maxgirkins.songle.Songle.songle;
 /**
  * Created by MaxGirkins on 01/12/2017.
  */
-
+//statistics activity
 public class UserStatisticsActivity extends AppCompatActivity{
-    Date dater = new Date();
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,6 +21,7 @@ public class UserStatisticsActivity extends AppCompatActivity{
         makeProgressBars();
         makeDistanceCounts();
     }
+    //populate view with up to date progress bars
     private void makeProgressBars(){
         ProgressBar total_completion = findViewById(R.id.total_game_completion);
         total_completion.setMax(songle.getSongs().getNumSongs());
@@ -30,6 +30,7 @@ public class UserStatisticsActivity extends AppCompatActivity{
         song_completion.setMax(songle.getSongs().getActiveSong().getLyrics().size());
         song_completion.setProgress(songle.getSongs().getActiveSong().getCompletedLyricsCount());
     }
+    //populate view with up to date distance stats.
     private void makeDistanceCounts(){
         TextView total_distance = findViewById(R.id.distance_all_time);
         Double total_dist = songle.getStats().getTotalDistance();
@@ -38,9 +39,11 @@ public class UserStatisticsActivity extends AppCompatActivity{
         Double song_dist = songle.getSongs().getActiveSong().getDistanceWalked();
         distance_for_song.setText(String.format("%.02f",song_dist) + songle.getSettings().getUnits() );
         TextView day_distance = findViewById(R.id.distance_walked_today);
+        //get distance walked in last 24 hours
         Double day_dist = songle.getStats().getTravelDistanceInRange(new Date(System.currentTimeMillis() - (24 * 60 * 60 * 1000)));
         day_distance.setText(String.format("%.02f",day_dist) + songle.getSettings().getUnits());
         TextView week_distance = findViewById(R.id.distance_walked_week);
+        //get distance walked in last week
         Double week_dist = songle.getStats().getTravelDistanceInRange(new Date(System.currentTimeMillis() - (7 * 24 * 60 * 60 * 1000)));
         week_distance.setText(String.format("%.02f",week_dist) + songle.getSettings().getUnits());
     }

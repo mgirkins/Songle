@@ -25,7 +25,7 @@
             android:id="@+id/textView3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Total Game Completion:"
+            android:text="@string/statistics_activity_total_completion_text"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
         <ProgressBar
@@ -39,7 +39,7 @@
             android:id="@+id/textView4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Song Completion:"
+            android:text="@string/statistics_activity_song_completion_text"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
         <ProgressBar
@@ -52,47 +52,47 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Distance walked for this song:"
+            android:text="@string/statistics_activity_song_distance_text"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
         <TextView
             android:id="@+id/distance_walked_for_song"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="0.0km" />
+            android:text="@string/statistics_activity_song_distance_nums" />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Distance walked today:"
+            android:text="@string/statistics_activity_day_walk_text"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
         <TextView
             android:id="@+id/distance_walked_today"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="0.0km" />
+            android:text="@string/statistics_activity_walked_today_nums" />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Distance walked this week:"
+            android:text="@string/statistics_activity_week_travel_text"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
         <TextView
             android:id="@+id/distance_walked_week"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="0.0km" />
+            android:text="@string/statistics_activity_week_travel_nums" />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Distance walked all time:"
+            android:text="@string/statistics_activity_all_time_travel_text"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
         <TextView
             android:id="@+id/distance_all_time"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="0.0km" />
+            android:text="@string/statistics_activity_all_time_travel_nums" />
 
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

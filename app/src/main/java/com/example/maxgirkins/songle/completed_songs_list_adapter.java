@@ -11,7 +11,7 @@ import android.widget.TextView;
 /**
  * Created by MaxGirkins on 30/11/2017.
  */
-
+//class to populate completed songs rows with the right data
 public class completed_songs_list_adapter extends ArrayAdapter {
     private Activity context;
     private String[] titles;
@@ -29,9 +29,9 @@ public class completed_songs_list_adapter extends ArrayAdapter {
     public View getView(int position, View view, ViewGroup parent) {
         LayoutInflater inflater=context.getLayoutInflater();
         View rowView=inflater.inflate(R.layout.completed_songs_row, null,true);
-        TextView song_title = (TextView) rowView.findViewById(R.id.song_title_completed_listview);
-        TextView artist_name = (TextView) rowView.findViewById(R.id.artist_title_completed_listview);
-        TextView youtube_links = (TextView) rowView.findViewById(R.id.youtube_link_completed_listview);
+        TextView song_title = rowView.findViewById(R.id.song_title_completed_listview);
+        TextView artist_name = rowView.findViewById(R.id.artist_title_completed_listview);
+        TextView youtube_links = rowView.findViewById(R.id.youtube_link_completed_listview);
         song_title.setText(titles[position]);
         artist_name.setText(artists[position]);
         youtube_links.setText(youtubeLinks[position]);

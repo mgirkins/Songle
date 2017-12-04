@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 import static com.example.maxgirkins.songle.Songle.songle;
-
+// download the song titles and artists etc.
 public class DownloadXmlTask extends AsyncTask<String, Void, SongList> {
 
     private static final String TAG = "DownloaderA";
@@ -35,7 +35,6 @@ public class DownloadXmlTask extends AsyncTask<String, Void, SongList> {
     @Override
     protected void onPostExecute(SongList songList) {
         super.onPostExecute(songList);
-        //songle.setSongs(songList);
     }
 
     private void loadXmlFromNetwork(String urlString) throws XmlPullParserException, IOException {

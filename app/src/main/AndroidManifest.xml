@@ -33,63 +33,60 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".MapsActivity"
-            android:label="@string/title_activity_maps" />
-        <activity
             android:name=".UserStatisticsActivity"
             android:label="@string/title_activity_statistics"
-            android:parentActivityName=".MapsActivity">
+            android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.maxgirkins.songle.MapsActivity" />
+                android:value="com.example.maxgirkins.songle.MainActivity" />
         </activity>
         <activity
             android:name=".Completed_songs_activity"
             android:label="@string/completed_songs_acitivty_title"
-            android:parentActivityName=".MapsActivity">
+            android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.maxgirkins.songle.MapsActivity" />
+                android:value="com.example.maxgirkins.songle.MainActivity" />
         </activity>
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName=".MapsActivity">
+            android:parentActivityName=".MainActivity">
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.maxgirkins.songle.MapsActivity" />
+                android:value="com.example.maxgirkins.songle.MainActivity" />
         </activity>
         <activity
             android:name=".Help"
             android:label="@string/help_title"
-            android:parentActivityName=".MapsActivity">
+            android:parentActivityName=".MainActivity">
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.maxgirkins.songle.MapsActivity" />
+                android:value="com.example.maxgirkins.songle.MainActivity" />
         </activity>
         <activity
             android:name=".word_bag"
             android:label="@string/word_bag_title"
-            android:parentActivityName=".MapsActivity">
+            android:parentActivityName=".MainActivity">
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.maxgirkins.songle.MapsActivity" />
+                android:value="com.example.maxgirkins.songle.MainActivity" />
         </activity>
         <activity
             android:name=".Guess"
             android:label="@string/activity_guess_title"
-            android:parentActivityName=".MapsActivity">
+            android:parentActivityName=".MainActivity">
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.maxgirkins.songle.MapsActivity" />
+                android:value="com.example.maxgirkins.songle.MainActivity" />
         </activity>
         <activity
             android:name=".MainActivity"
@@ -103,11 +100,12 @@
         </activity>
         <activity
             android:name=".GameCompleted"
-            android:parentActivityName=".MapsActivity">
+            android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.maxgirkins.songle.MapsActivity" />
+                android:value="com.example.maxgirkins.songle.MainActivity" />
         </activity>
+        <activity android:name=".NoInternetConnection"></activity>
     </application>
 
 </manifest>

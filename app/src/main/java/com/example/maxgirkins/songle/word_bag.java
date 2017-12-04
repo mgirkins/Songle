@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import static com.example.maxgirkins.songle.Songle.songle;
 
+//collected words screen
 public class word_bag extends AppCompatActivity {
     protected final String TAG = "WordBagActivity";
     @Override

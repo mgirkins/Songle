@@ -2,12 +2,10 @@ package com.example.maxgirkins.songle;
 
 import android.Manifest;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.location.Location;
 import com.google.android.gms.location.LocationListener;
-
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -24,7 +22,6 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
@@ -42,7 +39,7 @@ import java.io.IOException;
 import java.util.Date;
 
 import static com.example.maxgirkins.songle.Songle.songle;
-
+//Main activity used to display the map and navigation drawer that the user sees when opening the app.
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
@@ -54,18 +51,14 @@ public class MainActivity extends AppCompatActivity
     private Location mLastLocation;
     private NetworkReceiver receiver = new NetworkReceiver();
     private static final String TAG = "MapsActivity";
-    //private static SongList songs;
-    private static  final String PREFS = "PreferencesFile";
     private transient Date dater;
     private Boolean mapReady = false;
     private LatLng lastPosition;
-    SharedPreferences settings;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setupView();
         dater =  new Date();
-
     }
 
     private void setupView() {
@@ -73,6 +66,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        //side drawer for menu and a few stats
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(
                 this,                  /* host Activity */
@@ -81,13 +75,10 @@ public class MainActivity extends AppCompatActivity
                 R.string.drawer_open,  /* "open drawer" description */
                 R.string.drawer_close  /* "close drawer" description */
         ) {
-
-            /** Called when a drawer has settled in a completely closed state. */
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
             }
-
-            /** Called when a drawer has settled in a completely open state. */
+            //populate drawer header with some stats
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
                 TextView distance_for_song = findViewById(R.id.drawer_header_distnace_for_song);
@@ -107,7 +98,12 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onPause() {
         super.onPause();
-        mMap.clear();
+        if (mMap != null) {
+            mMap.clear();
+        }
+
+        //map can change lyrics data so should try to save it locally to keep everything up to date
+        //if the app is closed afterwards.
         try {
             songle.saveData();
         } catch (IOException e) {
@@ -118,12 +114,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     public  void onResume(){
         super.onResume();
-        if (songle.getSettings().getNightMode()){
-            setTheme(R.style.Songle_Dark);
-        } else {
-            setTheme(R.style.Songle_Light);
-        }
-        settings = songle.getSharedPreferences();
         Log.i(TAG,"MapsAcvtivity resumed");
         if (mMap == null) {
             SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -139,6 +129,7 @@ public class MainActivity extends AppCompatActivity
             mGoogleApiClient.connect();
 
         }
+        //if the map has loaded, populate it with lyric markers.
         if (mapReady){
             mGoogleApiClient.connect();
             populateMap();
@@ -160,12 +151,9 @@ public class MainActivity extends AppCompatActivity
         mMap = googleMap;
         Log.i(TAG, "Map ready");
         mapReady = true;
-        // Add a marker in Edinburgh and move the camera
+        //initially move the camera to the center of the playing area in case location is not available
         LatLng edinburghCentral = new LatLng(55.944425, -3.188396);
-        //mMap.addMarker(new MarkerOptions().position(edinburghCentral));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(edinburghCentral, 16));
-
-
         try {
             // Visualise current position with a small blue circle
             mMap.setMyLocationEnabled(true);
@@ -177,8 +165,7 @@ public class MainActivity extends AppCompatActivity
         // Add ‘‘My location’’ button to the user interface
         mMap.getUiSettings().setMyLocationButtonEnabled(true);
         try {
-            // Customise the styling of the base map using a JSON object defined
-            // in a raw resource file.
+            // Customise the styling of the map to be more minimal.
             boolean success = googleMap.setMapStyle(
                     MapStyleOptions.loadRawResourceStyle(
                             this, R.raw.style_json));
@@ -189,47 +176,60 @@ public class MainActivity extends AppCompatActivity
         } catch (Resources.NotFoundException e) {
             Log.e(TAG, "Can't find style. Error: ", e);
         }
+        //add lyric markers.
         populateMap();
 
 
     }
-
+    //function to add lyric markers to the map
     public void populateMap() {
-        Log.i(TAG, "PopulateMap Called");
-        Integer lyricsLength = songle.getSongs().getActiveSong().getLyrics().size();
+        try {
+            Integer lyricsLength = songle.getSongs().getActiveSong().getLyrics().size();
+            for (int i = 0; i<lyricsLength; i++){
+                Lyric l = songle.getSongs().getActiveSong().getLyrics().get(i);
+                LatLng coords = l.getCoords(songle.getSettings().getDifficulty());
+                Boolean collected = l.isCollected();
+                //if the marker is at (0.0,0.0) then don't show it as this is the default.
+                //if marker is uncollected and not at 0,0. then show it on map.
+                if (!coords.equals(new LatLng(0.0,0.0)) && !collected && mapReady) {
+                    String classification = l.getClassification(songle.getSettings().getDifficulty());
+                    //choose style of marker based on classification of lyric.
+                    switch (classification){
+                        case "unclassified":
+                            //setMapmarker used so that markers can be removed one by one
+                            //instead of clearing map each time a lyric is collected.
+                            l.setMapMarker(this.mMap.addMarker(new MarkerOptions().position(coords).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_marker_unclassified))));
+                            break;
+                        case "boring":
+                            l.setMapMarker(this.mMap.addMarker(new MarkerOptions().position(coords).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_marker_boring))));
+                            break;
+                        case  "notboring":
+                            l.setMapMarker(this.mMap.addMarker(new MarkerOptions().position(coords).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_marker_notboring))));
+                            break;
+                        case "interesting":
+                            l.setMapMarker(this.mMap.addMarker(new MarkerOptions().position(coords).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_marker_interesting))));
+                            break;
+                        case "veryinteresting":
+                            l.setMapMarker(this.mMap.addMarker(new MarkerOptions().position(coords).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_marker_veryinteresting))));
+                            break;
+                        default:
+                            break;
+                    }
 
-        for (int i = 0; i<lyricsLength; i++){
-            Lyric l = songle.getSongs().getActiveSong().getLyrics().get(i);
-            LatLng coords = l.getCoords(songle.getSettings().getDifficulty());
-            Boolean collected = l.isCollected();
-            if (!coords.equals(new LatLng(0.0,0.0)) && !collected && mapReady) {
-                String classification = l.getClassification(songle.getSettings().getDifficulty());
-                switch (classification){
-                    case "unclassified":
-                        l.setMapMarker(this.mMap.addMarker(new MarkerOptions().position(coords).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_marker_unclassified))));
-                        break;
-                    case "boring":
-                        l.setMapMarker(this.mMap.addMarker(new MarkerOptions().position(coords).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_marker_boring))));
-                        break;
-                    case  "notboring":
-                        l.setMapMarker(this.mMap.addMarker(new MarkerOptions().position(coords).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_marker_notboring))));
-                        break;
-                    case "interesting":
-                        l.setMapMarker(this.mMap.addMarker(new MarkerOptions().position(coords).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_marker_interesting))));
-                        break;
-                    case "veryinteresting":
-                        l.setMapMarker(this.mMap.addMarker(new MarkerOptions().position(coords).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_marker_veryinteresting))));
-                        break;
-                    default:
-                        break;
                 }
+        }
 
-            }
+        } catch (NullPointerException n){
+
         }
     }
+    //function to get distance in meters between two LatLngs.
+    //adapted form an answer on stackoverflow.
     public static double getDistanceBetween(LatLng first, LatLng second) {
 
-        final int R = 6371; // Radius of the earth
+        // Radius of the earth at edinburgh latitude for most accurate distance calculations
+        // according to data from https://rechneronline.de/earth-radius/
+        final Double R = 6363.494;
 
         double latDistance = Math.toRadians(first.latitude - second.latitude);
         double lonDistance = Math.toRadians(first.longitude - second.longitude);
@@ -239,10 +239,7 @@ public class MainActivity extends AppCompatActivity
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         double distance = R * c * 1000; // convert to meters
 
-
-        distance = Math.pow(distance, 2);
-
-        return Math.sqrt(distance);
+        return distance;
     }
 
     @Override
@@ -255,6 +252,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onDestroy(){
         super.onDestroy();
+        //save data to preserve user progress
         try {
             songle.saveData();
         } catch (IOException e) {
@@ -298,14 +296,28 @@ public class MainActivity extends AppCompatActivity
     }
     @Override
     public void onLocationChanged(Location location) {
+        //make LatLng for users position
         LatLng b = new LatLng(location.getLatitude(), location.getLongitude());
+        // if user has moved update their statistics accordingly
         if (lastPosition != null){
             double travel = getDistanceBetween(b,lastPosition);
+            //add distance walked to the current song
             songle.getSongs().getActiveSong().setDistanceWalked(travel);
+            //add distance walked to stats
             songle.getStats().addToTotalDistance(travel);
             songle.getStats().addTravels(travel,dater);
+            //move camera to keep up with user if they have moved more than 3 meters to enable them to
+            //pan around the map when stationary without it jumping back to there current location all
+            // the time.
+            if (travel > 3){
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(b));
+            }
+
         }
+
         lastPosition = b;
+        //if a lyric is within 20m then collect it, remove the marker, and popup a toast to
+        // the user displaying the lyric they have collected.
         for (int i = 0; i<songle.getSongs().getActiveSong().getLyrics().size(); i++){
             Lyric l = songle.getSongs().getActiveSong().getLyrics().get(i);
             LatLng a = l.getCoords(songle.getSettings().getDifficulty());
@@ -324,25 +336,21 @@ public class MainActivity extends AppCompatActivity
 
             }
         }
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(b));
+
     }
 
     @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
-    }
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {    }
 
     @Override
     public void onConnectionSuspended(int i) {
 
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
         int id = item.getItemId();
-
+        // handle user clicking on menu items by sending them to the correct activity.
         if (id == R.id.nav_bag) {
             Intent goBag = new Intent(this, word_bag.class);
             startActivity(goBag);
@@ -366,7 +374,7 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return false;
     }
-
+    //populate map when the lyrics for the song have been downloaded.
     public void onLyricsDownloaded() throws InterruptedException {
         populateMap();
         Log.i(TAG,"onLyricsDownloaded Called!");

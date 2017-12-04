@@ -14,8 +14,9 @@ import java.util.List;
  * Created by MaxGirkins on 22/11/2017.
  */
 
+//parser class for the song library list
+//returns a Songlist
 public class SongInfoParser {
-    private static final String TAG = "ParserClass";
     private static final String ns = null;
     public SongList parse(InputStream in) throws XmlPullParserException, IOException {
         try {
@@ -62,7 +63,6 @@ public class SongInfoParser {
                 number = readNumber(parser);
             } else if (name.equals("Link")) {
                 link = readLink(parser);
-                Log.i(TAG, link);
             }else {
                 skip(parser);
             }
@@ -80,7 +80,6 @@ public class SongInfoParser {
         parser.require(XmlPullParser.START_TAG, ns, "Number");
         String num = readText(parser);
         parser.require(XmlPullParser.END_TAG, ns, "Number");
-        Log.i(TAG,Integer.toString(Integer.parseInt(num)-1));
         return Integer.parseInt(num)-1;
     }
     private String readArtist(XmlPullParser parser) throws IOException, XmlPullParserException {

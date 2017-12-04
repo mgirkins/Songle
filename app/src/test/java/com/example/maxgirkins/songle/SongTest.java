@@ -17,7 +17,7 @@ public class SongTest {
         List<Lyric> lyrics = new ArrayList<>();
         lyrics.add(l);
         lyrics.add(l2);
-        testSong.addLyrics(lyrics);
+        testSong.setLyrics(lyrics);
         testSong.getLyrics().get(1).setCollected();
         testSong2.setCompleted();
         testSong2.setDistanceWalked(2100.00);

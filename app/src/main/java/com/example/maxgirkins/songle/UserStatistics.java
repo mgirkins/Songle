@@ -11,12 +11,15 @@ import static com.example.maxgirkins.songle.Songle.songle;
  * Created by MaxGirkins on 29/11/2017.
  */
 
+//class to handle the user's stats
 public class UserStatistics {
+        //expose to Gson
         @Expose
         private Double totalDistance;
         @Expose
         private ArrayList<Double> travels;
         @Expose
+        //arraylist of times used to give total distance in the last day/week/etc.
         private ArrayList<Date> travel_times;
 
         public UserStatistics(){
@@ -24,7 +27,7 @@ public class UserStatistics {
             travels = new ArrayList<>();
             travel_times = new ArrayList<>();
         }
-
+    //return total distance in miles or kilometers depending on user settings
     public Double getTotalDistance() {
         if (songle.getSettings().getUnits().equals("Km")){
             return totalDistance/1000;
@@ -37,7 +40,7 @@ public class UserStatistics {
     public void addToTotalDistance(double distance) {
         this.totalDistance += distance;
     }
-
+    //return total travel since date given in miles or kilometers depending on settings.
     public Double getTravelDistanceInRange(Date daterange) {
         Double total = 0.0;
         for (int i=0; i<travels.size(); i++){
@@ -51,7 +54,7 @@ public class UserStatistics {
             return (0.621371*(total/1000));
         }
     }
-
+    //add new travel data with time
     public void addTravels(Double travels, Date timestamp) {
         this.travels.add(travels);
         this.travel_times.add(timestamp);

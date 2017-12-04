@@ -10,6 +10,8 @@ import android.support.v7.app.AlertDialog;
  * Created by MaxGirkins on 29/11/2017.
  */
 
+//dialog triggered when user clicks reset progress in settings
+//triggers a warning that all data will be removed.
 public class ResetProgressDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {

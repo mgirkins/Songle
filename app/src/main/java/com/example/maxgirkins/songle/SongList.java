@@ -7,6 +7,7 @@ import com.google.gson.annotations.Expose;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static com.example.maxgirkins.songle.Songle.songle;
@@ -16,13 +17,13 @@ import static com.example.maxgirkins.songle.Songle.songle;
  */
 
 public class SongList {
+    //expose data to Gson
     @Expose
     private List<Song> songs;
     @Expose
     private Integer activeSongNum;
-    private final String TAG1 = "SonglistClass";
-
     public SongList(){
+        //activesong starts as -1 so that a new active song is called when data exists.
         activeSongNum = -1;
         songs = new ArrayList<>();
     }
@@ -30,9 +31,7 @@ public class SongList {
     public Song getSong(Integer num){
         return songs.get(num);
     }
-    public List<Song> getAllSongs(){
-        return songs;
-    }
+    //count songs that have been completed, return count.
     public Integer getCompletedSongsCount(){
         Integer count = 0;
         for (int i=0; i<songs.size(); i++){
@@ -42,6 +41,7 @@ public class SongList {
         }
         return count;
     }
+    //prettified list of titles and artists of all songs.
     public List<String> getTitlesAndArtist(){
         List<String> titles = new ArrayList<>();
         for (int i = 0; i< songs.size(); i++){
@@ -96,8 +96,11 @@ public class SongList {
 
 
     }
+    //pick random new song that hasn't been completed yet and isn't the current song
+    //then download the lyrics for that song.
     public void newActiveSong(){
-        Integer num = ThreadLocalRandom.current().nextInt(0, uncompletedSongs().size());
+        Random rand = new Random();
+        Integer num = rand.nextInt((uncompletedSongs().size()) + 1);
         if (num == activeSongNum){
             newActiveSong();
         } else {

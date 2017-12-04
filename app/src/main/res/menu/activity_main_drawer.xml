@@ -8,28 +8,28 @@
         <item
             android:id="@+id/nav_bag"
             android:icon="@drawable/ic_shopping_basket_black_24dp"
-            android:title="Collected Words" />
+            android:title="@string/collected_words_title" />
         <item
             android:id="@+id/nav_guess"
             android:icon="@drawable/ic_check_black_24dp"
-            android:title="Guess" />
+            android:title="@string/guess_activity_title" />
         <item
             android:id="@+id/completed_songs"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="Completed Songs Library" />
+            android:title="@string/completed_songs_activity" />
         <item
             android:id="@+id/statistics"
             android:icon="@drawable/ic_statistics"
-            android:title="Statistics" />
+            android:title="@string/statistics_activity" />
         <item
             android:id="@+id/nav_help"
             android:icon="@drawable/ic_info_black_24dp"
-            android:title="Help" />
+            android:title="@string/help_activity" />
 
         <item
             android:id="@+id/nav_manage"
             android:icon="@drawable/ic_settings_black_24dp"
-            android:title="Settings" />
+            android:title="@string/settings_activity" />
 
     </group>
 

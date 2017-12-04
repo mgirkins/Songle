@@ -5,88 +5,7 @@
 
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
-    <!-- Strings related to Settings -->
-
-    <!-- Example General settings -->
-    <string name="pref_header_general">General</string>
-
-    <string name="pref_title_dark_mode">Enable Dark Mode</string>
-    <string name="pref_description_dark_mode">Enables dark mode throughout the app to reduce eye strain.
-    </string>
-
     <string name="pref_difficulty">Difficulty Level:</string>
-
-
-    <string-array name="list_preference_entries">
-        <item>4</item>
-        <item>3</item>
-        <item>2</item>
-        <item>1</item>
-        <item>0</item>
-    </string-array>
-    <string-array name="list_preference_entry_values">
-        <item>Easy</item>
-        <item>Medium</item>
-        <item>Hard</item>
-        <item>Expert</item>
-        <item>Fiendish</item>
-    </string-array>
-
-    <string-array name="multi_select_list_preference_default_value" />
-
-
-    <!-- Example settings for Notifications -->
-    <string name="pref_header_notifications">Notifications</string>
-
-    <string name="pref_title_new_message_notifications">New message notifications</string>
-
-    <string name="pref_title_ringtone">Ringtone</string>
-    <string name="pref_ringtone_silent">Silent</string>
-
-    <string name="pref_title_vibrate">Vibrate</string>
-
-    <string name="pref_title_social_recommendations">Enable social recommendations</string>
-    <string name="pref_description_social_recommendations">Recommendations for people to contact
-        based on your message history
-    </string>
-
-    <string name="pref_title_display_name">Display name</string>
-    <string name="pref_default_display_name">John Smith</string>
-
-    <string name="pref_title_add_friends_to_messages">Add friends to messages</string>
-    <string-array name="pref_example_list_titles">
-        <item>Always</item>
-        <item>When possible</item>
-        <item>Never</item>
-    </string-array>
-    <string-array name="pref_example_list_values">
-        <item>1</item>
-        <item>0</item>
-        <item>-1</item>
-    </string-array>
-
-    <!-- Example settings for Data & Sync -->
-    <string name="pref_header_data_sync">Data &amp; sync</string>
-
-    <string name="pref_title_sync_frequency">Sync frequency</string>
-    <string-array name="pref_sync_frequency_titles">
-        <item>15 minutes</item>
-        <item>30 minutes</item>
-        <item>1 hour</item>
-        <item>3 hours</item>
-        <item>6 hours</item>
-        <item>Never</item>
-    </string-array>
-    <string-array name="pref_sync_frequency_values">
-        <item>15</item>
-        <item>30</item>
-        <item>60</item>
-        <item>180</item>
-        <item>360</item>
-        <item>-1</item>
-    </string-array>
-
-    <string name="pref_title_system_sync_settings">System sync settings</string>
     <string name="help_title">Help</string>
     <string name="word_bag_title">Collected words</string>
     <string name="statistics_activity_title">Statistics</string>
@@ -100,85 +19,39 @@
     <string name="units_toggle_on">M</string>
     <string name="units_toggle_off">Km</string>
     <string name="settings_difficulty_level_title">Difficulty Level</string>
-    <string name="word_bag_lyrics"> 1	Is this the real life?\n
-     2	Is this just fantasy?\n
-     3	Caught in a landslide,\n
-     4	No escape from reality.\n
-     5	\n
-     6	Open your eyes,\n
-     7	Look up to the skies and see,\n
-     8	I\'m just a poor boy, I need no sympathy,\n
-     9	Because I\'m easy come, easy go,\n
-    10	Little high, little low,\n
-    11	Any way the wind blows doesn\'t really matter to me, to me.\n
-    12	\n
-    13	Mama, just killed a man,\n
-    14	Put a gun against his head,\n
-    15	Pulled my trigger, now he\'s dead.\n
-    16	Mama, life had just begun,\n
-    17	But now I\'ve gone and thrown it all away.\n
-    18	\n
-    19	Mama, ooh,\n
-    20	Didn\'t mean to make you cry,\n
-    21	If I\'m not back again this time tomorrow,\n
-    22	Carry on, carry on as if nothing really matters.\n
-    23	\n
-    24	Too late, my time has come,\n
-    25	Sends shivers down my spine,\n
-    26	Body\'s aching all the time.\n
-    27	Goodbye, everybody, I\'ve got to go,\n
-    28	Gotta leave you all behind and face the truth.\n
-    29	\n
-    30	Mama, ooh (any way the wind blows),\n
-    31	I don\'t wanna die,\n
-    32	I sometimes wish I\'d never been born at all.\n
-    33	\n
-    34	I see a little silhouetto of a man,\n
-    35	Scaramouche, Scaramouche, will you do the Fandango?
-    36	Thunderbolt and lightning,
-    37	Very, very frightening me.
-    38	(Galileo) Galileo.
-    39	(Galileo) Galileo,
-    40	Galileo Figaro
-    41	Magnifico-o-o-o-o.
-    42
-    43	I'm just a poor boy, nobody loves me.
-    44	He's just a poor boy from a poor family,
-    45	Spare him his life from this monstrosity.
-    46
-    47	Easy come, easy go, will you let me go?
-    48	Bismillah! No, we will not let you go. (Let him go!)
-    49	Bismillah! We will not let you go. (Let him go!)
-    50	Bismillah! We will not let you go. (Let me go!)
-    51	Will not let you go. (Let me go!)
-    52	Never, never let you go
-    53	Never let me go, oh.
-    54	No, no, no, no, no, no, no.
-    55	Oh, mama mia, mama mia (Mama mia, let me go.)
-    56	Beelzebub has a devil put aside for me, for me, for me.
-    57
-    58	So you think you can stone me and spit in my eye?
-    59	So you think you can love me and leave me to die?
-    60	Oh, baby, can't do this to me, baby,
-    61	Just gotta get out, just gotta get right outta here.
-    62
-    63	(Ooooh, ooh yeah, ooh yeah)
-    64
-    65	Nothing really matters,
-    66	Anyone can see,
-    67	Nothing really matters,
-    68	Nothing really matters to me.
-    69
-    70	Any way the wind blows.</string>
+    <string name="word_bag_lyrics"></string>
     <string name="word_bag_guess_button">Guess!</string>
     <string name="activity_guess_title">Guess</string>
     <string name="title_activity_main">Songle</string>
-
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-
     <string name="action_settings">Settings</string>
     <string name="completed_songs_acitivty_title">Completed Songs</string>
     <string name="completed_songs_no_songs_message">Uncompleted songs appear redacted, try completing a song  to see it appear in your library!</string>
     <string name="title_activity_statistics">Statistics</string>
+    <string name="guess_autocomplete_hint">Start typing a song title...</string>
+    <string name="guess_button">Guess</string>
+    <string name="reset_all_progress_button">Reset All Progress!</string>
+    <string name="settings_units_text">Units</string>
+    <string name="settings_units_km">Km</string>
+    <string name="settings_units_miles">Miles</string>
+    <string name="settings_give_up_button">Give up on this song?</string>
+    <string name="statistics_activity_total_completion_text">Total Game Completion:</string>
+    <string name="statistics_activity_song_completion_text">Song Completion:</string>
+    <string name="statistics_activity_song_distance_text">Distance walked for this song:</string>
+    <string name="statistics_activity_song_distance_nums">0.0km</string>
+    <string name="statistics_activity_day_walk_text">Distance walked today:</string>
+    <string name="statistics_activity_walked_today_nums">0.0km</string>
+    <string name="statistics_activity_week_travel_text">Distance walked this week:</string>
+    <string name="statistics_activity_week_travel_nums">0.0km</string>
+    <string name="statistics_activity_all_time_travel_text">Distance walked all time:</string>
+    <string name="statistics_activity_all_time_travel_nums">0.0km</string>
+    <string name="nav_header_main_song_travel_text">Distance walked for this song:</string>
+    <string name="nav_header_main_song_completion_text">Song Completion:</string>
+    <string name="collected_words_title">Collected Words</string>
+    <string name="guess_activity_title">Guess</string>
+    <string name="completed_songs_activity">Completed Songs Library</string>
+    <string name="statistics_activity">Statistics</string>
+    <string name="help_activity">Help</string>
+    <string name="settings_activity">Settings</string>
 </resources>

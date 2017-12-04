@@ -5,18 +5,15 @@ import com.google.gson.annotations.Expose;
 /**
  * Created by MaxGirkins on 30/11/2017.
  */
-
+//settings class to handle difficulty and units.
 public class Settings {
     @Expose
     private Integer difficulty;
-    @Expose
-    private Boolean nightMode;
     @Expose
     private String units;
 
     public Settings(){
         this.difficulty = 0;
-        nightMode = false;
         units = "Km";
     }
 
@@ -26,14 +23,6 @@ public class Settings {
 
     public void setDifficulty(Integer difficulty) {
         this.difficulty = difficulty;
-    }
-
-    public Boolean getNightMode() {
-        return nightMode;
-    }
-
-    public void setNightMode(Boolean nightMode) {
-        this.nightMode = nightMode;
     }
 
     public String getUnits() {

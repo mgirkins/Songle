@@ -19,7 +19,19 @@ public class NetworkReceiver extends BroadcastReceiver {
         } else if (networkInfo != null && networkInfo.getType() == ConnectivityManager.TYPE_MOBILE) {
         // Have a network connection and permission, so use data
         } else {
-        // No Wi´Fi and no permission, or no network connection
+
+        }
+    }
+    public Boolean isInternet(Context context){
+        ConnectivityManager connMgr = (ConnectivityManager)
+                context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
+            return true;
+        } else if (networkInfo != null && networkInfo.getType() == ConnectivityManager.TYPE_MOBILE) {
+            return true;
+        } else {
+            return false;
         }
     }
 }

@@ -10,9 +10,11 @@ import android.support.v7.app.AlertDialog;
  * Created by MaxGirkins on 29/11/2017.
  */
 
+//dialog triggered when user guesses a song correctly.
 public class GuessDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        //get song title and artist
         String title = getArguments().getString("title");
         return new AlertDialog.Builder(getActivity())
                 .setTitle("Correct!")

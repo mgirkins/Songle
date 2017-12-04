@@ -1,6 +1,5 @@
 package com.example.maxgirkins.songle;
 
-import android.util.Log;
 
 import com.google.gson.annotations.Expose;
 
@@ -14,7 +13,7 @@ import static com.example.maxgirkins.songle.Songle.songle;
  */
 
 public class Song {
-
+    //expose data to Gson
     @Expose
     private String title;
     @Expose
@@ -29,7 +28,6 @@ public class Song {
     private  Integer completed;
     @Expose
     private double distanceWalked;
-    private final String TAG2 = "SongClass";
 
     public Song(String title, String artist, Integer num, String youtubeLink) {
         this.title = title;
@@ -39,7 +37,6 @@ public class Song {
         this.completed = 0;
         this.youtubeLink = youtubeLink;
         this.distanceWalked = 0.0;
-//        Log.i(TAG2, "song initialised with youtube link: " + youtubeLink);
     }
 
     public String getTitle() {
@@ -49,6 +46,7 @@ public class Song {
     public String getArtist() {
         return artist;
     }
+    //pretty print
     public String getArtistAndTitle(){
         return title + " - " + artist;
     }
@@ -56,6 +54,8 @@ public class Song {
     public List<Lyric> getLyrics() {
         return lyrics;
     }
+
+    //count all lyrics that have been completed and return them.
     public Integer getCompletedLyricsCount(){
         Integer count = 0;
         for (int i=0; i<lyrics.size();i++){
@@ -65,8 +65,8 @@ public class Song {
         }
         return count;
     }
-
-    public void addLyrics(List<Lyric>l){
+    //set the lyrics of the song
+    public void setLyrics(List<Lyric>l){
         this.lyrics = l;
     }
 
@@ -77,6 +77,7 @@ public class Song {
             return false;
         }
     }
+    //complete song
     public void setCompleted(){
         this.completed = 1;
     }
@@ -84,7 +85,9 @@ public class Song {
     public Integer getNum() {
         return num;
     }
+
     @Override
+    //get string representation of song with censored lyrics
     public String toString(){
         String s = "";
         Integer lineNum = 1;
@@ -103,7 +106,7 @@ public class Song {
         return youtubeLink;
     }
 
-
+    //return distance walked in miles or km depending on settings
     public Double getDistanceWalked() {
         if (songle.getSettings().getUnits().equals("Km")){
             return distanceWalked/1000;
@@ -112,7 +115,7 @@ public class Song {
         }
 
     }
-
+    //add to distance walked for song.
     public void setDistanceWalked(double distance) {
         this.distanceWalked += distance;
     }

@@ -6,6 +6,7 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -13,9 +14,9 @@ import java.util.concurrent.ExecutionException;
 /**
  * Created by MaxGirkins on 27/11/2017.
  */
-
+//static Singleton class to keep hold of all the data used by different activities
+// and handle saving and downloading.
 public class Songle extends Application implements DownloadLyricsResponse{
-    private static final String TAG = "SongleSingletonClass";
     public static Songle songle;
     private SongList songs;
     private DownloadXmlTask download;
@@ -39,11 +40,11 @@ public class Songle extends Application implements DownloadLyricsResponse{
         getData();
         downloadSongInfo();
         importSongLyrics(songs.getActiveSong().getNum(),settings.getDifficulty());
-
     }
     public SongList getSongs(){
         return songs;
     }
+    //reset user progress
     public void resetProgress(){
         main = new MainActivity();
         songs = new SongList();
@@ -51,39 +52,45 @@ public class Songle extends Application implements DownloadLyricsResponse{
         downloadSongInfo();
         importSongLyrics(songs.getActiveSong().getNum(),songle.getSettings().getDifficulty());
     }
-    public SharedPreferences getSharedPreferences(){
-        return sharedPreferences;
-    }
-
+    //load json data from sharedpreferences and make correct objects from the json.
     public void getData(){
+
         String jsonSongs = sharedPreferences.getString("Songs", "");
         String jsonSettings = sharedPreferences.getString("Settings", "");
         String jsonStats = sharedPreferences.getString("Stats", "");
-        this.stats = gson.fromJson(jsonStats, UserStatistics.class);
-        this.songs = gson.fromJson(jsonSongs, SongList.class);
-        this.settings = gson.fromJson(jsonSettings,Settings.class);
-        Log.i(TAG,"Data's back");
+        UserStatistics stats = gson.fromJson(jsonStats, UserStatistics.class);
+        SongList songs = gson.fromJson(jsonSongs, SongList.class);
+        Settings settings = gson.fromJson(jsonSettings,Settings.class);
+        if (stats != null){
+            this.stats = stats;
+        }
+        if (songs != null){
+            this.songs = songs;
+        }
+        if (settings != null){
+            this.settings = settings;
+        }
+
     }
+    //save data as json in sharedpreferences file.
     public void saveData() throws IOException {
         //stop distance travelled taking up loads of space.
         stats.removeOldTravels();
         SharedPreferences.Editor editor = sharedPreferences.edit();
         String jsonSongs = gson.toJson(songs);
-        Log.i(TAG,jsonSongs);
         editor.putString("Songs", jsonSongs);
         String jsonStats = gson.toJson(stats);
-        Log.i(TAG,jsonStats);
         editor.putString("Stats", jsonStats);
         String jsonSettings = gson.toJson(settings);
-        Log.i(TAG,jsonSettings);
         editor.putString("Settings", jsonSettings);
         editor.apply();
     }
+
     public void downloadSongInfo(){
         download = new DownloadXmlTask();
         try {
-            Log.i(TAG, "songs downloading");
             SongList temp = download.execute("http://www.inf.ed.ac.uk/teaching/courses/selp/data/songs/songs.xml").get();
+            //if there are more songs online than on local, add the new songs to local
             if (temp.getNumSongs() != songs.getNumSongs()){
                 for (int i=songs.getNumSongs(); i<temp.getNumSongs(); i++){
                     songs.addSong(temp.getSong(i));
@@ -115,7 +122,7 @@ public class Songle extends Application implements DownloadLyricsResponse{
                     }
                 }
                 downloadsongs = new DownloadSongLyrics();
-                this.songs.getSong(num).addLyrics(downloadsongs.execute(strings).get());
+                this.songs.getSong(num).setLyrics(downloadsongs.execute(strings).get());
                 for (int i=0; i<len; i++){
                     if (completed_lyrics.contains(i)){
                         songs.getActiveSong().getLyrics().get(i).setCollected();
@@ -123,7 +130,7 @@ public class Songle extends Application implements DownloadLyricsResponse{
                 }
             } else {
                 downloadsongs = new DownloadSongLyrics();
-                this.songs.getSong(num).addLyrics(downloadsongs.execute(strings).get());
+                this.songs.getSong(num).setLyrics(downloadsongs.execute(strings).get());
             }
 
         } catch (InterruptedException | ExecutionException i){
@@ -133,18 +140,18 @@ public class Songle extends Application implements DownloadLyricsResponse{
     }
     @Override
     public void onLyricsDownloaded(List<Lyric> list) {
-        Log.i(TAG, "lyrics Downloaded");
         try {
+            //calls populate map so map always up to date.
             main.onLyricsDownloaded();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
-
     public UserStatistics getStats() {
         return stats;
     }
     public Settings getSettings(){
         return settings;
     }
+
 }
