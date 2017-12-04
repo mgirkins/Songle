@@ -54,4 +54,6 @@
     <string name="statistics_activity">Statistics</string>
     <string name="help_activity">Help</string>
     <string name="settings_activity">Settings</string>
+    <string name="no_internet_detected_desc">No Internet Detected :(</string>
+    <string name="no_internet_detected_button">Try Again</string>
 </resources>

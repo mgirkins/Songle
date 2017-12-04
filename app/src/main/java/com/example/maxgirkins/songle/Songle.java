@@ -1,6 +1,7 @@
 package com.example.maxgirkins.songle;
 
 import android.app.Application;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 import com.google.gson.Gson;
@@ -27,10 +28,17 @@ public class Songle extends Application implements DownloadLyricsResponse{
     private Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
     private UserStatistics stats;
     private Settings settings;
+    private NetworkReceiver receiver = new NetworkReceiver();
 
     @Override
     public void onCreate(){
         super.onCreate();
+        if(!receiver.isInternet(getApplicationContext())){
+            Log.i("No Internet", "No internet");
+            Intent goNoInternet = new Intent(getApplicationContext(), NoInternetConnection.class);
+            goNoInternet.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(goNoInternet);
+        }
         songle = this;
         main = new MainActivity();
         settings = new Settings();

@@ -49,7 +49,6 @@ public class MainActivity extends AppCompatActivity
     private final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     private boolean mLocationPermissionGranted = false;
     private Location mLastLocation;
-    private NetworkReceiver receiver = new NetworkReceiver();
     private static final String TAG = "MapsActivity";
     private transient Date dater;
     private Boolean mapReady = false;
