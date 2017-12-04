@@ -33,8 +33,8 @@ public class Songle extends Application implements DownloadLyricsResponse{
     @Override
     public void onCreate(){
         super.onCreate();
+        //catch lack of internet before startup 
         if(!receiver.isInternet(getApplicationContext())){
-            Log.i("No Internet", "No internet");
             Intent goNoInternet = new Intent(getApplicationContext(), NoInternetConnection.class);
             goNoInternet.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(goNoInternet);
