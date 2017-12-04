@@ -39,7 +39,7 @@ public class Song {
         this.completed = 0;
         this.youtubeLink = youtubeLink;
         this.distanceWalked = 0.0;
-        Log.i(TAG2, "song initialised with youtube link: " + youtubeLink);
+//        Log.i(TAG2, "song initialised with youtube link: " + youtubeLink);
     }
 
     public String getTitle() {
