@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.maxgirkins.songle.word_bag"
-    android:id="@+id/word_bag_layout">
+    tools:context="com.example.maxgirkins.songle.word_bag">
 
     <Button
         android:id="@+id/word_bag_guess_button"

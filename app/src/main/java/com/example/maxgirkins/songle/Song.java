@@ -71,11 +71,7 @@ public class Song {
     }
 
     public Boolean isCompleted() {
-        if (completed == 1 ){
-            return true;
-        } else {
-            return false;
-        }
+        return completed == 1;
     }
     //complete song
     public void setCompleted(){

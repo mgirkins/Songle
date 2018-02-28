@@ -26,7 +26,6 @@
         android:textColor="@android:color/white" />
 
     <TextView
-        android:id="@+id/textView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/nav_header_main_song_completion_text"

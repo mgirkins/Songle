@@ -21,32 +21,31 @@ public class NoInternetConnection extends AppCompatActivity {
         setContentView(R.layout.activity_no_internet_connection);
         draw();
     }
+    //override back button so user cn't go to main screen without internet connection
     @Override
     public void onBackPressed() {
     }
-    private void draw(){
+
+    private void draw() {
         Button try_again = findViewById(R.id.no_internet_try_again_btn);
         try_again.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (isInternet(getApplicationContext())){
+                if (isInternet(getApplicationContext())) {
                     songle.onCreate();
                     Intent main = new Intent(getApplicationContext(), MainActivity.class);
                     startActivity(main);
                 } else {
-                    Toast.makeText(getApplicationContext(),"Sorry, still no internet :(", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Sorry, still no internet :(", Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
-    public Boolean isInternet(Context context){
+
+    public Boolean isInternet(Context context) {
         ConnectivityManager connMgr = (ConnectivityManager)
                 context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-        if (networkInfo != null && networkInfo.isConnected()) {
-            return true;
-        } else {
-            return false;
-        }
+        return networkInfo != null && networkInfo.isConnected();
     }
 }

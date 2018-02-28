@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity
     private final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     private boolean mLocationPermissionGranted = false;
     private Location mLastLocation;
+    private NetworkReceiver receiver = new NetworkReceiver();
     private static final String TAG = "MapsActivity";
     private transient Date dater;
     private Boolean mapReady = false;
@@ -219,7 +220,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         } catch (NullPointerException n){
-        } catch (IndexOutOfBoundsException i){
+
         }
     }
     //function to get distance in meters between two LatLngs.
@@ -308,7 +309,7 @@ public class MainActivity extends AppCompatActivity
             //move camera to keep up with user if they have moved more than 3 meters to enable them to
             //pan around the map when stationary without it jumping back to there current location all
             // the time.
-            if (travel > 0.1){
+            if (travel > 3){
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(b));
             }
 

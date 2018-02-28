@@ -23,15 +23,6 @@ public class Guess extends AppCompatActivity {
         setContentView(R.layout.activity_guess);
 
     }
-    public void onPause(){
-        super.onPause();
-        try {
-            //guess can alter the data so should save onPause to make sure everything saved up to date.
-            songle.saveData();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
     public void onResume(){
         super.onResume();
         //songtitles given to autocomplete text view so that user can guess easier.
@@ -52,7 +43,15 @@ public class Guess extends AppCompatActivity {
             }
         });
     }
-
+    public void onPause(){
+        super.onPause();
+        try {
+            //guess can alter the data so should save onPause to make sure everything saved up to date.
+            songle.saveData();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     private void onCorrect(){
         //if user has completed all songs then reset all progress to be mean, and send them to
         //the completion activity.
